@@ -98,17 +98,17 @@ export default {
         {
           icon: 'mdi-file-import-outline',
           title: 'Import',
-          to: '/import'
+          to: '/collection/import'
         },
         {
           icon: 'mdi-pencil',
           title: 'Manage',
-          to: '/manage'
+          to: '/collection/manage'
         },
         {
           icon: 'mdi-library-shelves',
           title: 'Arrange',
-          to: '/arrange'
+          to: '/collection/arrange'
         }
       ],
       miniVariant: false,
