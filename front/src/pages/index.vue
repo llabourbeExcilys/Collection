@@ -9,42 +9,15 @@
       sm8
       md6
     >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to Collection application
-        </v-card-title>
-        <v-card-text>
-          <p>This app is designed to help people manage their book collection.</p>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import * as THREE from 'three';
 
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
-  },
+  components: {},
   data: function () {
     return {
       camera: null,

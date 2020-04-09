@@ -38,12 +38,6 @@
       </v-btn>
       <v-btn
         icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
         @click.stop="fixed = !fixed"
       >
         <v-icon>mdi-minus</v-icon>
@@ -102,9 +96,19 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          icon: 'mdi-file-import-outline',
+          title: 'Import',
+          to: '/import'
+        },
+        {
+          icon: 'mdi-pencil',
+          title: 'Manage',
+          to: '/manage'
+        },
+        {
+          icon: 'mdi-library-shelves',
+          title: 'Arrange',
+          to: '/arrange'
         }
       ],
       miniVariant: false,
