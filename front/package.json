@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.0",
+    "drag-controls": "^1.0.4",
     "nuxt": "^2.0.0",
     "three": "^0.115.0"
   },
