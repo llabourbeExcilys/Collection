@@ -1,8 +1,7 @@
 <template>
-<div>
-  <p>threebook</p>
-  <div id="canvas"></div>
-</div>
+  <div>
+    <div :id="canvaName"></div>
+  </div>
 </template>
 
 <script>
@@ -14,6 +13,17 @@ import  {cloneDeep} from 'lodash';
 export default {
   name: 'threebook',  
   components: {},
+  
+  props:{
+    title :{
+      type: String,
+      required: true
+    },
+    length:{
+      type: Number,
+      required : true
+    }
+  },
   data: function () {
     return {
       books : [],
@@ -22,25 +32,12 @@ export default {
       scene: null,
       renderer: null,
       geometry: null,
-      material: null,
-
-      bookSerie:{
-        total: 3,
-        books: [
-          {
-            title: "tome 1",
-            color: '#2b97eb'
-          },
-          {
-            title: "tome 2",
-            color: '#2b97eb'
-          },
-          {
-            title: "tome 3",
-            color: '#2b97eb'
-          },
-        ]
-      }
+      material: null
+    }
+  },
+  computed: {
+    canvaName (){
+      return this.title+"-canva"
     }
   },
   mounted () {
@@ -56,7 +53,7 @@ export default {
       this.renderer.setSize( window.innerWidth/2, window.innerHeight /4);
       this.renderer.shadowMap.enabled = true;
 			this.renderer.shadowMap.type = THREE.PCFShadowMap;
-      let container = document.getElementById( 'canvas' );
+      let container = document.getElementById( this.canvaName );
       container.appendChild( this.renderer.domElement );
 
       this.camera = new THREE.PerspectiveCamera( 80, window.innerWidth / (window.innerHeight/2), 1, 5000 );
@@ -80,17 +77,23 @@ export default {
       light.shadow.mapSize.height = 1024;
       this.scene.add( light );
 
-      this.geometry = new THREE.BoxGeometry( 57, 184, 130 );
+      let bookWidth = 17
+      let bookHeight = 184
+      let bookDepth = 130
+      let emptySpace = 5
+
+      this.geometry = new THREE.BoxGeometry( bookWidth, bookHeight, bookDepth );
       //this.geometry = new THREE.BoxGeometry( 40, 40, 40 );
 
       let color = { color: Math.random() * 0xffffff }
 
-      let nbTome = 15
-      for ( var i = 0; i < nbTome; i ++ ) {
+      
+      for ( var i = 0; i < this.length; i ++ ) {
 
         var object = new THREE.Mesh( this.geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
 
-        object.position.x = (i*80) - (nbTome/2)*80 + 23
+        let bookTotalSpace = bookWidth + emptySpace
+        object.position.x = (i*bookTotalSpace) - (this.length/2)*bookTotalSpace + bookWidth/2
         // object.position.y = Math.random() * 600 - 300;
         // object.position.z = Math.random() * 800 - 400;
 
