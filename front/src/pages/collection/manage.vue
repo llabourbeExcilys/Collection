@@ -4,14 +4,21 @@
   <v-data-iterator
     :items="mangaSeries"
     :items-per-page=5
-    content-tag="v-layout"
     row
     wrap
   >
-    <template v-slot:item="item">
-        <MangaSerie 
-            v-bind=item
-        />
+    <template v-slot:default="props">
+      <v-row>
+        <v-col
+          v-for="item in props.items"
+          :key="item.title"
+          cols="12"
+        >
+          <MangaSerie 
+              :item="item"
+          />
+        </v-col>
+      </v-row>
     </template>
   </v-data-iterator>
 </div>
@@ -32,16 +39,30 @@ export default {
       mangaSeries: [
           {
             title: "Berserk",
-            length: 40
+            edition: "RÉÉDITION FRANÇAISE",
+            editeur: "GLENAT MANGA",
+            owned: 40,
+            published: 40,
+            type: "Manga",
+            genre:"Fantasy"
           },
           {
             title: "Jojo",
-            length: 80
-
+            edition: "Parties 1 -5",
+            editeur: "TONKAM",
+            owned: 68,
+            published: 68,
+            type: "Manga",
+            genre:"Aventure"
           },
           {
-            title: "Vinland",
-            length: 22
+            title: "Vinland Saga",
+            edition: "Simple",
+            editeur: "KUROKAWA",
+            owned: 16,
+            published: 23,
+            type: "Manga",
+            genre: "Action"          
           }
         ]
       }
