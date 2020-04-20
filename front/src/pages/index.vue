@@ -1,14 +1,10 @@
 <template>
-  <p>Welcome to collection app</p>
+	<p>Welcome to collection app</p>
 </template>
 
 <script>
-
 export default {
-  name: 'index',
-  components: {
-    
-  },
-  
-}
+	name: 'index',
+	components: {}
+};
 </script>

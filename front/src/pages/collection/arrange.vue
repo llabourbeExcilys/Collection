@@ -1,3 +1,3 @@
 <template>
-<p>arrange</p>
+	<p>arrange</p>
 </template>

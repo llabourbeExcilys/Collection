@@ -1,3 +1,3 @@
 <template>
-<p>import</p>
+	<p>import</p>
 </template>
