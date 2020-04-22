@@ -51,6 +51,33 @@ export default {
 					published: 23,
 					type: 'Manga',
 					genre: 'Action'
+				},
+				{
+					title: 'Berserk',
+					edition: 'RÉÉDITION FRANÇAISE',
+					editeur: 'GLENAT MANGA',
+					owned: 40,
+					published: 40,
+					type: 'Manga',
+					genre: 'Fantasy'
+				},
+				{
+					title: 'Jojo',
+					edition: 'Parties 1 -5',
+					editeur: 'TONKAM',
+					owned: 68,
+					published: 68,
+					type: 'Manga',
+					genre: 'Aventure'
+				},
+				{
+					title: 'Vinland Saga',
+					edition: 'Simple',
+					editeur: 'KUROKAWA',
+					owned: 16,
+					published: 23,
+					type: 'Manga',
+					genre: 'Action'
 				}
 			]
 		};
