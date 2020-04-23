@@ -49,19 +49,19 @@ export default {
 
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio(window.devicePixelRatio);
-			this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 4);
+			this.renderer.setSize(window.innerWidth / 4, window.innerHeight / 8);
 			this.renderer.shadowMap.enabled = true;
 			this.renderer.shadowMap.type = THREE.PCFShadowMap;
 			let container = document.getElementById(this.canvaName);
 			container.appendChild(this.renderer.domElement);
 
 			this.camera = new THREE.PerspectiveCamera(
-				80,
+				60,
 				window.innerWidth / (window.innerHeight / 2),
 				1,
 				5000
 			);
-			this.camera.position.z = 500;
+			this.camera.position.z = 400;
 			this.camera.position.y = 150;
 			this.camera.lookAt(0, 0, 0);
 

@@ -26,31 +26,31 @@ export default {
 			books: [],
 			mangaSeries: [
 				{
-					title: 'Berserk',
-					edition: 'RÉÉDITION FRANÇAISE',
+					title: '20th Century Boys',
+					edition: 'Deluxe',
+					editeur: 'Panini manga',
+					owned: 11,
+					published: 11,
+					type: 'Manga',
+					genre: 'science fiction'
+				},
+				{
+					title: 'Akira',
+					edition: 'Edition définitive',
 					editeur: 'GLENAT MANGA',
-					owned: 40,
-					published: 40,
+					owned: 6,
+					published: 6,
 					type: 'Manga',
-					genre: 'Fantasy'
+					genre: 'Science Fiction'
 				},
 				{
-					title: 'Jojo',
-					edition: 'Parties 1 -5',
+					title: 'Amer Beton',
+					edition: 'Intégrale',
 					editeur: 'TONKAM',
-					owned: 68,
-					published: 68,
+					owned: 1,
+					published: 1,
 					type: 'Manga',
-					genre: 'Aventure'
-				},
-				{
-					title: 'Vinland Saga',
-					edition: 'Simple',
-					editeur: 'KUROKAWA',
-					owned: 16,
-					published: 23,
-					type: 'Manga',
-					genre: 'Action'
+					genre: 'drame'
 				},
 				{
 					title: 'Berserk',

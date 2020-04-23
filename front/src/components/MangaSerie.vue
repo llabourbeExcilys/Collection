@@ -30,12 +30,17 @@
 						</v-card-actions>
 					</v-col>
 				</v-row>
+				<v-row dense align="center" justify="center" no-gutters>
+					<v-divider v-show="show" />
+				</v-row>
 				<v-row>
-					<v-expand-transition>
-						<div v-show="show">
-							<threebook :title="item.title" :length="item.published" />
-						</div>
-					</v-expand-transition>
+					<v-col :cols="5">
+						<v-expand-transition>
+							<div v-show="show">
+								<threebook :title="item.title" :length="item.published" />
+							</div>
+						</v-expand-transition>
+					</v-col>
 				</v-row>
 			</v-container>
 		</v-card>
