@@ -1,13 +1,27 @@
 <template>
 	<div>
-		<p>Manage</p>
-		<v-data-iterator :items="mangaSeries" :items-per-page="5" row wrap>
+		<v-data-iterator
+			hide-default-footer
+			:items-per-page="5"
+			:items="mangaSeries"
+			row
+			wrap
+		>
 			<template v-slot:default="props">
 				<v-row>
 					<v-col v-for="item in props.items" :key="item.title" cols="12">
 						<MangaSerie :item="item" />
 					</v-col>
 				</v-row>
+			</template>
+			<template v-slot:footer="{ options, pagination, updateOptions }">
+				<v-data-footer
+					:class="'d-flex justify-center'"
+					:options="options"
+					:pagination="pagination"
+					@update:options="updateOptions"
+				>
+				</v-data-footer>
 			</template>
 		</v-data-iterator>
 	</div>
@@ -93,4 +107,9 @@ export default {
     top: 100px;
     left: 100px; */
 }
+
+/* .v-data-footer {
+	display: flex;
+	justify-content: center;
+} */
 </style>
