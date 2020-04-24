@@ -1,29 +1,38 @@
 <template>
 	<div>
-		<v-data-iterator
-			hide-default-footer
-			:items-per-page="5"
-			:items="mangaSeries"
-			row
-			wrap
-		>
-			<template v-slot:default="props">
-				<v-row>
-					<v-col v-for="item in props.items" :key="item.title" cols="12">
-						<MangaSerie :item="item" />
-					</v-col>
-				</v-row>
-			</template>
-			<template v-slot:footer="{ options, pagination, updateOptions }">
-				<v-data-footer
-					:class="'d-flex justify-center'"
-					:options="options"
-					:pagination="pagination"
-					@update:options="updateOptions"
-				>
-				</v-data-footer>
-			</template>
-		</v-data-iterator>
+		<v-container>
+			<v-row align="center" justify="center">
+				<v-col :cols="6">
+					<v-data-iterator
+						hide-default-footer
+						:items-per-page="5"
+						:items="mangaSeries"
+						row
+						wrap
+					>
+						<template v-slot:header>
+							<v-toolbar dark color="blue darken-3" class="mb-1"> </v-toolbar>
+						</template>
+
+						<template v-slot:default="props">
+							<v-row>
+								<v-col v-for="item in props.items" :key="item.title" cols="12">
+									<MangaSerie :item="item" />
+								</v-col>
+							</v-row>
+						</template>
+						<template v-slot:footer="{ options, pagination, updateOptions }">
+							<v-data-footer
+								:class="'d-flex justify-center'"
+								:options="options"
+								:pagination="pagination"
+								@update:options="updateOptions"
+							>
+							</v-data-footer>
+						</template> </v-data-iterator
+				></v-col>
+			</v-row>
+		</v-container>
 	</div>
 </template>
 
