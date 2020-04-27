@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-card class="mx-auto" max-width="1000">
+		<v-card>
 			<v-container fluid>
 				<v-row dense align="center" justify="center" no-gutters>
 					<v-col :cols="4">

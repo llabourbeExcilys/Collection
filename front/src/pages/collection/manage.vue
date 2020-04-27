@@ -2,16 +2,52 @@
 	<div>
 		<v-container>
 			<v-row align="center" justify="center">
-				<v-col :cols="6">
+				<v-col :cols="8">
 					<v-data-iterator
 						hide-default-footer
-						:items-per-page="5"
-						:items="mangaSeries"
 						row
 						wrap
+						:items-per-page="5"
+						:items="mangaSeries"
+						:search="search"
 					>
 						<template v-slot:header>
-							<v-toolbar dark color="blue darken-3" class="mb-1"> </v-toolbar>
+							<v-card>
+								<v-toolbar dark color="blue darken-3" :extended="showFilters">
+									<v-container>
+										<v-row align="center">
+											<v-col cols="8">
+												<v-text-field
+													v-model="search"
+													clearable
+													flat
+													solo-inverted
+													hide-details
+													append-icon="mdi-magnify"
+													label="Chercher une oeuvre, un éditeur, un genre..."
+												/>
+											</v-col>
+											<v-spacer />
+											<v-col cols="2" align="right">
+												<v-btn
+													large
+													depressed
+													color="blue"
+													@click="showFilters = !showFilters"
+													>Filtrer +</v-btn
+												>
+											</v-col>
+										</v-row>
+										<v-row>
+											<!-- <v-col :cols="5">
+												<v-expand-transition>
+													<div v-show="showFilters">this is filters</div>
+												</v-expand-transition>
+											</v-col> -->
+										</v-row>
+									</v-container>
+								</v-toolbar>
+							</v-card>
 						</template>
 
 						<template v-slot:default="props">
@@ -102,7 +138,9 @@ export default {
 					type: 'Manga',
 					genre: 'Action'
 				}
-			]
+			],
+			search: '',
+			showFilters: false
 		};
 	},
 	methods: {}

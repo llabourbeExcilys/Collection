@@ -1,5 +1,5 @@
 <template>
-	<p>Welcome to collection app</p>
+	<p>Bienvenu sur l'application Collection !</p>
 </template>
 
 <script>
