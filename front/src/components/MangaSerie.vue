@@ -8,11 +8,23 @@
 							{{ item.title }}
 						</v-card-title>
 						<v-card-subtitle>
-							{{ item.edition }} ({{ item.editeur }})
+							{{ item.edition }} ({{ item.editor }})
 						</v-card-subtitle>
 					</v-col>
 
-					<v-col :cols="2"> {{ item.owned }} / {{ item.published }} </v-col>
+					<v-col :cols="2">
+						<v-chip
+							v-if="item.owned === item.published"
+							class="ma-2"
+							color="green"
+							text-color="white"
+						>
+							{{ item.owned }} / {{ item.published }}
+						</v-chip>
+						<v-chip v-else class="ma-2" color="orange" text-color="white">
+							{{ item.owned }} / {{ item.published }}
+						</v-chip>
+					</v-col>
 					<v-col :cols="3">
 						{{ item.type }}
 					</v-col>

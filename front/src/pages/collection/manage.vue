@@ -12,41 +12,69 @@
 						:search="search"
 					>
 						<template v-slot:header>
-							<v-card>
-								<v-toolbar dark color="blue darken-3" :extended="showFilters">
-									<v-container>
-										<v-row align="center">
-											<v-col cols="8">
-												<v-text-field
-													v-model="search"
+							<v-card color="grey lighten-3">
+								<v-container>
+									<v-row align="center">
+										<v-col cols="8">
+											<v-text-field
+												v-model="search"
+												clearable
+												flat
+												solo
+												hide-details
+												append-icon="mdi-magnify"
+												label="Chercher une oeuvre, un éditeur, un genre..."
+											/>
+										</v-col>
+										<v-spacer />
+										<v-col cols="2" align="right">
+											<v-btn
+												large
+												depressed
+												color="grey"
+												@click="showFilters = !showFilters"
+												>Filtrer {{ showFilters ? '-' : '+' }}</v-btn
+											>
+										</v-col>
+									</v-row>
+									<v-expand-transition>
+										<v-row v-show="showFilters">
+											<v-col :cols="3">
+												<v-autocomplete
+													v-model="searchedEditor"
+													:items="editors"
+													background-color="white"
+													dense
+													outlined
 													clearable
-													flat
-													solo-inverted
-													hide-details
-													append-icon="mdi-magnify"
-													label="Chercher une oeuvre, un éditeur, un genre..."
-												/>
-											</v-col>
-											<v-spacer />
-											<v-col cols="2" align="right">
-												<v-btn
-													large
-													depressed
-													color="blue"
-													@click="showFilters = !showFilters"
-													>Filtrer +</v-btn
-												>
-											</v-col>
+													label="Editeur"
+												></v-autocomplete
+											></v-col>
+											<v-col :cols="3">
+												<v-autocomplete
+													v-model="searchedType"
+													:items="types"
+													background-color="white"
+													dense
+													outlined
+													clearable
+													label="Type"
+												></v-autocomplete
+											></v-col>
+											<v-col :cols="3">
+												<v-autocomplete
+													v-model="searchedAutor"
+													:items="autors"
+													background-color="white"
+													dense
+													outlined
+													clearable
+													label="Auteur"
+												></v-autocomplete
+											></v-col>
 										</v-row>
-										<v-row>
-											<!-- <v-col :cols="5">
-												<v-expand-transition>
-													<div v-show="showFilters">this is filters</div>
-												</v-expand-transition>
-											</v-col> -->
-										</v-row>
-									</v-container>
-								</v-toolbar>
+									</v-expand-transition>
+								</v-container>
 							</v-card>
 						</template>
 
@@ -82,57 +110,72 @@ export default {
 	},
 	data: function() {
 		return {
+			autors: [
+				'Naoki URASAWA',
+				'Katsuhiro OTOMO',
+				'Taiyo MATSUMOTO',
+				'Kentaro MIURA',
+				'Hirohiko ARAKI',
+				'Makoto YUKIMURA'
+			],
 			books: [],
+			editors: ['PANINI MANGA', 'GLENAT MANGA', 'TONKAM', 'KUROKAWA'],
 			mangaSeries: [
 				{
+					autor: 'Naoki URASAWA',
 					title: '20th Century Boys',
 					edition: 'Deluxe',
-					editeur: 'Panini manga',
+					editor: 'PANINI MANGA',
 					owned: 11,
 					published: 11,
 					type: 'Manga',
 					genre: 'science fiction'
 				},
 				{
+					autor: 'Katsuhiro OTOMO',
 					title: 'Akira',
 					edition: 'Edition définitive',
-					editeur: 'GLENAT MANGA',
+					editor: 'GLENAT MANGA',
 					owned: 6,
 					published: 6,
 					type: 'Manga',
 					genre: 'Science Fiction'
 				},
 				{
+					autor: 'Taiyo MATSUMOTO',
 					title: 'Amer Beton',
 					edition: 'Intégrale',
-					editeur: 'TONKAM',
+					editor: 'TONKAM',
 					owned: 1,
 					published: 1,
 					type: 'Manga',
 					genre: 'drame'
 				},
 				{
+					autor: 'Kentaro MIURA',
 					title: 'Berserk',
 					edition: 'RÉÉDITION FRANÇAISE',
-					editeur: 'GLENAT MANGA',
+					editor: 'GLENAT MANGA',
 					owned: 40,
-					published: 40,
+					published: 41,
 					type: 'Manga',
 					genre: 'Fantasy'
 				},
 				{
+					autor: 'Hirohiko ARAKI',
 					title: 'Jojo',
 					edition: 'Parties 1 -5',
-					editeur: 'TONKAM',
+					editor: 'TONKAM',
 					owned: 68,
 					published: 68,
 					type: 'Manga',
 					genre: 'Aventure'
 				},
 				{
+					autor: 'Makoto YUKIMURA',
 					title: 'Vinland Saga',
 					edition: 'Simple',
-					editeur: 'KUROKAWA',
+					editor: 'KUROKAWA',
 					owned: 16,
 					published: 23,
 					type: 'Manga',
@@ -140,7 +183,12 @@ export default {
 				}
 			],
 			search: '',
-			showFilters: false
+			searchedEditor: '',
+			searchedType: '',
+			searchedAutor: '',
+			searchedGenre: '',
+			showFilters: false,
+			types: ['Manga', 'Artbook']
 		};
 	},
 	methods: {}
