@@ -11,7 +11,7 @@
 							{{ item.edition }} ({{ item.editor }})
 						</v-card-subtitle>
 					</v-col>
-
+					<v-col :cols="2">{{ item.autor }}</v-col>
 					<v-col :cols="2">
 						<v-chip
 							v-if="item.owned === item.published"
@@ -25,7 +25,7 @@
 							{{ item.owned }} / {{ item.published }}
 						</v-chip>
 					</v-col>
-					<v-col :cols="3">
+					<v-col :cols="1">
 						{{ item.type }}
 					</v-col>
 					<v-col :cols="2">
@@ -42,13 +42,13 @@
 						</v-card-actions>
 					</v-col>
 				</v-row>
-				<v-row dense align="center" justify="center" no-gutters>
-					<v-divider v-show="show" />
+				<v-row v-if="show" dense align="center" justify="center">
+					<v-divider />
 				</v-row>
-				<v-row>
+				<v-row v-if="show">
 					<v-col :cols="5">
 						<v-expand-transition>
-							<div v-show="show">
+							<div>
 								<threebook :title="item.title" :length="item.published" />
 							</div>
 						</v-expand-transition>

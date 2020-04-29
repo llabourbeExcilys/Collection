@@ -8,7 +8,7 @@
 						row
 						wrap
 						:items-per-page="5"
-						:items="mangaSeries"
+						:items="filteredItems"
 						:search="search"
 					>
 						<template v-slot:header>
@@ -26,13 +26,13 @@
 												label="Chercher une oeuvre, un éditeur, un genre..."
 											/>
 										</v-col>
-										<v-spacer />
-										<v-col cols="2" align="right">
+										<v-spacer></v-spacer>
+										<v-col>
 											<v-btn
 												large
 												depressed
-												color="grey"
-												@click="showFilters = !showFilters"
+												color="grey lighten-1"
+												@click="toggleFilters"
 												>Filtrer {{ showFilters ? '-' : '+' }}</v-btn
 											>
 										</v-col>
@@ -79,6 +79,7 @@
 						</template>
 
 						<template v-slot:default="props">
+							<v-row><v-col></v-col></v-row>
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.title" cols="12">
 									<MangaSerie :item="item" />
@@ -102,6 +103,7 @@
 
 <script>
 import MangaSerie from '@/components/MangaSerie';
+import cloneDeep from 'lodash';
 
 export default {
 	name: 'manage',
@@ -154,7 +156,7 @@ export default {
 				{
 					autor: 'Kentaro MIURA',
 					title: 'Berserk',
-					edition: 'RÉÉDITION FRANÇAISE',
+					edition: 'Réédition française',
 					editor: 'GLENAT MANGA',
 					owned: 40,
 					published: 41,
@@ -191,7 +193,42 @@ export default {
 			types: ['Manga', 'Artbook']
 		};
 	},
-	methods: {}
+	computed: {
+		filteredItems() {
+			if (!this.showFilters) {
+				return this.mangaSeries;
+			}
+			var filteredItems = this.mangaSeries;
+
+			if (this.searchedEditor) {
+				filteredItems = filteredItems.filter(
+					item => item.editor === this.searchedEditor
+				);
+			}
+			if (this.searchedType) {
+				filteredItems = filteredItems.filter(
+					item => item.type === this.searchedType
+				);
+			}
+			if (this.searchedAutor) {
+				filteredItems = filteredItems.filter(
+					item => item.autor === this.searchedAutor
+				);
+			}
+			return filteredItems;
+		}
+	},
+	methods: {
+		toggleFilters() {
+			this.showFilters = !this.showFilters;
+			if (!this.showFilters) {
+				this.searchedEditor = '';
+				this.searchedType = '';
+				this.searchedAutor = '';
+				this.searchedGenre = '';
+			}
+		}
+	}
 };
 </script>
 <style scoped>
