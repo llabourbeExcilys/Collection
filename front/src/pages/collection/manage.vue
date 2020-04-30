@@ -39,7 +39,7 @@
 									</v-row>
 									<v-expand-transition>
 										<v-row v-show="showFilters">
-											<v-col :cols="3">
+											<v-col>
 												<v-autocomplete
 													v-model="searchedEditor"
 													:items="editors"
@@ -48,9 +48,9 @@
 													outlined
 													clearable
 													label="Editeur"
-												></v-autocomplete
-											></v-col>
-											<v-col :cols="3">
+												></v-autocomplete>
+											</v-col>
+											<v-col>
 												<v-autocomplete
 													v-model="searchedType"
 													:items="types"
@@ -59,9 +59,9 @@
 													outlined
 													clearable
 													label="Type"
-												></v-autocomplete
-											></v-col>
-											<v-col :cols="3">
+												></v-autocomplete>
+											</v-col>
+											<v-col>
 												<v-autocomplete
 													v-model="searchedAutor"
 													:items="autors"
@@ -70,8 +70,28 @@
 													outlined
 													clearable
 													label="Auteur"
-												></v-autocomplete
-											></v-col>
+												></v-autocomplete>
+											</v-col>
+
+											<v-col>
+												<v-autocomplete
+													v-model="searchedGenre"
+													:items="genres"
+													background-color="white"
+													dense
+													outlined
+													clearable
+													label="Genres"
+													multiple
+												></v-autocomplete>
+											</v-col>
+
+											<v-col>
+												<v-btn-toggle v-model="searchGenreType" mandatory>
+													<v-btn> ET </v-btn>
+													<v-btn> OU </v-btn>
+												</v-btn-toggle>
+											</v-col>
 										</v-row>
 									</v-expand-transition>
 								</v-container>
@@ -189,7 +209,8 @@ export default {
 			searchedEditor: '',
 			searchedType: '',
 			searchedAutor: '',
-			searchedGenre: '',
+			searchedGenre: [],
+			searchGenreType: 1,
 			showFilters: false,
 			types: ['Manga', 'Artbook', 'Fanbook'],
 			genres: [
@@ -227,6 +248,19 @@ export default {
 					item => item.autor === this.searchedAutor
 				);
 			}
+			if (this.searchedGenre.length > 0) {
+				/* OU */
+				if (this.searchGenreType === 1) {
+					filteredItems = filteredItems.filter(item =>
+						item.genres.some(x => this.searchedGenre.includes(x))
+					);
+					/* ET */
+				} else if (this.searchGenreType === 0) {
+					filteredItems = filteredItems.filter(item =>
+						this.searchedGenre.every(x => item.genres.includes(x))
+					);
+				}
+			}
 			return filteredItems;
 		}
 	},
@@ -237,7 +271,7 @@ export default {
 				this.searchedEditor = '';
 				this.searchedType = '';
 				this.searchedAutor = '';
-				this.searchedGenre = '';
+				this.searchedGenre = [];
 			}
 		}
 	}
