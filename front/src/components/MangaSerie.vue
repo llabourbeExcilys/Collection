@@ -12,7 +12,7 @@
 						</v-card-subtitle>
 					</v-col>
 					<v-col :cols="2">{{ item.autor }}</v-col>
-					<v-col :cols="2">
+					<v-col :cols="1">
 						<v-chip
 							v-if="item.owned === item.published"
 							class="ma-2"
@@ -28,12 +28,25 @@
 					<v-col :cols="1">
 						{{ item.type }}
 					</v-col>
-					<v-col :cols="2">
-						{{ item.genre }}
+					<v-col :cols="3">
+						<v-row no-gutters>
+							<v-col>
+								<v-chip
+									v-for="genre in item.genres"
+									v-bind:key="genre"
+									class="ma-2"
+									small
+									dense
+									color="grey lighten-1"
+									text-color="grey darken-4"
+								>
+									{{ genre }}
+								</v-chip>
+							</v-col>
+						</v-row>
 					</v-col>
-					<v-col :cols="1">
+					<v-col>
 						<v-card-actions>
-							<v-spacer />
 							<v-btn icon @click="show = !show">
 								<v-icon>{{
 									show ? 'mdi-chevron-up' : 'mdi-chevron-down'
@@ -45,15 +58,15 @@
 				<v-row v-if="show" dense align="center" justify="center">
 					<v-divider />
 				</v-row>
-				<v-row v-if="show">
-					<v-col :cols="5">
-						<v-expand-transition>
-							<div>
+				<div v-if="show">
+					<v-row>
+						<v-col :cols="5">
+							<v-expand-transition>
 								<threebook :title="item.title" :length="item.published" />
-							</div>
-						</v-expand-transition>
-					</v-col>
-				</v-row>
+							</v-expand-transition>
+						</v-col>
+					</v-row>
+				</div>
 			</v-container>
 		</v-card>
 	</div>

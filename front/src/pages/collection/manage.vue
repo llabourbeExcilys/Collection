@@ -2,7 +2,7 @@
 	<div>
 		<v-container>
 			<v-row align="center" justify="center">
-				<v-col :cols="8">
+				<v-col :cols="9">
 					<v-data-iterator
 						hide-default-footer
 						row
@@ -122,6 +122,7 @@ export default {
 			],
 			books: [],
 			editors: ['PANINI MANGA', 'GLENAT MANGA', 'TONKAM', 'KUROKAWA'],
+			genres: [],
 			mangaSeries: [
 				{
 					autor: 'Naoki URASAWA',
@@ -131,7 +132,7 @@ export default {
 					owned: 11,
 					published: 11,
 					type: 'Manga',
-					genre: 'science fiction'
+					genres: ['Science Fiction', 'Action', 'Suspense']
 				},
 				{
 					autor: 'Katsuhiro OTOMO',
@@ -141,7 +142,7 @@ export default {
 					owned: 6,
 					published: 6,
 					type: 'Manga',
-					genre: 'Science Fiction'
+					genres: ['Science Fiction', 'Suspense']
 				},
 				{
 					autor: 'Taiyo MATSUMOTO',
@@ -151,7 +152,7 @@ export default {
 					owned: 1,
 					published: 1,
 					type: 'Manga',
-					genre: 'drame'
+					genres: ['Drame', 'Philosophie']
 				},
 				{
 					autor: 'Kentaro MIURA',
@@ -161,17 +162,17 @@ export default {
 					owned: 40,
 					published: 41,
 					type: 'Manga',
-					genre: 'Fantasy'
+					genres: ['Action', 'Fantastique']
 				},
 				{
 					autor: 'Hirohiko ARAKI',
-					title: 'Jojo',
+					title: "Jojo's Bizarre Adventure",
 					edition: 'Parties 1 -5',
 					editor: 'TONKAM',
 					owned: 68,
 					published: 68,
 					type: 'Manga',
-					genre: 'Aventure'
+					genres: ['Fantastique', 'Aventure', 'Action']
 				},
 				{
 					autor: 'Makoto YUKIMURA',
@@ -181,7 +182,7 @@ export default {
 					owned: 16,
 					published: 23,
 					type: 'Manga',
-					genre: 'Action'
+					genres: ['Action', 'Aventure', 'Drame', 'Historique']
 				}
 			],
 			search: '',
@@ -190,7 +191,18 @@ export default {
 			searchedAutor: '',
 			searchedGenre: '',
 			showFilters: false,
-			types: ['Manga', 'Artbook']
+			types: ['Manga', 'Artbook', 'Fanbook'],
+			genres: [
+				'Science Fiction',
+				'Suspense',
+				'Action',
+				'Aventure',
+				'Historique',
+				'Fantastique',
+				'Aventure',
+				'Drame',
+				'Philosophie'
+			]
 		};
 	},
 	computed: {
