@@ -21,6 +21,10 @@ export default {
 		length: {
 			type: Number,
 			required: true
+		},
+		mangaDimensions: {
+			type: Object,
+			required: true
 		}
 	},
 	data: function() {
@@ -31,12 +35,30 @@ export default {
 			scene: null,
 			renderer: null,
 			geometry: null,
-			material: null
+			material: null,
+			timeBeforeEachRender: 200,
+			newRenderReady: true
 		};
 	},
 	computed: {
 		canvaName() {
 			return this.title + '-canva';
+		}
+	},
+	watch: {
+		mangaDimensions() {
+			if (this.newRenderReady) {
+				const myNode = document.getElementById(this.canvaName);
+				myNode.innerHTML = '';
+				this.init();
+				this.animate();
+
+				this.newRenderReady = false;
+				const readyToRender = () => {
+					this.newRenderReady = true;
+				};
+				setTimeout(readyToRender, this.timeBeforeEachRender);
+			}
 		}
 	},
 	mounted() {
@@ -80,12 +102,16 @@ export default {
 			light.shadow.mapSize.height = 1024;
 			this.scene.add(light);
 
-			let bookWidth = 17;
-			let bookHeight = 184;
-			let bookDepth = 130;
+			let bookWidth = this.mangaDimensions.width;
+			let bookHeight = this.mangaDimensions.height;
+			let bookDepth = this.mangaDimensions.depth;
 			let emptySpace = 5;
 
-			this.geometry = new THREE.BoxGeometry(bookWidth, bookHeight, bookDepth);
+			this.geometry = new THREE.BoxGeometry(
+				this.mangaDimensions.width,
+				bookHeight,
+				bookDepth
+			);
 			//this.geometry = new THREE.BoxGeometry( 40, 40, 40 );
 
 			let color = { color: Math.random() * 0xffffff };

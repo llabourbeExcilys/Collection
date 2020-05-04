@@ -59,13 +59,60 @@
 					<v-divider />
 				</v-row>
 				<div v-if="show">
-					<v-row>
-						<v-col :cols="5">
-							<v-expand-transition>
-								<threebook :title="item.title" :length="item.published" />
-							</v-expand-transition>
-						</v-col>
-					</v-row>
+					<v-expand-transition>
+						<v-row>
+							<v-col :cols="6">
+								<threebook
+									:title="item.title"
+									:length="item.published"
+									:mangaDimensions="mangaDimensions"
+								/>
+							</v-col>
+							<v-col :cols="6">
+								<v-row>
+									<v-col>
+										<v-subheader class="pl-0">Largeur (mm)</v-subheader>
+										<v-slider
+											v-model="mangaWidth"
+											thumb-label="always"
+											min="10"
+											max="100"
+										/>
+									</v-col>
+									<v-col>row 1 col 2</v-col>
+									<v-col>row 1 col 3</v-col>
+								</v-row>
+								<v-row>
+									<v-col>
+										<v-subheader class="pl-0">Profondeur (mm)</v-subheader>
+										<v-slider
+											v-model="mangaDepth"
+											thumb-label="always"
+											thumb-size="24"
+											min="100"
+											max="300"
+										/>
+									</v-col>
+									<v-col>row 2 col 2</v-col>
+									<v-col>row 2 col 3</v-col>
+								</v-row>
+								<v-row>
+									<v-col>
+										<v-subheader class="pl-0">Hauteur (mm)</v-subheader>
+										<v-slider
+											v-model="mangaHeight"
+											thumb-label="always"
+											min="150"
+											max="350"
+										/>
+										></v-col
+									>
+									<v-col>row 3 col 2</v-col>
+									<v-col>row 3 col 3</v-col>
+								</v-row>
+							</v-col>
+						</v-row>
+					</v-expand-transition>
 				</div>
 			</v-container>
 		</v-card>
@@ -88,8 +135,20 @@ export default {
 	},
 	data() {
 		return {
-			show: false
+			show: false,
+			mangaWidth: 17,
+			mangaHeight: 184,
+			mangaDepth: 130
 		};
+	},
+	computed: {
+		mangaDimensions() {
+			return {
+				width: this.mangaWidth,
+				height: this.mangaHeight,
+				depth: this.mangaDepth
+			};
+		}
 	},
 	mounted() {},
 	methods: {}
