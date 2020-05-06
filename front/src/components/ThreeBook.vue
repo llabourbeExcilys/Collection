@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div :id="canvaName"></div>
+		<div :id="canvaName" ref="canva"></div>
 	</div>
 </template>
 
@@ -37,7 +37,8 @@ export default {
 			geometry: null,
 			material: null,
 			timeBeforeEachRender: 200,
-			newRenderReady: true
+			newRenderReady: true,
+			rendererWidth: 613
 		};
 	},
 	computed: {
@@ -63,6 +64,7 @@ export default {
 	},
 	mounted() {
 		this.init();
+		this.rendererWidth = this.$refs.canva.clientWidth;
 		this.animate();
 	},
 	methods: {
@@ -71,18 +73,15 @@ export default {
 
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio(window.devicePixelRatio);
-			this.renderer.setSize(window.innerWidth / 4, window.innerHeight / 8);
+			this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
 			this.renderer.shadowMap.enabled = true;
 			this.renderer.shadowMap.type = THREE.PCFShadowMap;
 			let container = document.getElementById(this.canvaName);
 			container.appendChild(this.renderer.domElement);
 
-			this.camera = new THREE.PerspectiveCamera(
-				60,
-				window.innerWidth / (window.innerHeight / 2),
-				1,
-				5000
-			);
+			this.camera = new THREE.PerspectiveCamera(60, 4, 3, 5000);
+			this.camera.aspect = 4 / 3;
+			this.camera.updateProjectionMatrix();
 			this.camera.position.z = 400;
 			this.camera.position.y = 150;
 			this.camera.lookAt(0, 0, 0);
@@ -168,10 +167,17 @@ export default {
 			// } );
 		},
 		animate() {
-			requestAnimationFrame(this.animate);
+			console.log('canvaWidth:', this.$refs.canva.clientWidth);
+			if (this.rendererWidth != this.$refs.canva.clientWidth) {
+				this.rendererWidth = this.$refs.canva.clientWidth;
+				this.camera.updateProjectionMatrix();
+				this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
+			}
+
 			// this.mesh.rotation.x += 0.01;
 			// this.mesh.rotation.y += 0.02;
 			this.renderer.render(this.scene, this.camera);
+			requestAnimationFrame(this.animate);
 		}
 	}
 };

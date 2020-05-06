@@ -60,58 +60,68 @@
 				</v-row>
 				<div v-if="show">
 					<v-expand-transition>
-						<v-row>
-							<v-col :cols="6">
-								<threebook
-									:title="item.title"
-									:length="item.published"
-									:mangaDimensions="mangaDimensions"
-								/>
-							</v-col>
-							<v-col :cols="6">
-								<v-row>
+						<v-container>
+							<v-row>
+								<v-col :cols="6">
+									<threebook
+										:title="item.title"
+										:length="item.published"
+										:mangaDimensions="mangaDimensions"
+									/>
+								</v-col>
+								<v-col :cols="2">
+									<v-row>
+										<v-col :cols="12">
+											<v-subheader class="pl-0">Largeur (mm)</v-subheader>
+										</v-col>
+										<v-col :cols="12">
+											<v-slider
+												v-model="mangaWidth"
+												thumb-label="always"
+												thumb-size="25"
+												min="10"
+												max="100"
+												hide-details
+											/>
+										</v-col>
+										<v-col :cols="12">
+											<v-subheader class="pl-0">Profondeur (mm)</v-subheader>
+										</v-col>
+										<v-col :cols="12">
+											<v-slider
+												v-model="mangaDepth"
+												thumb-label="always"
+												thumb-size="25"
+												min="100"
+												max="300"
+												hide-details
+											/>
+										</v-col>
+										<v-col :cols="12">
+											<v-subheader class="pl-0">Hauteur (mm)</v-subheader>
+										</v-col>
+										<v-col :cols="12">
+											<v-slider
+												v-model="mangaHeight"
+												thumb-label="always"
+												thumb-size="25"
+												min="150"
+												max="350"
+												hide-details
+											/>
+										</v-col>
+									</v-row>
+								</v-col>
+								<v-col :cols="4">
 									<v-col>
-										<v-subheader class="pl-0">Largeur (mm)</v-subheader>
-										<v-slider
-											v-model="mangaWidth"
-											thumb-label="always"
-											min="10"
-											max="100"
-										/>
-									</v-col>
-									<v-col>row 1 col 2</v-col>
-									<v-col>row 1 col 3</v-col>
-								</v-row>
-								<v-row>
-									<v-col>
-										<v-subheader class="pl-0">Profondeur (mm)</v-subheader>
-										<v-slider
-											v-model="mangaDepth"
-											thumb-label="always"
-											thumb-size="24"
-											min="100"
-											max="300"
-										/>
-									</v-col>
-									<v-col>row 2 col 2</v-col>
-									<v-col>row 2 col 3</v-col>
-								</v-row>
-								<v-row>
-									<v-col>
-										<v-subheader class="pl-0">Hauteur (mm)</v-subheader>
-										<v-slider
-											v-model="mangaHeight"
-											thumb-label="always"
-											min="150"
-											max="350"
-										/>
-										></v-col
-									>
-									<v-col>row 3 col 2</v-col>
-									<v-col>row 3 col 3</v-col>
-								</v-row>
-							</v-col>
-						</v-row>
+										<v-color-picker
+											class="ma-2"
+											show-swatches
+											dot-size="15"
+										></v-color-picker> </v-col
+								></v-col>
+							</v-row>
+						</v-container>
 					</v-expand-transition>
 				</div>
 			</v-container>
