@@ -65,8 +65,9 @@
 								<v-col :cols="6">
 									<threebook
 										:title="item.title"
-										:length="item.published"
+										:numberPublished="item.published"
 										:mangaDimensions="mangaDimensions"
+										:pickedColor="pickedColor"
 									/>
 								</v-col>
 								<v-col :cols="2">
@@ -115,6 +116,7 @@
 								<v-col :cols="4">
 									<v-col>
 										<v-color-picker
+											v-model="pickedColor"
 											class="ma-2"
 											show-swatches
 											dot-size="15"
@@ -148,7 +150,8 @@ export default {
 			show: false,
 			mangaWidth: 17,
 			mangaHeight: 184,
-			mangaDepth: 130
+			mangaDepth: 130,
+			pickedColor: ''
 		};
 	},
 	computed: {

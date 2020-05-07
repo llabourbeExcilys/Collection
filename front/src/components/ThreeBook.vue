@@ -14,11 +14,15 @@ export default {
 	components: {},
 
 	props: {
+		pickedColor: {
+			type: String,
+			default: '#3F51B5'
+		},
 		title: {
 			type: String,
 			required: true
 		},
-		length: {
+		numberPublished: {
 			type: Number,
 			required: true
 		},
@@ -49,17 +53,16 @@ export default {
 	watch: {
 		mangaDimensions() {
 			if (this.newRenderReady) {
-				const myNode = document.getElementById(this.canvaName);
-				myNode.innerHTML = '';
-				this.init();
-				this.animate();
-
+				this.rerender();
 				this.newRenderReady = false;
 				const readyToRender = () => {
 					this.newRenderReady = true;
 				};
 				setTimeout(readyToRender, this.timeBeforeEachRender);
 			}
+		},
+		pickedColor() {
+			this.rerender();
 		}
 	},
 	mounted() {
@@ -68,6 +71,12 @@ export default {
 		this.animate();
 	},
 	methods: {
+		rerender() {
+			const myNode = document.getElementById(this.canvaName);
+			myNode.innerHTML = '';
+			this.init();
+			this.animate();
+		},
 		init() {
 			DragControls.install({ THREE: THREE });
 
@@ -82,8 +91,9 @@ export default {
 			this.camera = new THREE.PerspectiveCamera(60, 4, 3, 5000);
 			this.camera.aspect = 4 / 3;
 			this.camera.updateProjectionMatrix();
-			this.camera.position.z = 400;
-			this.camera.position.y = 150;
+			this.camera.position.z = this.numberPublished * 11 + 300;
+			this.camera.position.y =
+				this.numberPublished + 100 + this.mangaDimensions.height / 4;
 			this.camera.lookAt(0, 0, 0);
 
 			this.scene = new THREE.Scene();
@@ -111,20 +121,23 @@ export default {
 				bookHeight,
 				bookDepth
 			);
-			//this.geometry = new THREE.BoxGeometry( 40, 40, 40 );
 
-			let color = { color: Math.random() * 0xffffff };
+			for (var i = 0; i < this.numberPublished; i++) {
+				// let color =  Math.random() * 0xffffff;
 
-			for (var i = 0; i < this.length; i++) {
+				// remove # at the start and 2 digits used for transparency at the end
+				let color = parseInt(this.pickedColor.substring(1, 7), 16);
+				console.log('color parsed:', color.toString(16));
+
 				var object = new THREE.Mesh(
 					this.geometry,
-					new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff })
+					new THREE.MeshLambertMaterial({ color: color })
 				);
 
 				let bookTotalSpace = bookWidth + emptySpace;
 				object.position.x =
 					i * bookTotalSpace -
-					(this.length / 2) * bookTotalSpace +
+					(this.numberPublished / 2) * bookTotalSpace +
 					bookWidth / 2;
 				// object.position.y = Math.random() * 600 - 300;
 				// object.position.z = Math.random() * 800 - 400;
@@ -167,7 +180,7 @@ export default {
 			// } );
 		},
 		animate() {
-			console.log('canvaWidth:', this.$refs.canva.clientWidth);
+			//console.log('canvaWidth:', this.$refs.canva.clientWidth);
 			if (this.rendererWidth != this.$refs.canva.clientWidth) {
 				this.rendererWidth = this.$refs.canva.clientWidth;
 				this.camera.updateProjectionMatrix();
