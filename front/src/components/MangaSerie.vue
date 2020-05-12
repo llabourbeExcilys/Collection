@@ -7,18 +7,11 @@
 						<v-card-title>
 							{{ item.title }}
 						</v-card-title>
-						<v-card-subtitle>
-							{{ item.edition }} ({{ item.editor }})
-						</v-card-subtitle>
+						<v-card-subtitle> {{ item.edition }} ({{ item.editor }}) </v-card-subtitle>
 					</v-col>
 					<v-col :cols="2">{{ item.autor }}</v-col>
 					<v-col :cols="1">
-						<v-chip
-							v-if="item.owned === item.published"
-							class="ma-2"
-							color="green"
-							text-color="white"
-						>
+						<v-chip v-if="item.owned === item.published" class="ma-2" color="green" text-color="white">
 							{{ item.owned }} / {{ item.published }}
 						</v-chip>
 						<v-chip v-else class="ma-2" color="orange" text-color="white">
@@ -48,9 +41,7 @@
 					<v-col>
 						<v-card-actions>
 							<v-btn icon @click="show = !show">
-								<v-icon>{{
-									show ? 'mdi-chevron-up' : 'mdi-chevron-down'
-								}}</v-icon>
+								<v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
 							</v-btn>
 						</v-card-actions>
 					</v-col>

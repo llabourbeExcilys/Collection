@@ -28,11 +28,7 @@
 										</v-col>
 										<v-spacer></v-spacer>
 										<v-col>
-											<v-btn
-												large
-												depressed
-												color="grey lighten-1"
-												@click="toggleFilters"
+											<v-btn large depressed color="grey lighten-1" @click="toggleFilters"
 												>Filtrer {{ showFilters ? '-' : '+' }}</v-btn
 											>
 										</v-col>
@@ -234,26 +230,18 @@ export default {
 			var filteredItems = this.mangaSeries;
 
 			if (this.searchedEditor) {
-				filteredItems = filteredItems.filter(
-					item => item.editor === this.searchedEditor
-				);
+				filteredItems = filteredItems.filter(item => item.editor === this.searchedEditor);
 			}
 			if (this.searchedType) {
-				filteredItems = filteredItems.filter(
-					item => item.type === this.searchedType
-				);
+				filteredItems = filteredItems.filter(item => item.type === this.searchedType);
 			}
 			if (this.searchedAutor) {
-				filteredItems = filteredItems.filter(
-					item => item.autor === this.searchedAutor
-				);
+				filteredItems = filteredItems.filter(item => item.autor === this.searchedAutor);
 			}
 			if (this.searchedGenre.length > 0) {
 				/* OU */
 				if (this.searchGenreType === 1) {
-					filteredItems = filteredItems.filter(item =>
-						item.genres.some(x => this.searchedGenre.includes(x))
-					);
+					filteredItems = filteredItems.filter(item => item.genres.some(x => this.searchedGenre.includes(x)));
 					/* ET */
 				} else if (this.searchGenreType === 0) {
 					filteredItems = filteredItems.filter(item =>

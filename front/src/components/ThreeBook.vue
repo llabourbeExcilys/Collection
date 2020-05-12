@@ -48,6 +48,31 @@ export default {
 	computed: {
 		canvaName() {
 			return this.title + '-canva';
+		},
+		// convert RGBA to RGB assuming color background
+		pickedRGBColor() {
+			const color_r = parseInt(this.pickedColor.substring(1, 3), 16);
+			const color_g = parseInt(this.pickedColor.substring(3, 5), 16);
+			const color_b = parseInt(this.pickedColor.substring(5, 7), 16);
+
+			//assuming white background
+			const background_r = 255;
+			const background_g = 255;
+			const background_b = 255;
+
+			// getting transparancy [0,255] then translating to [0-1])
+			let transparency = parseInt(this.pickedColor.substring(7), 16);
+			let alpha = Math.round((transparency * 100) / 256) / 100;
+
+			let newColor_r = Math.round((1 - alpha) * background_r + alpha * color_r);
+			let newColor_g = Math.round((1 - alpha) * background_g + alpha * color_g);
+			let newColor_b = Math.round((1 - alpha) * background_b + alpha * color_b);
+
+			let hexPartToString = hex => {
+				return hex.toString(16).length < 2 ? '0' + hex.toString(16) : hex.toString(16);
+			};
+
+			return '#' + hexPartToString(newColor_r) + hexPartToString(newColor_g) + hexPartToString(newColor_b);
 		}
 	},
 	watch: {
@@ -92,8 +117,7 @@ export default {
 			this.camera.aspect = 4 / 3;
 			this.camera.updateProjectionMatrix();
 			this.camera.position.z = this.numberPublished * 11 + 300;
-			this.camera.position.y =
-				this.numberPublished + 100 + this.mangaDimensions.height / 4;
+			this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
 			this.camera.lookAt(0, 0, 0);
 
 			this.scene = new THREE.Scene();
@@ -116,29 +140,21 @@ export default {
 			let bookDepth = this.mangaDimensions.depth;
 			let emptySpace = 5;
 
-			this.geometry = new THREE.BoxGeometry(
-				this.mangaDimensions.width,
-				bookHeight,
-				bookDepth
-			);
+			this.geometry = new THREE.BoxGeometry(this.mangaDimensions.width, bookHeight, bookDepth);
 
 			for (var i = 0; i < this.numberPublished; i++) {
 				// let color =  Math.random() * 0xffffff;
 
-				// remove # at the start and 2 digits used for transparency at the end
-				let color = parseInt(this.pickedColor.substring(1, 7), 16);
-				console.log('color parsed:', color.toString(16));
+				console.log('pickedColor RGBA:', this.pickedColor);
+				console.log('pickedColor RGB :', this.pickedRGBColor);
 
-				var object = new THREE.Mesh(
-					this.geometry,
-					new THREE.MeshLambertMaterial({ color: color })
-				);
+				// remove # at the start and 2 digits used for transparency at the end
+				let color = parseInt(this.pickedRGBColor.substring(1), 16);
+
+				var object = new THREE.Mesh(this.geometry, new THREE.MeshLambertMaterial({ color: color }));
 
 				let bookTotalSpace = bookWidth + emptySpace;
-				object.position.x =
-					i * bookTotalSpace -
-					(this.numberPublished / 2) * bookTotalSpace +
-					bookWidth / 2;
+				object.position.x = i * bookTotalSpace - (this.numberPublished / 2) * bookTotalSpace + bookWidth / 2;
 				// object.position.y = Math.random() * 600 - 300;
 				// object.position.z = Math.random() * 800 - 400;
 
@@ -163,11 +179,7 @@ export default {
 			// this.books.push(mesh1);
 			// this.books.push(mesh2);
 
-			this.controls = new DragControls(
-				[...this.books],
-				this.camera,
-				this.renderer.domElement
-			);
+			this.controls = new DragControls([...this.books], this.camera, this.renderer.domElement);
 			// add event listener to highlight dragged objects
 			// this.controls.addEventListener( 'dragstart',  event => {
 			//   console.log('event:', event)
