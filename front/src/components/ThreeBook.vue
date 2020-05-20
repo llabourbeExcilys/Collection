@@ -87,7 +87,12 @@ export default {
 			}
 		},
 		pickedColor() {
-			this.rerender();
+			console.log('pickedColor RGBA:', this.pickedColor);
+			console.log('pickedColor RGB :', this.pickedRGBColor);
+			let color = parseInt(this.pickedRGBColor.substring(1), 16);
+			this.books.forEach(book => {
+				book.material.color.set(color);
+			});
 		}
 	},
 	mounted() {
@@ -144,9 +149,6 @@ export default {
 
 			for (var i = 0; i < this.numberPublished; i++) {
 				// let color =  Math.random() * 0xffffff;
-
-				console.log('pickedColor RGBA:', this.pickedColor);
-				console.log('pickedColor RGB :', this.pickedRGBColor);
 
 				// remove # at the start and 2 digits used for transparency at the end
 				let color = parseInt(this.pickedRGBColor.substring(1), 16);
