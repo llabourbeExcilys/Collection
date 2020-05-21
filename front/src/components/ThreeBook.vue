@@ -6,7 +6,6 @@
 
 <script>
 import * as THREE from 'three';
-import DragControls from 'drag-controls';
 import { cloneDeep } from 'lodash';
 
 export default {
@@ -36,13 +35,16 @@ export default {
 			books: [],
 			camera: null,
 			controls: null,
-			scene: null,
-			renderer: null,
 			geometry: null,
+			intersected: null,
 			material: null,
-			timeBeforeEachRender: 200,
+			mouse: null,
 			newRenderReady: true,
-			rendererWidth: 613
+			raycaster: null,
+			renderer: null,
+			rendererWidth: 613,
+			scene: null,
+			timeBeforeEachRender: 50
 		};
 	},
 	computed: {
@@ -77,14 +79,7 @@ export default {
 	},
 	watch: {
 		mangaDimensions() {
-			if (this.newRenderReady) {
-				this.rerender();
-				this.newRenderReady = false;
-				const readyToRender = () => {
-					this.newRenderReady = true;
-				};
-				setTimeout(readyToRender, this.timeBeforeEachRender);
-			}
+			this.setBooksScale();
 		},
 		pickedColor() {
 			console.log('pickedColor RGBA:', this.pickedColor);
@@ -101,25 +96,56 @@ export default {
 		this.animate();
 	},
 	methods: {
-		rerender() {
-			const myNode = document.getElementById(this.canvaName);
-			myNode.innerHTML = '';
-			this.init();
-			this.animate();
-		},
-		init() {
-			DragControls.install({ THREE: THREE });
+		animate() {
+			requestAnimationFrame(this.animate);
 
+			if (this.$refs.canva && this.rendererWidth != this.$refs.canva.clientWidth) {
+				this.rendererWidth = this.$refs.canva.clientWidth;
+				this.camera.updateProjectionMatrix();
+				this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
+			}
+
+			// update the picking ray with the camera and mouse position
+			this.raycaster.setFromCamera(this.mouse, this.camera);
+			// calculate objects intersecting the picking ray
+			var intersects = this.raycaster.intersectObjects(this.scene.children);
+			if (intersects.length > 0) {
+				if (this.intersected != intersects[0].object) {
+					if (this.intersected) {
+						this.intersected.material.emissive.setHex(this.intersected.currentHex);
+					}
+
+					this.intersected = intersects[0].object;
+					this.intersected.currentHex = this.intersected.material.emissive.getHex();
+					this.intersected.material.emissive.setHex(0xa6b7bf);
+					console.log('mouse.x', this.mouse.x);
+					console.log('mouse.y', this.mouse.y);
+					console.log(('intersected', JSON.stringify(this.intersected)));
+				}
+			} else {
+				if (this.intersected) {
+					this.intersected.material.emissive.setHex(this.intersected.currentHex);
+				}
+
+				this.intersected = null;
+			}
+
+			// this.mesh.rotation.x += 0.01;
+			// this.mesh.rotation.y += 0.02;
+			this.renderer.render(this.scene, this.camera);
+		},
+
+		init() {
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio(window.devicePixelRatio);
 			this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
-			this.renderer.shadowMap.enabled = true;
-			this.renderer.shadowMap.type = THREE.PCFShadowMap;
+			// this.renderer.shadowMap.enabled = true;
+			// this.renderer.shadowMap.type = THREE.PCFShadowMap;
+
 			let container = document.getElementById(this.canvaName);
 			container.appendChild(this.renderer.domElement);
 
-			this.camera = new THREE.PerspectiveCamera(60, 4, 3, 5000);
-			this.camera.aspect = 4 / 3;
+			this.camera = new THREE.PerspectiveCamera(60, 4 / 3, 1, 5000);
 			this.camera.updateProjectionMatrix();
 			this.camera.position.z = this.numberPublished * 11 + 300;
 			this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
@@ -134,18 +160,15 @@ export default {
 			light.angle = Math.PI / 9;
 
 			light.castShadow = true;
-			light.shadow.camera.near = 1000;
+			light.shadow.camera.near = 1;
 			light.shadow.camera.far = 4000;
 			light.shadow.mapSize.width = 1024;
 			light.shadow.mapSize.height = 1024;
 			this.scene.add(light);
 
 			let bookWidth = this.mangaDimensions.width;
-			let bookHeight = this.mangaDimensions.height;
-			let bookDepth = this.mangaDimensions.depth;
 			let emptySpace = 5;
-
-			this.geometry = new THREE.BoxGeometry(this.mangaDimensions.width, bookHeight, bookDepth);
+			this.geometry = new THREE.BoxGeometry(1, 1, 1);
 
 			for (var i = 0; i < this.numberPublished; i++) {
 				// let color =  Math.random() * 0xffffff;
@@ -167,44 +190,33 @@ export default {
 				this.books.push(object);
 			}
 
-			// this.material = new THREE.MeshLambertMaterial(color);
-			// let mesh1 = new THREE.Mesh( this.geometry, this.material );
-			// let mesh2 = new THREE.Mesh( this.geometry, this.material );
-			// mesh1.castShadow = true;
-			// mesh1.receiveShadow = true;
-			// mesh2.castShadow = true;
-			// mesh2.receiveShadow = true;
+			this.setBooksScale();
 
-			// this.scene.add(mesh1)
-			// this.scene.add(mesh2)
-
-			// this.books.push(mesh1);
-			// this.books.push(mesh2);
-
-			this.controls = new DragControls([...this.books], this.camera, this.renderer.domElement);
-			// add event listener to highlight dragged objects
-			// this.controls.addEventListener( 'dragstart',  event => {
-			//   console.log('event:', event)
-			//   event.object.material.emissive.set( 0x0b9663 )
-			// }
-			// );
-			// this.controls.addEventListener( 'dragend', function ( event ) {
-			//   console.log('event:', event)
-			//   event.object.material.emissive.set( color );
-			// } );
+			this.raycaster = new THREE.Raycaster();
+			this.mouse = new THREE.Vector2();
+			document.addEventListener('mousemove', this.onMouseMove, false);
 		},
-		animate() {
-			//console.log('canvaWidth:', this.$refs.canva.clientWidth);
-			if (this.rendererWidth != this.$refs.canva.clientWidth) {
-				this.rendererWidth = this.$refs.canva.clientWidth;
-				this.camera.updateProjectionMatrix();
-				this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
-			}
+		onMouseMove(event) {
+			event.preventDefault();
 
-			// this.mesh.rotation.x += 0.01;
-			// this.mesh.rotation.y += 0.02;
-			this.renderer.render(this.scene, this.camera);
-			requestAnimationFrame(this.animate);
+			// calculate mouse position in normalized device coordinates
+			// (-1 to +1) for both components
+
+			this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		},
+		rerender() {
+			const myNode = document.getElementById(this.canvaName);
+			myNode.innerHTML = '';
+			this.init();
+			this.animate();
+		},
+		setBooksScale() {
+			this.books.forEach(book => {
+				book.scale.x = this.mangaDimensions.width;
+				book.scale.y = this.mangaDimensions.height;
+				book.scale.z = this.mangaDimensions.depth;
+			});
 		}
 	}
 };
