@@ -117,19 +117,14 @@ export default {
 					if (this.intersected) {
 						this.intersected.material.emissive.setHex(this.intersected.currentHex);
 					}
-
 					this.intersected = intersects[0].object;
 					this.intersected.currentHex = this.intersected.material.emissive.getHex();
 					this.intersected.material.emissive.setHex(0xa6b7bf);
-					console.log('mouse.x', this.mouse.x);
-					console.log('mouse.y', this.mouse.y);
-					console.log(('intersected', JSON.stringify(this.intersected)));
 				}
 			} else {
 				if (this.intersected) {
 					this.intersected.material.emissive.setHex(this.intersected.currentHex);
 				}
-
 				this.intersected = null;
 			}
 
@@ -184,8 +179,6 @@ export default {
 
 				let bookTotalSpace = bookWidth + emptySpace;
 				object.position.x = i * bookTotalSpace - (this.numberPublished / 2) * bookTotalSpace + bookWidth / 2;
-				// object.position.y = Math.random() * 600 - 300;
-				// object.position.z = Math.random() * 800 - 400;
 
 				object.castShadow = true;
 				object.receiveShadow = true;
@@ -193,7 +186,6 @@ export default {
 				this.scene.add(object);
 				this.books.push(object);
 			}
-
 			this.setBooksScale();
 
 			this.raycaster = new THREE.Raycaster();
