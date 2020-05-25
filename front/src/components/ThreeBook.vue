@@ -75,6 +75,9 @@ export default {
 			};
 
 			return '#' + hexPartToString(newColor_r) + hexPartToString(newColor_g) + hexPartToString(newColor_b);
+		},
+		rendererHeight() {
+			return (this.rendererWidth * 3) / 4;
 		}
 	},
 	watch: {
@@ -102,7 +105,7 @@ export default {
 			if (this.$refs.canva && this.rendererWidth != this.$refs.canva.clientWidth) {
 				this.rendererWidth = this.$refs.canva.clientWidth;
 				this.camera.updateProjectionMatrix();
-				this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
+				this.renderer.setSize(this.rendererWidth, this.rendererHeight);
 			}
 
 			// update the picking ray with the camera and mouse position
@@ -138,7 +141,8 @@ export default {
 		init() {
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio(window.devicePixelRatio);
-			this.renderer.setSize(this.rendererWidth, (this.rendererWidth * 3) / 4);
+
+			this.renderer.setSize(this.rendererWidth, this.rendererHeight);
 			// this.renderer.shadowMap.enabled = true;
 			// this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
@@ -194,16 +198,15 @@ export default {
 
 			this.raycaster = new THREE.Raycaster();
 			this.mouse = new THREE.Vector2();
-			document.addEventListener('mousemove', this.onMouseMove, false);
+			container.addEventListener('mousemove', this.onMouseMove, false);
 		},
 		onMouseMove(event) {
 			event.preventDefault();
-
 			// calculate mouse position in normalized device coordinates
 			// (-1 to +1) for both components
-
-			this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-			this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+			var rect = this.renderer.domElement.getBoundingClientRect();
+			this.mouse.x = ((event.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
+			this.mouse.y = -((event.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
 		},
 		rerender() {
 			const myNode = document.getElementById(this.canvaName);
