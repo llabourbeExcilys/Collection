@@ -60,7 +60,7 @@
 											<v-col>
 												<v-autocomplete
 													v-model="searchedAutor"
-													:items="autors"
+													:items="authors"
 													background-color="white"
 													dense
 													outlined
@@ -120,6 +120,7 @@
 <script>
 import MangaSerie from '@/components/MangaSerie';
 import cloneDeep from 'lodash';
+import axios from 'axios';
 
 export default {
 	name: 'manage',
@@ -128,79 +129,11 @@ export default {
 	},
 	data: function() {
 		return {
-			autors: [
-				'Naoki URASAWA',
-				'Katsuhiro OTOMO',
-				'Taiyo MATSUMOTO',
-				'Kentaro MIURA',
-				'Hirohiko ARAKI',
-				'Makoto YUKIMURA'
-			],
+			authors: [],
 			books: [],
-			editors: ['PANINI MANGA', 'GLENAT MANGA', 'TONKAM', 'KUROKAWA'],
+			editors: [],
 			genres: [],
-			mangaSeries: [
-				{
-					autor: 'Naoki URASAWA',
-					title: '20th Century Boys',
-					edition: 'Deluxe',
-					editor: 'PANINI MANGA',
-					owned: 11,
-					published: 11,
-					type: 'Manga',
-					genres: ['Science Fiction', 'Action', 'Suspense']
-				},
-				{
-					autor: 'Katsuhiro OTOMO',
-					title: 'Akira',
-					edition: 'Edition définitive',
-					editor: 'GLENAT MANGA',
-					owned: 6,
-					published: 6,
-					type: 'Manga',
-					genres: ['Science Fiction', 'Suspense']
-				},
-				{
-					autor: 'Taiyo MATSUMOTO',
-					title: 'Amer Beton',
-					edition: 'Intégrale',
-					editor: 'TONKAM',
-					owned: 1,
-					published: 1,
-					type: 'Manga',
-					genres: ['Drame', 'Philosophie']
-				},
-				{
-					autor: 'Kentaro MIURA',
-					title: 'Berserk',
-					edition: 'Réédition française',
-					editor: 'GLENAT MANGA',
-					owned: 40,
-					published: 41,
-					type: 'Manga',
-					genres: ['Action', 'Fantastique']
-				},
-				{
-					autor: 'Hirohiko ARAKI',
-					title: "Jojo's Bizarre Adventure",
-					edition: 'Parties 1 -5',
-					editor: 'TONKAM',
-					owned: 68,
-					published: 68,
-					type: 'Manga',
-					genres: ['Fantastique', 'Aventure', 'Action']
-				},
-				{
-					autor: 'Makoto YUKIMURA',
-					title: 'Vinland Saga',
-					edition: 'Simple',
-					editor: 'KUROKAWA',
-					owned: 16,
-					published: 23,
-					type: 'Manga',
-					genres: ['Action', 'Aventure', 'Drame', 'Historique']
-				}
-			],
+			mangaSeries: [],
 			search: '',
 			searchedEditor: '',
 			searchedType: '',
@@ -208,18 +141,8 @@ export default {
 			searchedGenre: [],
 			searchGenreType: 1,
 			showFilters: false,
-			types: ['Manga', 'Artbook', 'Fanbook'],
-			genres: [
-				'Science Fiction',
-				'Suspense',
-				'Action',
-				'Aventure',
-				'Historique',
-				'Fantastique',
-				'Aventure',
-				'Drame',
-				'Philosophie'
-			]
+			types: [],
+			genres: []
 		};
 	},
 	computed: {
@@ -251,6 +174,39 @@ export default {
 			}
 			return filteredItems;
 		}
+	},
+	mounted() {
+		axios
+			.get('http://localhost:3000/series')
+			.then(response => {
+				this.mangaSeries = response.data;
+			})
+			.catch(error => console.log(error));
+
+		axios
+			.get('http://localhost:3000/genres')
+			.then(response => {
+				this.genres = response.data;
+			})
+			.catch(error => console.log(error));
+		axios
+			.get('http://localhost:3000/types')
+			.then(response => {
+				this.types = response.data;
+			})
+			.catch(error => console.log(error));
+		axios
+			.get('http://localhost:3000/authors')
+			.then(response => {
+				this.authors = response.data;
+			})
+			.catch(error => console.log(error));
+		axios
+			.get('http://localhost:3000/editors')
+			.then(response => {
+				this.editors = response.data;
+			})
+			.catch(error => console.log(error));
 	},
 	methods: {
 		toggleFilters() {

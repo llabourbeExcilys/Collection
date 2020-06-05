@@ -1,0 +1,91 @@
+{
+	"series": [
+		{
+			"id": 1,
+			"autor": "Naoki URASAWA",
+			"title": "20th Century Boys",
+			"edition": "Deluxe",
+			"editor": "PANINI MANGA",
+			"owned": 11,
+			"published": 11,
+			"type": "Manga",
+			"genres": ["Science Fiction", "Action", "Suspense"]
+		},
+		{
+			"id": 2,
+			"autor": "Katsuhiro OTOMO",
+			"title": "Akira",
+			"edition": "Edition définitive",
+			"editor": "GLENAT MANGA",
+			"owned": 6,
+			"published": 6,
+			"type": "Manga",
+			"genres": ["Science Fiction", "Suspense"]
+		},
+		{
+			"id": 3,
+			"autor": "Taiyo MATSUMOTO",
+			"title": "Amer Beton",
+			"edition": "Intégrale",
+			"editor": "TONKAM",
+			"owned": 1,
+			"published": 1,
+			"type": "Manga",
+			"genres": ["Drame", "Philosophie"]
+		},
+		{
+			"id": 4,
+			"autor": "Kentaro MIURA",
+			"title": "Berserk",
+			"edition": "Réédition française",
+			"editor": "GLENAT MANGA",
+			"owned": 40,
+			"published": 41,
+			"type": "Manga",
+			"genres": ["Action", "Fantastique"]
+		},
+		{
+			"id": 5,
+			"autor": "Hirohiko ARAKI",
+			"title": "Jojo's Bizarre Adventure",
+			"edition": "Parties 1 -5",
+			"editor": "TONKAM",
+			"owned": 68,
+			"published": 68,
+			"type": "Manga",
+			"genres": ["Fantastique", "Aventure", "Action"]
+		},
+		{
+			"id": 6,
+			"autor": "Makoto YUKIMURA",
+			"title": "Vinland Saga",
+			"edition": "Simple",
+			"editor": "KUROKAWA",
+			"owned": 16,
+			"published": 23,
+			"type": "Manga",
+			"genres": ["Action", "Aventure", "Drame", "Historique"]
+		}
+	],
+	"genres": [
+		"Science Fiction",
+		"Suspense",
+		"Action",
+		"Aventure",
+		"Historique",
+		"Fantastique",
+		"Aventure",
+		"Drame",
+		"Philosophie"
+	],
+	"types": ["Manga", "Artbook", "Fanbook"],
+	"authors": [
+		"Naoki URASAWA",
+		"Katsuhiro OTOMO",
+		"Taiyo MATSUMOTO",
+		"Kentaro MIURA",
+		"Hirohiko ARAKI",
+		"Makoto YUKIMURA"
+	],
+	"editors": ["PANINI MANGA", "GLENAT MANGA", "TONKAM", "KUROKAWA"]
+}
