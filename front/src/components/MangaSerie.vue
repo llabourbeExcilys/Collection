@@ -5,7 +5,8 @@
 				<v-row dense align="center" justify="center" no-gutters>
 					<v-col :cols="4">
 						<v-card-title>
-							{{ item.title }}
+							<v-text-field v-if="item.edit" :value="item.title"></v-text-field>
+							<p v-else>{{ item.title }}</p>
 						</v-card-title>
 						<v-card-subtitle> {{ item.edition }} ({{ item.editor }}) </v-card-subtitle>
 					</v-col>
@@ -40,9 +41,22 @@
 					</v-col>
 					<v-col>
 						<v-card-actions>
-							<v-btn icon @click="show = !show">
-								<v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-							</v-btn>
+							<v-tooltip :disabled="show" top>
+								<template v-slot:activator="{ on }">
+									<v-btn v-on="on" icon @click="show = !show">
+										<v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+									</v-btn>
+								</template>
+								<span>Afficher les détails</span>
+							</v-tooltip>
+							<v-tooltip :disabled="item.edit" v-if="show" top>
+								<template v-slot:activator="{ on }">
+									<v-btn v-on="on" @click="$emit('clickEdit')" icon>
+										<v-icon small>{{ item.edit ? 'mdi-pencil-off' : 'mdi-pencil' }}</v-icon>
+									</v-btn>
+								</template>
+								<span>Editer l'élément</span>
+							</v-tooltip>
 						</v-card-actions>
 					</v-col>
 				</v-row>

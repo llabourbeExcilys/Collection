@@ -97,8 +97,8 @@
 						<template v-slot:default="props">
 							<v-row><v-col></v-col></v-row>
 							<v-row>
-								<v-col v-for="item in props.items" :key="item.title" cols="12">
-									<MangaSerie :item="item" />
+								<v-col v-for="item in props.items" :key="item.id" cols="12">
+									<MangaSerie :item="item" @clickEdit="item.edit = !item.edit" />
 								</v-col>
 							</v-row>
 						</template>
@@ -180,7 +180,7 @@ export default {
 		mangaService
 			.getSeries()
 			.then(response => {
-				this.mangaSeries = response;
+				this.mangaSeries = response.map(obj => ({ ...obj, edit: false }));
 			})
 			.catch(error => console.log(error));
 
