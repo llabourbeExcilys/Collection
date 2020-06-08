@@ -121,6 +121,7 @@
 import MangaSerie from '@/components/MangaSerie';
 import cloneDeep from 'lodash';
 import axios from 'axios';
+import mangaService from '@/services/MangaService';
 
 export default {
 	name: 'manage',
@@ -176,35 +177,38 @@ export default {
 		}
 	},
 	mounted() {
-		axios
-			.get('http://localhost:3000/series')
+		mangaService
+			.getSeries()
 			.then(response => {
-				this.mangaSeries = response.data;
+				this.mangaSeries = response;
 			})
 			.catch(error => console.log(error));
 
-		axios
-			.get('http://localhost:3000/genres')
+		mangaService
+			.getGenres()
 			.then(response => {
-				this.genres = response.data;
+				this.genres = response;
 			})
 			.catch(error => console.log(error));
-		axios
-			.get('http://localhost:3000/types')
+
+		mangaService
+			.getTypes()
 			.then(response => {
-				this.types = response.data;
+				this.types = response;
 			})
 			.catch(error => console.log(error));
-		axios
-			.get('http://localhost:3000/authors')
+
+		mangaService
+			.getAuthors()
 			.then(response => {
-				this.authors = response.data;
+				this.authors = response;
 			})
 			.catch(error => console.log(error));
-		axios
-			.get('http://localhost:3000/editors')
+
+		mangaService
+			.getEditors()
 			.then(response => {
-				this.editors = response.data;
+				this.editors = response;
 			})
 			.catch(error => console.log(error));
 	},
