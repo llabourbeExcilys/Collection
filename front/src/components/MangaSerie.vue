@@ -2,15 +2,28 @@
 	<div>
 		<v-card>
 			<v-container fluid>
-				<v-row dense align="center" justify="center" no-gutters>
+				<v-row dense :align="item.edit ? 'baseline' : 'center'" justify="center" no-gutters>
 					<v-col :cols="4">
 						<v-card-title>
-							<v-text-field v-if="item.edit" :value="item.title"></v-text-field>
-							<p v-else>{{ item.title }}</p>
+							<v-text-field v-if="item.edit" v-model="item.title" outlined label="Titre"></v-text-field>
+							<div v-else>{{ item.title }}</div>
 						</v-card-title>
-						<v-card-subtitle> {{ item.edition }} ({{ item.editor }}) </v-card-subtitle>
+						<v-card-subtitle>
+							<v-text-field
+								v-if="item.edit"
+								v-model="item.editor"
+								outlined
+								dense
+								label="Edition"
+							></v-text-field>
+							<div v-else>{{ item.edition }} ({{ item.editor }})</div>
+						</v-card-subtitle>
 					</v-col>
-					<v-col :cols="2">{{ item.autor }}</v-col>
+					<v-col :cols="2">
+						<v-text-field v-if="item.edit" v-model="item.autor" outlined label="Auteur"></v-text-field>
+						<div v-else>{{ item.autor }}</div>
+					</v-col>
+
 					<v-col :cols="1">
 						<v-chip v-if="item.owned === item.published" class="ma-2" color="green" text-color="white">
 							{{ item.owned }} / {{ item.published }}
@@ -49,7 +62,7 @@
 								</template>
 								<span>Afficher les détails</span>
 							</v-tooltip>
-							<v-tooltip :disabled="item.edit" v-if="show" top>
+							<v-tooltip v-if="show" :disabled="item.edit" top>
 								<template v-slot:activator="{ on }">
 									<v-btn v-on="on" @click="$emit('clickEdit')" icon>
 										<v-icon small>{{ item.edit ? 'mdi-pencil-off' : 'mdi-pencil' }}</v-icon>

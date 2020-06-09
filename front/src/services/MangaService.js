@@ -8,7 +8,9 @@ const MangaService = {
 	getGenres: () => ApiService.get(baseUrl + '/genres'),
 	getTypes: () => ApiService.get(baseUrl + '/types'),
 	getAuthors: () => ApiService.get(baseUrl + '/authors'),
-	getEditors: () => ApiService.get(baseUrl + '/editors')
+	getEditors: () => ApiService.get(baseUrl + '/editors'),
+
+	updateSerie: serie => ApiService.put(baseUrl + '/series/' + serie.id, serie)
 };
 
 export default MangaService;

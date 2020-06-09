@@ -98,7 +98,7 @@
 							<v-row><v-col></v-col></v-row>
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
-									<MangaSerie :item="item" @clickEdit="item.edit = !item.edit" />
+									<MangaSerie :item.sync="item" @clickEdit="manageEdit(item)" />
 								</v-col>
 							</v-row>
 						</template>
@@ -221,6 +221,13 @@ export default {
 				this.searchedAutor = '';
 				this.searchedGenre = [];
 			}
+		},
+		manageEdit(item) {
+			if (item.edit) {
+				console.log('item', item);
+				mangaService.updateSerie(item).then(resp => console.log(resp));
+			}
+			item.edit = !item.edit;
 		}
 	}
 };
