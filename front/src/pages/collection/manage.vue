@@ -181,11 +181,7 @@ export default {
 		mangaService
 			.getSeries()
 			.then(response => {
-				this.mangaSeries = response.map(obj => ({ ...obj, edit: false }));
-				// this.seriesEditedMap = new Map();
-				// this.mangaSeries.forEach(element => {
-				// 	this.seriesEditedMap.set(element.id, false);
-				// });
+				this.mangaSeries = response;
 			})
 			.catch(error => console.log(error));
 
