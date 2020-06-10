@@ -98,7 +98,7 @@
 							<v-row><v-col></v-col></v-row>
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
-									<MangaSerie :item.sync="item" @clickEdit="manageEdit(item)" />
+									<MangaSerie :item.sync="item" @clickEdit="manageEdit" />
 								</v-col>
 							</v-row>
 						</template>
@@ -133,6 +133,7 @@ export default {
 			authors: [],
 			books: [],
 			editors: [],
+			// seriesEditedMap: {},
 			genres: [],
 			mangaSeries: [],
 			search: '',
@@ -181,6 +182,10 @@ export default {
 			.getSeries()
 			.then(response => {
 				this.mangaSeries = response.map(obj => ({ ...obj, edit: false }));
+				// this.seriesEditedMap = new Map();
+				// this.mangaSeries.forEach(element => {
+				// 	this.seriesEditedMap.set(element.id, false);
+				// });
 			})
 			.catch(error => console.log(error));
 
@@ -223,11 +228,7 @@ export default {
 			}
 		},
 		manageEdit(item) {
-			if (item.edit) {
-				console.log('item', item);
-				mangaService.updateSerie(item).then(resp => console.log(resp));
-			}
-			item.edit = !item.edit;
+			mangaService.updateSerie(item).then(resp => console.log(resp));
 		}
 	}
 };

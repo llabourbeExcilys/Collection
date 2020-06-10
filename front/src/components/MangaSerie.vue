@@ -2,25 +2,19 @@
 	<div>
 		<v-card>
 			<v-container fluid>
-				<v-row dense :align="item.edit ? 'baseline' : 'center'" justify="center" no-gutters>
+				<v-row dense :align="edit ? 'baseline' : 'center'" justify="center" no-gutters>
 					<v-col :cols="4">
 						<v-card-title>
-							<v-text-field v-if="item.edit" v-model="item.title" outlined label="Titre"></v-text-field>
+							<v-text-field v-if="edit" v-model="item.title" outlined label="Titre"></v-text-field>
 							<div v-else>{{ item.title }}</div>
 						</v-card-title>
 						<v-card-subtitle>
-							<v-text-field
-								v-if="item.edit"
-								v-model="item.editor"
-								outlined
-								dense
-								label="Edition"
-							></v-text-field>
+							<v-text-field v-if="edit" v-model="item.editor" outlined dense label="Edition"></v-text-field>
 							<div v-else>{{ item.edition }} ({{ item.editor }})</div>
 						</v-card-subtitle>
 					</v-col>
 					<v-col :cols="2">
-						<v-text-field v-if="item.edit" v-model="item.autor" outlined label="Auteur"></v-text-field>
+						<v-text-field v-if="edit" v-model="item.autor" outlined label="Auteur"></v-text-field>
 						<div v-else>{{ item.autor }}</div>
 					</v-col>
 
@@ -62,10 +56,10 @@
 								</template>
 								<span>Afficher les détails</span>
 							</v-tooltip>
-							<v-tooltip v-if="show" :disabled="item.edit" top>
+							<v-tooltip v-if="show" :disabled="edit" top>
 								<template v-slot:activator="{ on }">
-									<v-btn v-on="on" @click="$emit('clickEdit')" icon>
-										<v-icon small>{{ item.edit ? 'mdi-pencil-off' : 'mdi-pencil' }}</v-icon>
+									<v-btn v-on="on" @click="clickEdit" icon>
+										<v-icon small>{{ edit ? 'mdi-pencil-off' : 'mdi-pencil' }}</v-icon>
 									</v-btn>
 								</template>
 								<span>Editer l'élément</span>
@@ -165,6 +159,7 @@ export default {
 	},
 	data() {
 		return {
+			edit: false,
 			show: false,
 			mangaWidth: 17,
 			mangaHeight: 184,
@@ -182,7 +177,14 @@ export default {
 		}
 	},
 	mounted() {},
-	methods: {}
+	methods: {
+		clickEdit() {
+			if (this.edit) {
+				this.$emit('clickEdit', this.item);
+			}
+			this.edit = !this.edit;
+		}
+	}
 };
 </script>
 <style scoped></style>
