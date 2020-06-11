@@ -25,6 +25,10 @@ export default {
 			type: Number,
 			required: true
 		},
+		numberPossessed: {
+			type: Number,
+			required: true
+		},
 		mangaDimensions: {
 			type: Object,
 			required: true
@@ -53,31 +57,15 @@ export default {
 		},
 		// convert RGBA to RGB assuming color background
 		pickedRGBColor() {
-			const color_r = parseInt(this.pickedColor.substring(1, 3), 16);
-			const color_g = parseInt(this.pickedColor.substring(3, 5), 16);
-			const color_b = parseInt(this.pickedColor.substring(5, 7), 16);
-
-			//assuming white background
-			const background_r = 255;
-			const background_g = 255;
-			const background_b = 255;
-
-			// getting transparancy [0,255] then translating to [0-1])
-			let transparency = parseInt(this.pickedColor.substring(7), 16);
-			let alpha = Math.round((transparency * 100) / 256) / 100;
-
-			let newColor_r = Math.round((1 - alpha) * background_r + alpha * color_r);
-			let newColor_g = Math.round((1 - alpha) * background_g + alpha * color_g);
-			let newColor_b = Math.round((1 - alpha) * background_b + alpha * color_b);
-
-			let hexPartToString = hex => {
-				return hex.toString(16).length < 2 ? '0' + hex.toString(16) : hex.toString(16);
-			};
-
-			return '#' + hexPartToString(newColor_r) + hexPartToString(newColor_g) + hexPartToString(newColor_b);
+			const transparency = parseInt(this.pickedColor.substring(7), 16);
+			return this.computedColor(transparency);
 		},
 		rendererHeight() {
 			return (this.rendererWidth * 3) / 4;
+		},
+		lightenColor() {
+			const transparency = Math.round(255 * 0.7);
+			return this.computedColor(transparency);
 		}
 	},
 	watch: {
@@ -85,12 +73,17 @@ export default {
 			this.setBooksScale();
 		},
 		pickedColor() {
-			console.log('pickedColor RGBA:', this.pickedColor);
-			console.log('pickedColor RGB :', this.pickedRGBColor);
-			let color = parseInt(this.pickedRGBColor.substring(1), 16);
-			this.books.forEach(book => {
-				book.material.color.set(color);
-			});
+			let colorOwned = parseInt(this.pickedRGBColor.substring(1), 16);
+			let colorNotOwned = parseInt(this.lightenColor.substring(1), 16);
+			for (var i = 0; i < this.numberPublished; i++) {
+				this.books[i].material.color.set(i < this.numberPossessed ? colorOwned : colorNotOwned);
+			}
+		},
+		numberPossessed() {
+			this.rerender();
+		},
+		numberPublished() {
+			this.rerender();
 		}
 	},
 	mounted() {
@@ -172,8 +165,13 @@ export default {
 			for (var i = 0; i < this.numberPublished; i++) {
 				// let color =  Math.random() * 0xffffff;
 
-				// remove # at the start and 2 digits used for transparency at the end
-				let color = parseInt(this.pickedRGBColor.substring(1), 16);
+				let color;
+				if (i < this.numberPossessed) {
+					// remove # at the start and 2 digits used for transparency at the end
+					color = parseInt(this.pickedRGBColor.substring(1), 16);
+				} else {
+					color = parseInt(this.lightenColor.substring(1), 16);
+				}
 
 				var object = new THREE.Mesh(this.geometry, new THREE.MeshLambertMaterial({ color: color }));
 
@@ -212,6 +210,30 @@ export default {
 				book.scale.y = this.mangaDimensions.height;
 				book.scale.z = this.mangaDimensions.depth;
 			});
+		},
+		computedColor(transparency) {
+			const color_r = parseInt(this.pickedColor.substring(1, 3), 16);
+			const color_g = parseInt(this.pickedColor.substring(3, 5), 16);
+			const color_b = parseInt(this.pickedColor.substring(5, 7), 16);
+
+			//assuming white background
+			const background_r = 255;
+			const background_g = 255;
+			const background_b = 255;
+
+			// getting transparancy [0,255] then translating to [0-1])
+			const alpha = Math.round((transparency * 100) / 256) / 100;
+			console.log('lt ', transparency);
+
+			const newColor_r = Math.round((1 - alpha) * background_r + alpha * color_r);
+			const newColor_g = Math.round((1 - alpha) * background_g + alpha * color_g);
+			const newColor_b = Math.round((1 - alpha) * background_b + alpha * color_b);
+
+			const hexPartToString = hex => {
+				return hex.toString(16).length < 2 ? '0' + hex.toString(16) : hex.toString(16);
+			};
+
+			return '#' + hexPartToString(newColor_r) + hexPartToString(newColor_g) + hexPartToString(newColor_b);
 		}
 	}
 };

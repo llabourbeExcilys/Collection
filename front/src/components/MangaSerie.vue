@@ -14,15 +14,43 @@
 						</v-card-subtitle>
 					</v-col>
 					<v-col :cols="2">
-						<v-text-field v-if="edit" v-model="item.autor" outlined label="Auteur"></v-text-field>
+						<div v-if="edit">
+							<v-text-field v-model="item.autor" outlined label="Auteur"></v-text-field>
+							<v-row align="start">
+								<v-col :cols="6">
+									<v-text-field
+										v-model="item.owned"
+										v-if="edit"
+										outlined
+										dense
+										label="Possédé"
+										type="number"
+										@input="item.owned = parseInt($event)"
+									></v-text-field
+								></v-col>
+								<v-col :cols="6">
+									<v-text-field
+										v-model="item.published"
+										v-if="edit"
+										outlined
+										dense
+										label="Publié"
+										type="number"
+										@input="item.published = parseInt($event)"
+									></v-text-field
+								></v-col>
+							</v-row>
+						</div>
 						<div v-else>{{ item.autor }}</div>
 					</v-col>
 
 					<v-col :cols="1">
-						<v-chip v-if="item.owned === item.published" class="ma-2" color="green" text-color="white">
-							{{ item.owned }} / {{ item.published }}
-						</v-chip>
-						<v-chip v-else class="ma-2" color="orange" text-color="white">
+						<v-chip
+							v-if="!edit"
+							class="ma-2"
+							:color="item.owned === item.published ? 'green' : 'orange'"
+							text-color="white"
+						>
 							{{ item.owned }} / {{ item.published }}
 						</v-chip>
 					</v-col>
@@ -78,6 +106,7 @@
 									<threebook
 										:title="item.title"
 										:numberPublished="item.published"
+										:numberPossessed="item.owned"
 										:mangaDimensions="mangaDimensions"
 										:pickedColor="pickedColor"
 									/>
@@ -130,8 +159,10 @@
 										<v-color-picker
 											v-model="pickedColor"
 											class="ma-2"
-											show-swatches
 											dot-size="15"
+											hide-canvas
+											show-swatches
+											swatches-max-height="250"
 										></v-color-picker> </v-col
 								></v-col>
 							</v-row>
