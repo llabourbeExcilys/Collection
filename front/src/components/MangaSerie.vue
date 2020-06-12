@@ -55,22 +55,43 @@
 						</v-chip>
 					</v-col>
 					<v-col :cols="1">
-						{{ item.type }}
+						<div v-if="edit">
+							<v-select
+								v-model="item.type"
+								outlined
+								:items="possibleTypes"
+								:rules="[v => !!v || 'Le genre est requis']"
+								label="Genre"
+								required
+							></v-select>
+						</div>
+						<div v-else>{{ item.type }}</div>
 					</v-col>
 					<v-col :cols="3">
 						<v-row no-gutters>
 							<v-col>
-								<v-chip
-									v-for="genre in item.genres"
-									v-bind:key="genre"
-									class="ma-2"
-									small
-									dense
-									color="grey lighten-1"
-									text-color="grey darken-4"
-								>
-									{{ genre }}
-								</v-chip>
+								<div v-if="edit">
+									<v-combobox
+										v-model="item.genres"
+										:items="possibleGenres"
+										label="Genres"
+										multiple
+										chips
+									></v-combobox>
+								</div>
+								<div v-else>
+									<v-chip
+										v-for="genre in item.genres"
+										v-bind:key="genre"
+										class="ma-2"
+										small
+										dense
+										color="grey lighten-1"
+										text-color="grey darken-4"
+									>
+										{{ genre }}
+									</v-chip>
+								</div>
 							</v-col>
 						</v-row>
 					</v-col>
@@ -186,6 +207,14 @@ export default {
 		item: {
 			type: Object,
 			required: true
+		},
+		possibleTypes: {
+			type: Array,
+			default: []
+		},
+		possibleGenres: {
+			type: Array,
+			default: []
 		}
 	},
 	data() {

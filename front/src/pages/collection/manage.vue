@@ -98,7 +98,12 @@
 							<v-row><v-col></v-col></v-row>
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
-									<MangaSerie :item.sync="item" @clickEdit="manageEdit" />
+									<MangaSerie
+										:item.sync="item"
+										:possibleTypes="types"
+										:possibleGenres="genres"
+										@clickEdit="manageEdit"
+									/>
 								</v-col>
 							</v-row>
 						</template>

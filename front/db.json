@@ -8,11 +8,12 @@
       "editor": "PANINI MANGA",
       "owned": 12,
       "published": 19,
-      "type": "Manga",
+      "type": "Fanbook",
       "genres": [
         "Science Fiction",
         "Action",
-        "Suspense"
+        "Suspense",
+        "Aventure"
       ]
     },
     {
