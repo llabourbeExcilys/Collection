@@ -43,6 +43,7 @@
 								label="Possédé"
 								type="number"
 								@input="item.owned = parseInt($event)"
+								:rules="[rules.numberOwnedCantBeSupToPublished]"
 							>
 							</v-text-field>
 						</v-col>
@@ -76,6 +77,74 @@
 								multiple
 								small-chips
 							></v-combobox>
+						</v-col>
+					</v-row>
+					<v-row v-if="show" dense align="center" justify="center">
+						<v-divider />
+					</v-row>
+					<v-row v-if="show" justify="center">
+						<v-col :cols="6">
+							<threebook
+								:editMode="edit"
+								:title="item.title"
+								:numberPublished="item.published"
+								:numberPossessed="item.owned"
+								:mangaDimensions="mangaDimensions"
+								:pickedColor="pickedColor"
+							/>
+						</v-col>
+						<v-col :cols="2">
+							<v-row>
+								<v-col :cols="12">
+									<v-subheader class="pl-0">Largeur (mm)</v-subheader>
+								</v-col>
+								<v-col :cols="12">
+									<v-slider
+										v-model="mangaWidth"
+										thumb-label="always"
+										thumb-size="25"
+										min="10"
+										max="100"
+										hide-details
+									/>
+								</v-col>
+								<v-col :cols="12">
+									<v-subheader class="pl-0">Profondeur (mm)</v-subheader>
+								</v-col>
+								<v-col :cols="12">
+									<v-slider
+										v-model="mangaDepth"
+										thumb-label="always"
+										thumb-size="25"
+										min="100"
+										max="300"
+										hide-details
+									/>
+								</v-col>
+								<v-col :cols="12">
+									<v-subheader class="pl-0">Hauteur (mm)</v-subheader>
+								</v-col>
+								<v-col :cols="12">
+									<v-slider
+										v-model="mangaHeight"
+										thumb-label="always"
+										thumb-size="25"
+										min="150"
+										max="350"
+										hide-details
+									/>
+								</v-col>
+							</v-row>
+						</v-col>
+						<v-col :cols="3">
+							<v-color-picker
+								v-model="pickedColor"
+								class="ma-2"
+								dot-size="15"
+								hide-canvas
+								show-swatches
+								swatches-max-height="250"
+							></v-color-picker>
 						</v-col>
 					</v-row>
 				</template>
@@ -137,82 +206,22 @@
 							</v-card-actions>
 						</v-col>
 					</v-row>
+					<v-row v-if="show" dense align="center" justify="center">
+						<v-divider />
+					</v-row>
+					<v-row v-if="show" justify="center">
+						<v-col :cols="10">
+							<threebook
+								:editMode="edit"
+								:title="item.title"
+								:numberPublished="item.published"
+								:numberPossessed="item.owned"
+								:mangaDimensions="mangaDimensions"
+								:pickedColor="pickedColor"
+							/>
+						</v-col>
+					</v-row>
 				</template>
-
-				<v-row v-if="show" dense align="center" justify="center">
-					<v-divider />
-				</v-row>
-				<div v-if="show">
-					<v-expand-transition>
-						<v-container>
-							<v-row>
-								<v-col :cols="6">
-									<threebook
-										:title="item.title"
-										:numberPublished="item.published"
-										:numberPossessed="item.owned"
-										:mangaDimensions="mangaDimensions"
-										:pickedColor="pickedColor"
-									/>
-								</v-col>
-								<v-col :cols="2">
-									<v-row>
-										<v-col :cols="12">
-											<v-subheader class="pl-0">Largeur (mm)</v-subheader>
-										</v-col>
-										<v-col :cols="12">
-											<v-slider
-												v-model="mangaWidth"
-												thumb-label="always"
-												thumb-size="25"
-												min="10"
-												max="100"
-												hide-details
-											/>
-										</v-col>
-										<v-col :cols="12">
-											<v-subheader class="pl-0">Profondeur (mm)</v-subheader>
-										</v-col>
-										<v-col :cols="12">
-											<v-slider
-												v-model="mangaDepth"
-												thumb-label="always"
-												thumb-size="25"
-												min="100"
-												max="300"
-												hide-details
-											/>
-										</v-col>
-										<v-col :cols="12">
-											<v-subheader class="pl-0">Hauteur (mm)</v-subheader>
-										</v-col>
-										<v-col :cols="12">
-											<v-slider
-												v-model="mangaHeight"
-												thumb-label="always"
-												thumb-size="25"
-												min="150"
-												max="350"
-												hide-details
-											/>
-										</v-col>
-									</v-row>
-								</v-col>
-								<v-col :cols="4">
-									<v-col>
-										<v-color-picker
-											v-model="pickedColor"
-											class="ma-2"
-											dot-size="15"
-											hide-canvas
-											show-swatches
-											swatches-max-height="250"
-										></v-color-picker> </v-col
-								></v-col>
-							</v-row>
-						</v-container>
-					</v-expand-transition>
-				</div>
 			</v-container>
 		</v-card>
 	</div>
@@ -247,7 +256,11 @@ export default {
 			mangaWidth: 17,
 			mangaHeight: 184,
 			mangaDepth: 130,
-			pickedColor: ''
+			pickedColor: '',
+			rules: {
+				numberOwnedCantBeSupToPublished: owned =>
+					owned <= this.item.published || 'Ne peut dépasser le nombre publié.'
+			}
 		};
 	},
 	computed: {

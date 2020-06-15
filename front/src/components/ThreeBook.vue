@@ -13,6 +13,10 @@ export default {
 	components: {},
 
 	props: {
+		editMode: {
+			type: Boolean,
+			default: false
+		},
 		pickedColor: {
 			type: String,
 			default: '#3F51B5'
@@ -61,11 +65,18 @@ export default {
 			return this.computedColor(transparency);
 		},
 		rendererHeight() {
-			return (this.rendererWidth * 3) / 4;
+			if (this.editMode) {
+				return this.rendererWidth * (3 / 4);
+			} else {
+				return this.rendererWidth * (9 / 16);
+			}
 		},
 		lightenColor() {
 			const transparency = Math.round(255 * 0.7);
 			return this.computedColor(transparency);
+		},
+		ratio() {
+			return this.editMode ? 4 / 3 : 16 / 9;
 		}
 	},
 	watch: {
@@ -88,15 +99,17 @@ export default {
 	},
 	mounted() {
 		this.init();
-		this.rendererWidth = this.$refs.canva.clientWidth;
 		this.animate();
 	},
+	updated() {},
 	methods: {
 		animate() {
 			requestAnimationFrame(this.animate);
 
 			if (this.$refs.canva && this.rendererWidth != this.$refs.canva.clientWidth) {
 				this.rendererWidth = this.$refs.canva.clientWidth;
+
+				this.camera.aspect = this.ratio;
 				this.camera.updateProjectionMatrix();
 				this.renderer.setSize(this.rendererWidth, this.rendererHeight);
 			}
@@ -130,14 +143,16 @@ export default {
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
 			this.renderer.setPixelRatio(window.devicePixelRatio);
 
+			this.rendererWidth = this.$refs.canva.clientWidth;
 			this.renderer.setSize(this.rendererWidth, this.rendererHeight);
-			// this.renderer.shadowMap.enabled = true;
-			// this.renderer.shadowMap.type = THREE.PCFShadowMap;
+
+			this.renderer.shadowMap.enabled = true;
+			this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
 			let container = document.getElementById(this.canvaName);
 			container.appendChild(this.renderer.domElement);
 
-			this.camera = new THREE.PerspectiveCamera(60, 4 / 3, 1, 5000);
+			this.camera = new THREE.PerspectiveCamera(60, this.ratio, 1, 5000);
 			this.camera.updateProjectionMatrix();
 			this.camera.position.z = this.numberPublished * 11 + 300;
 			this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
@@ -192,8 +207,7 @@ export default {
 		},
 		onMouseMove(event) {
 			event.preventDefault();
-			// calculate mouse position in normalized device coordinates
-			// (-1 to +1) for both components
+			// calculate mouse position in normalized device coordinates : (-1 to +1) for both components
 			var rect = this.renderer.domElement.getBoundingClientRect();
 			this.mouse.x = ((event.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
 			this.mouse.y = -((event.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
@@ -223,7 +237,6 @@ export default {
 
 			// getting transparancy [0,255] then translating to [0-1])
 			const alpha = Math.round((transparency * 100) / 256) / 100;
-			console.log('lt ', transparency);
 
 			const newColor_r = Math.round((1 - alpha) * background_r + alpha * color_r);
 			const newColor_g = Math.round((1 - alpha) * background_g + alpha * color_g);
