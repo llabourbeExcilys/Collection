@@ -90,7 +90,7 @@
 								:numberPublished="item.published"
 								:numberPossessed="item.owned"
 								:mangaDimensions="mangaDimensions"
-								:pickedColor="pickedColor"
+								:color="item.color"
 							/>
 						</v-col>
 						<v-col :cols="2">
@@ -138,7 +138,7 @@
 						</v-col>
 						<v-col :cols="3">
 							<v-color-picker
-								v-model="pickedColor"
+								v-model="item.color"
 								class="ma-2"
 								dot-size="15"
 								hide-canvas
@@ -217,7 +217,7 @@
 								:numberPublished="item.published"
 								:numberPossessed="item.owned"
 								:mangaDimensions="mangaDimensions"
-								:pickedColor="pickedColor"
+								:color="item.color"
 							/>
 						</v-col>
 					</v-row>
@@ -256,7 +256,6 @@ export default {
 			mangaWidth: 17,
 			mangaHeight: 184,
 			mangaDepth: 130,
-			pickedColor: '',
 			rules: {
 				numberOwnedCantBeSupToPublished: owned =>
 					owned <= this.item.published || 'Ne peut dépasser le nombre publié.'

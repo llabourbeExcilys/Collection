@@ -3,6 +3,7 @@
     {
       "id": 1,
       "autor": "Naoki URASAWA",
+      "color": "#E91E63FF",
       "title": "20th Century Boys",
       "edition": "Deluxe",
       "editor": "PANINI MANGA",
@@ -19,6 +20,7 @@
     {
       "id": 2,
       "autor": "Katsuhiro OTOMO",
+      "color": "#FF0000FF",
       "title": "Akira",
       "edition": "Edition définitive",
       "editor": "GLENAT MANGA",
@@ -33,6 +35,7 @@
     {
       "id": 3,
       "autor": "Taiyo MATSUMOTO",
+      "color": "#FF0000FF",
       "title": "Amer Beton",
       "edition": "Intégrale",
       "editor": "TONKAM",
@@ -47,6 +50,7 @@
     {
       "id": 4,
       "autor": "Kentaro MIURA",
+      "color": "#FF0000FF",
       "title": "Berserk",
       "edition": "Réédition française",
       "editor": "GLENAT MANGA",
@@ -61,6 +65,7 @@
     {
       "id": 5,
       "autor": "Hirohiko ARAKI",
+      "color": "#FF0000FF",
       "title": "Jojo's Bizarre Adventure",
       "edition": "Parties 1 -5",
       "editor": "TONKAM",
@@ -76,6 +81,7 @@
     {
       "id": 6,
       "autor": "Makoto YUKIMURA",
+      "color": "#FF0000FF",
       "title": "Vinland Saga",
       "edition": "Simple",
       "editor": "KUROKAWA",
