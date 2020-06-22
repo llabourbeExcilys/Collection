@@ -43,11 +43,13 @@ export default {
 			books: [],
 			camera: null,
 			controls: null,
+			emptySpace: 5,
 			geometry: null,
 			intersected: null,
 			material: null,
 			mouse: null,
 			newRenderReady: true,
+			previousMangaDimensions: null,
 			raycaster: null,
 			renderer: null,
 			rendererWidth: 613,
@@ -98,6 +100,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.previousMangaDimensions = cloneDeep(this.mangaDimensions);
 		this.init();
 		this.animate();
 	},
@@ -155,7 +158,7 @@ export default {
 			this.camera = new THREE.PerspectiveCamera(60, this.ratio, 1, 5000);
 			this.camera.position.z = this.numberPublished * 11 + 300;
 			this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
-			this.camera.lookAt(0, 0, 0);
+			this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
 
 			this.scene = new THREE.Scene();
 			this.scene.background = new THREE.Color(0xf7f9f9);
@@ -173,13 +176,13 @@ export default {
 			this.scene.add(light);
 
 			let bookWidth = this.mangaDimensions.width;
-			let emptySpace = 5;
-			this.geometry = new THREE.BoxGeometry(1, 1, 1);
-			let color;
+			let bookTotalSpace = bookWidth + this.emptySpace;
+			let geometry = new THREE.BoxGeometry(1, 1, 1);
 
 			for (var i = 0; i < this.numberPublished; i++) {
 				// let color =  Math.random() * 0xffffff;
 
+				let color;
 				if (i < this.numberPossessed) {
 					// remove # at the start and 2 digits used for transparency at the end
 					color = parseInt(this.pickedRGBColor.substring(1), 16);
@@ -187,16 +190,12 @@ export default {
 					color = parseInt(this.lightenColor.substring(1), 16);
 				}
 
-				var object = new THREE.Mesh(this.geometry, new THREE.MeshPhongMaterial({ color: color }));
-
-				let bookTotalSpace = bookWidth + emptySpace;
-				object.position.x = i * bookTotalSpace - (this.numberPublished / 2) * bookTotalSpace + bookWidth / 2;
-
-				object.castShadow = true;
-				object.receiveShadow = true;
-
-				this.scene.add(object);
-				this.books.push(object);
+				var manga = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: color }));
+				manga.position.x = i * bookTotalSpace - (this.numberPublished / 2) * bookTotalSpace + bookWidth / 2;
+				manga.castShadow = true;
+				manga.receiveShadow = true;
+				this.scene.add(manga);
+				this.books.push(manga);
 			}
 			this.setBooksScale();
 
@@ -218,11 +217,29 @@ export default {
 			this.animate();
 		},
 		setBooksScale() {
-			this.books.forEach(book => {
+			this.books.forEach((book, index) => {
 				book.scale.x = this.mangaDimensions.width;
 				book.scale.y = this.mangaDimensions.height;
 				book.scale.z = this.mangaDimensions.depth;
+
+				let diff = this.mangaDimensions.width - this.previousMangaDimensions.width;
+				if (diff != 0) {
+					let middle = (this.books.length - 1) / 2;
+					if (index < middle) {
+						book.translateX(-(diff * (middle - index)));
+					} else if (index > middle) {
+						book.translateX(diff * (index - middle));
+					}
+
+					this.camera.position.z = this.camera.position.z + diff / 3;
+					this.camera.position.y = this.camera.position.y + diff / 5;
+					this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
+				}
 			});
+			// console.log('this.camera.position.x', this.camera.position.x);
+			// console.log('this.camera.position.y', this.camera.position.y);
+			// console.log('this.camera.position.z', this.camera.position.z);
+			this.previousMangaDimensions = cloneDeep(this.mangaDimensions);
 		},
 		computedColor(transparency) {
 			const color_r = parseInt(this.color.substring(1, 3), 16);
