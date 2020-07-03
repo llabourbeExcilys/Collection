@@ -242,11 +242,11 @@ export default {
 		},
 		possibleTypes: {
 			type: Array,
-			default: []
+			default: () => []
 		},
 		possibleGenres: {
 			type: Array,
-			default: []
+			default: () => []
 		}
 	},
 	data() {

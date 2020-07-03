@@ -4,8 +4,9 @@
 	</div>
 </template>
 
-<script>
+<script type="module">
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { cloneDeep } from 'lodash';
 
 export default {
@@ -43,9 +44,10 @@ export default {
 			books: [],
 			camera: null,
 			controls: null,
-			emptySpace: 5,
+			emptySpace: 2,
 			geometry: null,
 			intersected: null,
+			loader: null,
 			material: null,
 			mouse: null,
 			newRenderReady: true,
@@ -137,7 +139,6 @@ export default {
 				this.intersected = null;
 			}
 
-			// this.mesh.rotation.x += 0.01;
 			// this.mesh.rotation.y += 0.02;
 			this.renderer.render(this.scene, this.camera);
 		},
@@ -156,13 +157,48 @@ export default {
 			container.appendChild(this.renderer.domElement);
 
 			this.camera = new THREE.PerspectiveCamera(60, this.ratio, 1, 5000);
-			this.camera.position.z = this.numberPublished * 11 + 300;
+			this.camera.position.z = this.numberPublished * 12 + 500;
+			// this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
 			this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
 			this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
 
 			this.scene = new THREE.Scene();
 			this.scene.background = new THREE.Color(0xf7f9f9);
 			this.scene.add(new THREE.AmbientLight(0x505050));
+
+			const loader = new GLTFLoader();
+
+			// this.loader = new THREE.GLTFLoader();
+
+			loader.load(
+				'/models/scene.gltf',
+				gltf => {
+					var obj3D = gltf.scene;
+					console.log('obj3D', obj3D);
+
+					var objectToRemove = obj3D.children[0].children[0].children[0].children[0];
+					var parent = objectToRemove.parent;
+					parent.remove(objectToRemove);
+
+					objectToRemove = obj3D.children[0].children[0].children[0].children[0];
+					parent = objectToRemove.parent;
+					parent.remove(objectToRemove);
+
+					var object = obj3D.children[0].children[0].children[0].children[0];
+
+					object.position.x = 0;
+					object.position.y = 0;
+					object.position.z = -(this.mangaDimensions.height / 2 + 20);
+					object.rotateZ(1.5708);
+
+					object.scale.x = 100;
+					object.scale.y = 100;
+					object.scale.z = 100;
+					this.scene.add(gltf.scene);
+				},
+				xhr => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
+				error => console.error(error)
+			);
 
 			let light = new THREE.SpotLight(0xffffff, 1.5);
 			light.position.set(0, 200, 2000);
@@ -222,18 +258,23 @@ export default {
 				book.scale.y = this.mangaDimensions.height;
 				book.scale.z = this.mangaDimensions.depth;
 
-				let diff = this.mangaDimensions.width - this.previousMangaDimensions.width;
-				if (diff != 0) {
+				let diffWidth = this.mangaDimensions.width - this.previousMangaDimensions.width;
+				if (diffWidth != 0) {
 					let middle = (this.books.length - 1) / 2;
 					if (index < middle) {
-						book.translateX(-(diff * (middle - index)));
+						book.translateX(-(diffWidth * (middle - index)));
 					} else if (index > middle) {
-						book.translateX(diff * (index - middle));
+						book.translateX(diffWidth * (index - middle));
 					}
 
-					this.camera.position.z = this.camera.position.z + diff / 3;
-					this.camera.position.y = this.camera.position.y + diff / 5;
+					this.camera.position.z = this.camera.position.z + diffWidth / 3;
+					this.camera.position.y = this.camera.position.y + diffWidth / 5;
 					this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
+				}
+
+				let diffHeight = this.mangaDimensions.height - this.previousMangaDimensions.height;
+				if (diffHeight != 0) {
+					book.translateY(diffHeight / 2);
 				}
 			});
 			// console.log('this.camera.position.x', this.camera.position.x);
