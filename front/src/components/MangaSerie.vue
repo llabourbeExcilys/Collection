@@ -2,6 +2,7 @@
 	<div>
 		<v-card>
 			<v-container fluid>
+				<!-- Edit Mode -->
 				<template v-if="edit">
 					<v-row align="stretch" justify="space-around" no-gutters>
 						<v-col :cols="5">
@@ -14,22 +15,63 @@
 							<v-text-field v-model="item.editor" outlined label="Edition"></v-text-field>
 						</v-col>
 						<v-col :cols="1">
-							<v-row align="center" justify="center">
-								<v-col :cols="5">
-									<v-tooltip :disabled="show" top>
-										<template v-slot:activator="{ on }">
-											<v-btn v-on="on" icon @click="show = !show">
-												<v-icon large>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-											</v-btn>
-										</template>
-										<span>Afficher les détails</span>
-									</v-tooltip>
-								</v-col>
-								<v-col :cols="5">
-									<v-btn @click="clickEdit" icon>
-										<v-icon>{{ 'mdi-pencil-off' }}</v-icon>
-									</v-btn>
-								</v-col>
+							<v-row align="center" justify="start">
+								<!-- Adding a new item -->
+								<template v-if="isNewItem">
+									<v-col :cols="4">
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon @click="$emit('clickAddNewItem')">
+													<v-icon color="green">mdi-check-bold</v-icon>
+												</v-btn>
+											</template>
+											<span>Valider</span>
+										</v-tooltip>
+									</v-col>
+									<v-col :cols="4">
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon @click="$emit('clickCancelNewItem')">
+													<v-icon>mdi-cancel</v-icon>
+												</v-btn>
+											</template>
+											<span>Annuler</span>
+										</v-tooltip>
+									</v-col>
+								</template>
+								<!-- Editing an existing item -->
+								<template v-else>
+									<v-col :cols="3">
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon @click="clickValidateEdition">
+													<v-icon color="green">mdi-check-bold</v-icon>
+												</v-btn>
+											</template>
+											<span>Valider</span>
+										</v-tooltip>
+									</v-col>
+									<v-col :cols="3">
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon @click="clickRemoveItem">
+													<v-icon color="red">mdi-close-circle</v-icon>
+												</v-btn>
+											</template>
+											<span>Supprimer</span>
+										</v-tooltip>
+									</v-col>
+									<v-col :cols="3">
+										<v-tooltip top>
+											<template v-slot:activator="{ on }">
+												<v-btn v-on="on" icon @click="clickCancel">
+													<v-icon>mdi-cancel</v-icon>
+												</v-btn>
+											</template>
+											<span>Annuler</span>
+										</v-tooltip>
+									</v-col>
+								</template>
 							</v-row>
 						</v-col>
 					</v-row>
@@ -148,7 +190,7 @@
 						</v-col>
 					</v-row>
 				</template>
-
+				<!-- View Mode -->
 				<template v-else>
 					<v-row dense align="center" justify="center" no-gutters>
 						<v-col :cols="4">
@@ -186,24 +228,28 @@
 							</v-chip>
 						</v-col>
 						<v-col>
-							<v-card-actions>
-								<v-tooltip :disabled="show" top>
-									<template v-slot:activator="{ on }">
-										<v-btn v-on="on" icon @click="show = !show">
-											<v-icon large>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-										</v-btn>
-									</template>
-									<span>Afficher les détails</span>
-								</v-tooltip>
-								<v-tooltip v-if="show" :disabled="edit" top>
-									<template v-slot:activator="{ on }">
-										<v-btn v-on="on" @click="clickEdit" icon>
-											<v-icon>{{ 'mdi-pencil' }}</v-icon>
-										</v-btn>
-									</template>
-									<span>Editer l'élément</span>
-								</v-tooltip>
-							</v-card-actions>
+							<v-row align="center" justify="start">
+								<v-col :cols="4">
+									<v-tooltip :disabled="show" top>
+										<template v-slot:activator="{ on }">
+											<v-btn v-on="on" icon @click="show = !show">
+												<v-icon large>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+											</v-btn>
+										</template>
+										<span>Afficher les détails</span>
+									</v-tooltip>
+								</v-col>
+								<v-col :cols="4">
+									<v-tooltip v-if="show" top>
+										<template v-slot:activator="{ on }">
+											<v-btn v-on="on" @click="clickEdit" icon>
+												<v-icon>{{ 'mdi-pencil' }}</v-icon>
+											</v-btn>
+										</template>
+										<span>Editer l'élément</span>
+									</v-tooltip>
+								</v-col>
+							</v-row>
 						</v-col>
 					</v-row>
 					<v-row v-if="show" dense align="center" justify="center">
@@ -240,6 +286,10 @@ export default {
 			type: Object,
 			required: true
 		},
+		isNewItem: {
+			type: Boolean,
+			default: false
+		},
 		possibleTypes: {
 			type: Array,
 			default: () => []
@@ -251,8 +301,8 @@ export default {
 	},
 	data() {
 		return {
-			edit: false,
-			show: false,
+			edit: this.isNewItem ? true : false,
+			show: this.isNewItem ? true : false,
 			mangaWidth: 17,
 			mangaHeight: 184,
 			mangaDepth: 130,
@@ -273,11 +323,27 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		clickCancel() {
+			this.edit = false;
+			this.show = false;
+		},
 		clickEdit() {
-			if (this.edit) {
-				this.$emit('clickEdit', this.item);
-			}
-			this.edit = !this.edit;
+			this.edit = true;
+			this.show = true;
+			// if (this.edit) {
+			// 	this.$emit('clickEdit', this.item);
+			// }
+			// this.edit = !this.edit;
+		},
+		clickRemoveItem() {
+			this.$emit('removeItem', this.item);
+			this.edit = false;
+			this.show = false;
+		},
+		clickValidateEdition() {
+			this.$emit('editItem', this.item);
+			this.edit = false;
+			this.show = false;
 		}
 	}
 };

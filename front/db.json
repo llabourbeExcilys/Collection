@@ -18,18 +18,18 @@
       ]
     },
     {
-      "id": 2,
-      "autor": "Katsuhiro OTOMO",
+      "id": 4,
+      "autor": "Kentaro MIURA",
       "color": "#FF0000FF",
-      "title": "Akira",
-      "edition": "Edition définitive",
+      "title": "Berserk",
+      "edition": "Réédition française",
       "editor": "GLENAT MANGA",
-      "owned": 6,
-      "published": 6,
+      "owned": 40,
+      "published": 41,
       "type": "Manga",
       "genres": [
-        "Science Fiction",
-        "Suspense"
+        "Action",
+        "Fantastique"
       ]
     },
     {
@@ -48,18 +48,18 @@
       ]
     },
     {
-      "id": 4,
-      "autor": "Kentaro MIURA",
+      "id": 2,
+      "autor": "Katsuhiro OTOMO",
       "color": "#FF0000FF",
-      "title": "Berserk",
-      "edition": "Réédition française",
+      "title": "Akira",
+      "edition": "Edition définitive",
       "editor": "GLENAT MANGA",
-      "owned": 40,
-      "published": 41,
+      "owned": 6,
+      "published": 6,
       "type": "Manga",
       "genres": [
-        "Action",
-        "Fantastique"
+        "Science Fiction",
+        "Suspense"
       ]
     },
     {

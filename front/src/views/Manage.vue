@@ -28,6 +28,16 @@
 										</v-col>
 										<v-spacer></v-spacer>
 										<v-col>
+											<v-btn
+												v-if="newItem === null"
+												large
+												depressed
+												color="grey lighten-1"
+												@click="addBlankItem"
+												>Ajouter</v-btn
+											>
+										</v-col>
+										<v-col>
 											<v-btn large depressed color="grey lighten-1" @click="toggleFilters"
 												>Filtrer {{ showFilters ? '-' : '+' }}</v-btn
 											>
@@ -95,14 +105,27 @@
 						</template>
 
 						<template v-slot:default="props">
-							<v-row><v-col></v-col></v-row>
+							<v-row>
+								<v-col>
+									<MangaSerie
+										v-if="newItem != null"
+										isNewItem
+										:item.sync="newItem"
+										:possibleTypes="types"
+										:possibleGenres="genres"
+										@clickAddNewItem="manageAddItem"
+										@clickCancelNewItem="manageCancelNewItem"
+									/>
+								</v-col>
+							</v-row>
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
 									<MangaSerie
 										:item.sync="item"
 										:possibleTypes="types"
 										:possibleGenres="genres"
-										@clickEdit="manageEdit"
+										@editItem="manageEdit"
+										@removeItem="manageRemove"
 									/>
 								</v-col>
 							</v-row>
@@ -139,6 +162,7 @@ export default {
 			// seriesEditedMap: {},
 			genres: [],
 			mangaSeries: [],
+			newItem: null,
 			search: '',
 			searchedEditor: '',
 			searchedType: '',
@@ -151,10 +175,12 @@ export default {
 	},
 	computed: {
 		filteredItems() {
-			if (!this.showFilters) {
-				return this.mangaSeries;
-			}
 			var filteredItems = this.mangaSeries;
+
+			if (!this.showFilters) {
+				console.log('filtered item:', filteredItems.sort(this.compareValues('title')));
+				return filteredItems.sort(this.compareValues('title'));
+			}
 
 			if (this.searchedEditor) {
 				filteredItems = filteredItems.filter(item => item.editor === this.searchedEditor);
@@ -176,16 +202,11 @@ export default {
 					);
 				}
 			}
-			return filteredItems;
+			return filteredItems.sort(this.compareValues('title'));
 		}
 	},
 	mounted() {
-		mangaService
-			.getSeries()
-			.then(response => {
-				this.mangaSeries = response;
-			})
-			.catch(error => console.log(error));
+		this.loadMangaSeries();
 
 		mangaService
 			.getGenres()
@@ -216,6 +237,45 @@ export default {
 			.catch(error => console.log(error));
 	},
 	methods: {
+		addBlankItem() {
+			this.newItem = {
+				id: null,
+				autor: '',
+				color: '#1565C0FF',
+				title: '',
+				edition: '',
+				editor: '',
+				owned: 0,
+				published: 0,
+				type: '',
+				genres: []
+			};
+		},
+		compareValues(key, order = 'asc') {
+			return function innerSort(a, b) {
+				if (!Object.prototype.hasOwnProperty.call(a, key) || !Object.prototype.hasOwnProperty.call(b, key)) {
+					// property doesn't exist on either object
+					return 0;
+				}
+				const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
+				const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
+				let comparison = 0;
+				if (varA > varB) {
+					comparison = 1;
+				} else if (varA < varB) {
+					comparison = -1;
+				}
+				return order === 'asc' ? comparison : -comparison;
+			};
+		},
+		loadMangaSeries() {
+			mangaService
+				.getSeries()
+				.then(response => {
+					this.mangaSeries = response;
+				})
+				.catch(error => console.log(error));
+		},
 		toggleFilters() {
 			this.showFilters = !this.showFilters;
 			if (!this.showFilters) {
@@ -225,8 +285,25 @@ export default {
 				this.searchedGenre = [];
 			}
 		},
+		manageAddItem() {
+			mangaService.addSerie(this.newItem).then(
+				mangaService
+					.getSeries()
+					.then(response => {
+						this.mangaSeries = response;
+					})
+					.catch(error => console.log(error))
+			);
+			this.newItem = null;
+		},
+		manageCancelNewItem() {
+			this.newItem = null;
+		},
 		manageEdit(item) {
-			mangaService.updateSerie(item).then(resp => console.log(resp));
+			mangaService.updateSerie(item).then(() => this.loadMangaSeries());
+		},
+		manageRemove(item) {
+			mangaService.removeSerie(item.id).then(() => this.loadMangaSeries());
 		}
 	}
 };
