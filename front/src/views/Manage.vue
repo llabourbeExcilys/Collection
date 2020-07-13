@@ -178,7 +178,7 @@ export default {
 			var filteredItems = this.mangaSeries;
 
 			if (!this.showFilters) {
-				console.log('filtered item:', filteredItems.sort(this.compareValues('title')));
+				// ascending filter on 'title' property
 				return filteredItems.sort(this.compareValues('title'));
 			}
 

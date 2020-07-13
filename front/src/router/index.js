@@ -25,7 +25,7 @@ const routes = [
 			{
 				path: 'import',
 				name: 'Import',
-				component: () => import(/* webpackChunkName: "about" */ '@/views/Arrange.vue')
+				component: () => import(/* webpackChunkName: "about" */ '@/views/Import.vue')
 			},
 			{
 				path: 'manage',

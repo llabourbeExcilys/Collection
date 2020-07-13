@@ -174,7 +174,7 @@ export default {
 				'/models/scene.gltf',
 				gltf => {
 					var obj3D = gltf.scene;
-					console.log('obj3D', obj3D);
+					// console.log('obj3D', obj3D);
 
 					var objectToRemove = obj3D.children[0].children[0].children[0].children[0];
 					var parent = objectToRemove.parent;
