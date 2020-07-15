@@ -211,13 +211,32 @@ export default {
 			light.shadow.mapSize.height = 1024;
 			this.scene.add(light);
 
+			this.addBooks();
+			this.setBooksScale();
+
+			this.raycaster = new THREE.Raycaster();
+			this.mouse = new THREE.Vector2();
+			container.addEventListener('mousemove', this.onMouseMove, false);
+		},
+		onMouseMove(event) {
+			event.preventDefault();
+			// calculate mouse position in normalized device coordinates : (-1 to +1) for both components
+			var rect = this.renderer.domElement.getBoundingClientRect();
+			this.mouse.x = ((event.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
+			this.mouse.y = -((event.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
+		},
+		rerender() {
+			this.books.forEach(item => this.scene.remove(item));
+			this.books = [];
+			this.addBooks();
+			this.setBooksScale();
+			this.animate();
+		},
+		addBooks() {
 			let bookWidth = this.mangaDimensions.width;
 			let bookTotalSpace = bookWidth + this.emptySpace;
 			let geometry = new THREE.BoxGeometry(1, 1, 1);
-
 			for (var i = 0; i < this.numberPublished; i++) {
-				// let color =  Math.random() * 0xffffff;
-
 				let color;
 				if (i < this.numberPossessed) {
 					// remove # at the start and 2 digits used for transparency at the end
@@ -233,24 +252,6 @@ export default {
 				this.scene.add(manga);
 				this.books.push(manga);
 			}
-			this.setBooksScale();
-
-			this.raycaster = new THREE.Raycaster();
-			this.mouse = new THREE.Vector2();
-			container.addEventListener('mousemove', this.onMouseMove, false);
-		},
-		onMouseMove(event) {
-			event.preventDefault();
-			// calculate mouse position in normalized device coordinates : (-1 to +1) for both components
-			var rect = this.renderer.domElement.getBoundingClientRect();
-			this.mouse.x = ((event.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
-			this.mouse.y = -((event.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
-		},
-		rerender() {
-			const myNode = document.getElementById(this.canvaName);
-			myNode.innerHTML = '';
-			this.init();
-			this.animate();
 		},
 		setBooksScale() {
 			this.books.forEach((book, index) => {
@@ -261,11 +262,7 @@ export default {
 				let diffWidth = this.mangaDimensions.width - this.previousMangaDimensions.width;
 				if (diffWidth != 0) {
 					let middle = (this.books.length - 1) / 2;
-					if (index < middle) {
-						book.translateX(-(diffWidth * (middle - index)));
-					} else if (index > middle) {
-						book.translateX(diffWidth * (index - middle));
-					}
+					book.translateX(diffWidth * (index - middle));
 
 					this.camera.position.z = this.camera.position.z + diffWidth / 3;
 					this.camera.position.y = this.camera.position.y + diffWidth / 5;
@@ -277,9 +274,6 @@ export default {
 					book.translateY(diffHeight / 2);
 				}
 			});
-			// console.log('this.camera.position.x', this.camera.position.x);
-			// console.log('this.camera.position.y', this.camera.position.y);
-			// console.log('this.camera.position.z', this.camera.position.z);
 			this.previousMangaDimensions = cloneDeep(this.mangaDimensions);
 		},
 		computedColor(transparency) {
