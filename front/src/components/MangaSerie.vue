@@ -113,7 +113,7 @@
 									outlined
 									label="Publié"
 									type="number"
-									min="1"
+									min="0"
 									:rules="[rules.atLeastOnePublished, rules.numberToPublishedCantBeInfToOwned]"
 									@input="item.published = parseInt($event)"
 								></v-text-field>
@@ -321,6 +321,7 @@ export default {
 	},
 	data() {
 		return {
+			validatingItem: false,
 			edit: this.isNewItem ? true : false,
 			show: this.isNewItem ? true : false,
 			mangaWidth: 17,
@@ -332,8 +333,9 @@ export default {
 					owned <= this.item.published || 'Ne peut être supérieur au nombre publié',
 				numberToPublishedCantBeInfToOwned: published =>
 					published >= this.item.owned || 'Ne peut être inférieur au nombre possédé',
-				requiredField: value => !!value || 'Champs requis',
-				requiredGenre: value => (!!value && value.length > 0) || 'Au moins un genre requis'
+				requiredField: value => !this.validatingItem || !!value || 'Champs requis',
+				requiredGenre: value =>
+					!this.validatingItem || (!!value && value.length > 0) || 'Au moins un genre requis'
 			}
 		};
 	},
@@ -344,6 +346,20 @@ export default {
 				height: this.mangaHeight,
 				depth: this.mangaDepth
 			};
+		},
+		owned() {
+			return this.item.owned;
+		},
+		published() {
+			return this.item.published;
+		}
+	},
+	watch: {
+		owned() {
+			this.$refs.form.validate();
+		},
+		published() {
+			this.$refs.form.validate();
 		}
 	},
 	mounted() {},
@@ -366,6 +382,7 @@ export default {
 			this.show = false;
 		},
 		clickValidateEdition() {
+			this.validatingItem = true;
 			if (this.$refs.form.validate()) {
 				if (this.isNewItem) {
 					this.$emit('clickAddNewItem');
