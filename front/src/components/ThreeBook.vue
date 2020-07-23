@@ -44,7 +44,7 @@ export default {
 			books: [],
 			camera: null,
 			controls: null,
-			emptySpace: 2,
+			emptySpace: 3,
 			geometry: null,
 			intersected: null,
 			loader: null,
@@ -164,12 +164,8 @@ export default {
 
 			this.scene = new THREE.Scene();
 			this.scene.background = new THREE.Color(0xf7f9f9);
-			this.scene.add(new THREE.AmbientLight(0x505050));
 
 			const loader = new GLTFLoader();
-
-			// this.loader = new THREE.GLTFLoader();
-
 			loader.load(
 				'/models/scene.gltf',
 				gltf => {
@@ -200,11 +196,12 @@ export default {
 				error => console.error(error)
 			);
 
-			let light = new THREE.SpotLight(0xffffff, 1.5);
-			light.position.set(0, 200, 2000);
-			light.angle = Math.PI / 9;
+			this.scene.add(new THREE.AmbientLight(0xffffff));
 
-			light.castShadow = true;
+			let light = new THREE.SpotLight(0xffffff);
+			light.position.set(0, 1000, 500);
+			light.target = this.scene.children[0];
+
 			light.shadow.camera.near = 1;
 			light.shadow.camera.far = 4000;
 			light.shadow.mapSize.width = 1024;
@@ -217,6 +214,9 @@ export default {
 			this.raycaster = new THREE.Raycaster();
 			this.mouse = new THREE.Vector2();
 			container.addEventListener('mousemove', this.onMouseMove, false);
+
+			// var axesHelper = new THREE.AxesHelper(500);
+			// this.scene.add(axesHelper);
 		},
 		onMouseMove(event) {
 			event.preventDefault();
