@@ -121,7 +121,7 @@
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
 									<MangaSerie
-										:item.sync="item"
+										:item="item"
 										:possibleTypes="types"
 										:possibleGenres="genres"
 										@editItem="manageEdit"
