@@ -9,6 +9,7 @@
 						wrap
 						:items-per-page="5"
 						:items="filteredItems"
+						:page.sync="page"
 						:search="search"
 					>
 						<template v-slot:header>
@@ -28,12 +29,7 @@
 										</v-col>
 										<v-spacer></v-spacer>
 										<v-col>
-											<v-btn
-												v-if="newItem === null"
-												large
-												depressed
-												color="grey lighten-1"
-												@click="addBlankItem"
+											<v-btn v-if="!isNewItem" large depressed color="grey lighten-1" @click="addBlankItem"
 												>Ajouter</v-btn
 											>
 										</v-col>
@@ -106,26 +102,16 @@
 
 						<template v-slot:default="props">
 							<v-row>
-								<v-col>
-									<MangaSerie
-										v-if="newItem != null"
-										isNewItem
-										:item.sync="newItem"
-										:possibleTypes="types"
-										:possibleGenres="genres"
-										@clickAddNewItem="manageAddItem"
-										@clickCancelNewItem="manageCancelNewItem"
-									/>
-								</v-col>
-							</v-row>
-							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
 									<MangaSerie
 										:item="item"
+										:isNewItem="item.isNewItem"
 										:possibleTypes="types"
 										:possibleGenres="genres"
 										@editItem="manageEdit"
 										@removeItem="manageRemove"
+										@clickAddNewItem="manageAddItem"
+										@clickCancelNewItem="manageCancelNewItem"
 									/>
 								</v-col>
 							</v-row>
@@ -161,8 +147,9 @@ export default {
 			editors: [],
 			// seriesEditedMap: {},
 			genres: [],
+			isNewItem: false,
 			mangaSeries: [],
-			newItem: null,
+			page: 1,
 			search: '',
 			searchedEditor: '',
 			searchedType: '',
@@ -238,8 +225,8 @@ export default {
 	},
 	methods: {
 		addBlankItem() {
-			this.newItem = {
-				id: null,
+			this.mangaSeries.push({
+				id: -1,
 				autor: '',
 				color: '#1565C0FF',
 				title: '',
@@ -248,8 +235,11 @@ export default {
 				owned: 0,
 				published: 0,
 				type: '',
-				genres: []
-			};
+				genres: [],
+				isNewItem: true
+			});
+			this.page = 1;
+			this.isNewItem = true;
 		},
 		compareValues(key, order = 'asc') {
 			return function innerSort(a, b) {
@@ -257,6 +247,15 @@ export default {
 					// property doesn't exist on either object
 					return 0;
 				}
+
+				// if id === -1 then it is a new item and must be in first position
+				if (a['id'] === -1) {
+					return -1;
+				}
+				if (b['id'] === -1) {
+					return 1;
+				}
+
 				const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
 				const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
 				let comparison = 0;
@@ -286,7 +285,11 @@ export default {
 			}
 		},
 		manageAddItem() {
-			mangaService.addSerie(this.newItem).then(
+			var newItem = this.mangaSeries.find(item => item.id === -1);
+			delete newItem.isNewItem;
+			delete newItem.id;
+			console.log('newItem', newItem);
+			mangaService.addSerie(newItem).then(
 				mangaService
 					.getSeries()
 					.then(response => {
@@ -294,10 +297,11 @@ export default {
 					})
 					.catch(error => console.log(error))
 			);
-			this.newItem = null;
+			this.isNewItem = false;
 		},
 		manageCancelNewItem() {
-			this.newItem = null;
+			this.mangaSeries = this.mangaSeries.filter(item => item.id != -1);
+			this.isNewItem = false;
 		},
 		manageEdit(item) {
 			mangaService.updateSerie(item).then(() => this.loadMangaSeries());

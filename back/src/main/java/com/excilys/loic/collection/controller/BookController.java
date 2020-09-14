@@ -1,5 +1,6 @@
 package com.excilys.loic.collection.controller;
 
+import com.excilys.loic.collection.model.Author;
 import com.excilys.loic.collection.model.Book;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class BookController {
         return service.getBooks();
     }
 
+    @GetMapping("/{id}")
+    public Book getBookById(@PathVariable long id){
+        return service.getBookById(id).orElse(null);
+    }
+
     @PostMapping
     public void postBook(@RequestBody Book book){
         this.service.addBook(book);
@@ -33,8 +39,8 @@ public class BookController {
         this.service.updateBook(book);
     }
 
-    @DeleteMapping
-    public void deleteBook(@RequestParam long id){
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable long id){
         this.service.deleteBookById(id);
     }
 }

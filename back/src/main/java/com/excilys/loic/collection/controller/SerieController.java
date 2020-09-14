@@ -1,6 +1,7 @@
 package com.excilys.loic.collection.controller;
 
 
+import com.excilys.loic.collection.model.Editor;
 import com.excilys.loic.collection.model.Genre;
 import com.excilys.loic.collection.model.Serie;
 import com.excilys.loic.collection.service.Service;
@@ -25,6 +26,11 @@ public class SerieController {
         return service.getSeries();
     }
 
+    @GetMapping("/{id}")
+    public Serie getSerieById(@PathVariable long id){
+        return service.getSerieById(id).orElse(null);
+    }
+    
     @PostMapping
     public void  postSerie(@RequestBody Serie serie){
         this.service.addSerie(serie);
@@ -35,8 +41,8 @@ public class SerieController {
         this.service.updateSerie(serie);
     }
 
-    @DeleteMapping
-    public void deleteSerie(@RequestParam long id){
+    @DeleteMapping("/{id}")
+    public void deleteSerie(@PathVariable long id){
         this.service.deleteSerieById(id);
     }
     

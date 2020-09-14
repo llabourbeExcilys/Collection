@@ -10,9 +10,9 @@ const ApiService = {
 			.get(resource, config)
 			.then(response => response.data)
 			.catch(
-				ex =>
+				error =>
 					new Promise(() => {
-						throw ex.response.data;
+						throw error;
 					})
 			);
 	},
@@ -22,9 +22,9 @@ const ApiService = {
 			.post(resource, data, config)
 			.then(response => response.data)
 			.catch(
-				ex =>
+				error =>
 					new Promise(() => {
-						throw ex.response.data;
+						throw error;
 					})
 			),
 
@@ -33,9 +33,9 @@ const ApiService = {
 			.post(resource, data, config)
 			.then(response => response)
 			.catch(
-				ex =>
+				error =>
 					new Promise(() => {
-						throw ex.response.data;
+						throw error;
 					})
 			);
 	},
@@ -46,9 +46,9 @@ const ApiService = {
 				return JSON.parse(response.config.data);
 			})
 			.catch(
-				ex =>
+				error =>
 					new Promise(() => {
-						throw ex.response.data;
+						throw error;
 					})
 			),
 
@@ -57,9 +57,9 @@ const ApiService = {
 			.put(resource, data, config)
 			.then(response => response)
 			.catch(
-				ex =>
+				error =>
 					new Promise(() => {
-						throw ex.response.data;
+						throw error;
 					})
 			),
 
@@ -72,9 +72,9 @@ const ApiService = {
 			.delete(resource, params)
 			.then(response => response.data)
 			.catch(
-				ex =>
+				error =>
 					new Promise(() => {
-						throw ex.response.data;
+						throw error;
 					})
 			);
 	}

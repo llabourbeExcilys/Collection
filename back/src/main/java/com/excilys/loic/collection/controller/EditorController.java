@@ -1,5 +1,6 @@
 package com.excilys.loic.collection.controller;
 
+import com.excilys.loic.collection.model.Book;
 import com.excilys.loic.collection.model.Editor;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class EditorController {
         return service.getEditors();
     }
 
+    @GetMapping("/{id}")
+    public Editor getEditorById(@PathVariable long id){
+        return service.getEditorById(id).orElse(null);
+    }
+
     @PostMapping
     public void  postEditor(@RequestBody Editor editor){
         this.service.addEditor(editor);
@@ -34,8 +40,9 @@ public class EditorController {
         this.service.updateEditor(editor);
     }
 
-    @DeleteMapping
-    public void deleteEditor(@RequestParam long id){
+
+    @DeleteMapping("/{id}")
+    public void deleteEditor(@PathVariable long id){
         this.service.deleteEditorById(id);
     }
 }

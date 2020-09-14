@@ -27,9 +27,15 @@ public class Serie {
 
     @ManyToOne
     private Editor editor;
-    private Boolean completed;
 
-    public Serie(long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> author, String title, Editor editor, Boolean completed) {
+    private String edition;
+
+    private int owned;
+
+    private int published;
+
+
+    public Serie(long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> author, String title, Editor editor, String edition, int owned, int published) {
         this.id = id;
         this.mangas = mangas;
         this.fanbooks = fanbooks;
@@ -37,9 +43,10 @@ public class Serie {
         this.author = author;
         this.title = title;
         this.editor = editor;
-        this.completed = completed;
+        this.edition = edition;
+        this.owned = owned;
+        this.published = published;
     }
-
 
     public Serie() {
     }
@@ -98,12 +105,36 @@ public class Serie {
         return this;
     }
 
-    public Boolean getCompleted() {
-        return completed;
+    public int getOwned() {
+        return owned;
     }
 
-    public Serie setCompleted(Boolean completed) {
-        this.completed = completed;
+    public Serie setOwned(int owned) {
+        this.owned = owned;
+        return this;
+    }
+
+    public int getPublished() {
+        return published;
+    }
+
+    public Serie setNumberPublished(int published) {
+        this.published = published;
+
+        return this;
+    }
+
+    public String getEdition() {
+        return edition;
+    }
+
+    public Serie setEdition(String edition) {
+        this.edition = edition;
+        return this;
+    }
+
+    public Serie setPublished(int published) {
+        this.published = published;
         return this;
     }
 

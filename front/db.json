@@ -94,6 +94,20 @@
         "Drame",
         "Historique"
       ]
+    },
+    {
+      "autor": "zzz",
+      "color": "#1565C0FF",
+      "title": "zzz",
+      "edition": "",
+      "editor": "zzz",
+      "owned": 1,
+      "published": 2,
+      "type": "Artbook",
+      "genres": [
+        "Science Fiction"
+      ],
+      "id": 7
     }
   ],
   "genres": [

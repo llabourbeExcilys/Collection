@@ -24,6 +24,11 @@ public class AuthorController {
         return service.getAuthors();
     }
 
+    @GetMapping("/{id}")
+    public Author getAuthorById(@PathVariable long id){
+        return service.getAuthorById(id).orElse(null);
+    }
+
     @PostMapping
     public void  postAuthor(@RequestBody Author author){
         this.service.addAuthor(author);
@@ -34,8 +39,8 @@ public class AuthorController {
         this.service.updateAuthor(author);
     }
 
-    @DeleteMapping
-    public void deleteAuthor(@RequestParam long id){
+    @DeleteMapping("/{id}")
+    public void deleteAuthor(@PathVariable long id){
         this.service.deleteAuthorById(id);
     }
 

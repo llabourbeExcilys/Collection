@@ -14,25 +14,23 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
-    private int volume;
-
     @Column(columnDefinition = "DATE")
     private LocalDate releaseDate;
 
     @ManyToOne
     private Serie serie;
 
-    public Book(String title, int volume, LocalDate releaseDate, Serie serie) {
+    private String color;
+
+    private Boolean owned;
+
+    public Book(long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned) {
+        this.id = id;
         this.title = title;
-        this.volume = volume;
         this.releaseDate = releaseDate;
         this.serie = serie;
-    }
-
-    public Book(String title, int volume, LocalDate releaseDate ) {
-        this.title = title;
-        this.volume = volume;
-        this.releaseDate = releaseDate;
+        this.color = color;
+        this.owned = owned;
     }
 
     public Book() {
@@ -56,12 +54,12 @@ public class Book {
         return this;
     }
 
-    public int getVolume() {
-        return volume;
+    public String getColor() {
+        return color;
     }
 
-    public Book setVolume(int volume) {
-        this.volume = volume;
+    public Book setColor(String color) {
+        this.color = color;
         return this;
     }
 
@@ -71,6 +69,15 @@ public class Book {
 
     public Book setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
+        return this;
+    }
+
+    public Boolean getOwned() {
+        return owned;
+    }
+
+    public Book setOwned(Boolean owned) {
+        this.owned = owned;
         return this;
     }
 

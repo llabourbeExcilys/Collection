@@ -5,6 +5,7 @@ import com.excilys.loic.collection.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class Service {
@@ -30,6 +31,9 @@ public class Service {
         return this.authorDAO.findAll();
     }
 
+    public Optional<Author> getAuthorById(long id){
+        return this.authorDAO.findById(id);
+    }
     public void addAuthor(Author author) {
         this.authorDAO.save(author);
     }
@@ -46,6 +50,10 @@ public class Service {
 
     public List<Book> getBooks(){
         return this.bookDAO.findAll();
+    }
+
+    public Optional<Book> getBookById(long id){
+        return this.bookDAO.findById(id);
     }
 
     public void addBook(Book book) {
@@ -66,6 +74,9 @@ public class Service {
         return this.editorDAO.findAll();
     }
 
+    public Optional<Editor> getEditorById(long id){
+        return this.editorDAO.findById(id);
+    }
     public void addEditor(Editor editor) {
         this.editorDAO.save(editor);
     }
@@ -82,6 +93,10 @@ public class Service {
 
     public List<Genre> getGenres(){
         return this.genreDAO.findAll();
+    }
+
+    public Optional<Genre> getGenreById(long id){
+        return this.genreDAO.findById(id);
     }
 
     public void addGenre(Genre genre) {
@@ -102,6 +117,9 @@ public class Service {
         return this.serieDAO.findAll();
     }
 
+    public Optional<Serie> getSerieById(long id){
+        return this.serieDAO.findById(id);
+    }
     public void addSerie(Serie serie) {
         this.serieDAO.save(serie);
     }

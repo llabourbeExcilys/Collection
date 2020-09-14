@@ -1,5 +1,6 @@
 package com.excilys.loic.collection.controller;
 
+import com.excilys.loic.collection.model.Editor;
 import com.excilys.loic.collection.model.Genre;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class GenreController {
         return service.getGenres();
     }
 
+    @GetMapping("/{id}")
+    public Genre getGenreById(@PathVariable long id){
+        return service.getGenreById(id).orElse(null);
+    }
+
     @PostMapping
     public void  postGenre(@RequestBody Genre genre){
         this.service.addGenre(genre);
@@ -34,8 +40,8 @@ public class GenreController {
         this.service.updateGenre(genre);
     }
 
-    @DeleteMapping
-    public void deleteGenre(@RequestParam long id){
+    @DeleteMapping("/{id}")
+    public void deleteGenre(@PathVariable long id){
         this.service.deleteGenreById(id);
     }
 }
