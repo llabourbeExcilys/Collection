@@ -1,6 +1,9 @@
 package com.excilys.loic.collection.controller;
 
+import com.excilys.loic.collection.binding.AuthorDTO;
+import com.excilys.loic.collection.binding.mapper.AuthorMapper;
 import com.excilys.loic.collection.model.Author;
+import com.excilys.loic.collection.model.Serie;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,30 +16,44 @@ import java.util.List;
 public class AuthorController {
 
     private Service service;
+    private AuthorMapper authorMapper;
 
     @Autowired
-    public AuthorController(Service service) {
+    public AuthorController(Service service, AuthorMapper authorMapper) {
         this.service = service;
+        this.authorMapper = authorMapper;
     }
 
     @GetMapping
-    public List<Author> getAllAuthors(){
-        return service.getAuthors();
+    public List<AuthorDTO> getAllAuthors(){
+        return service.getAuthorsDTO();
     }
 
+
+    @GetMapping("/{id}/serie")
+    public List<Serie> getAuthorSeries(@PathVariable long id){
+        return service.getSeriesByAuthorId(id);
+    }
+
+
     @GetMapping("/{id}")
-    public Author getAuthorById(@PathVariable long id){
-        return service.getAuthorById(id).orElse(null);
+    public AuthorDTO getAuthorById(@PathVariable long id){
+        return service.findAuthorDTOById(id).orElse(null);
     }
 
     @PostMapping
-    public void  postAuthor(@RequestBody Author author){
-        this.service.addAuthor(author);
+    public void  postAuthor(@RequestBody AuthorDTO author){
+        this.service.addAuthor(this.authorMapper.DTOToAuthor(author));
     }
 
     @PutMapping
-    public void putAuthor(@RequestBody Author author){
-        this.service.updateAuthor(author);
+    public void putAuthor(@RequestBody AuthorDTO authorDTO){
+        if(this.service.doesAuthorExistById(authorDTO.getId())){
+            Author author = this.service.getAuthorById(authorDTO.getId());
+            author.setFirstName(authorDTO.getFirstName());
+            author.setLastName(authorDTO.getLastName());
+            this.service.updateAuthor(author);
+        }
     }
 
     @DeleteMapping("/{id}")

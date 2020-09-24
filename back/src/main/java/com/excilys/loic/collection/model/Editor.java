@@ -22,10 +22,6 @@ public class Editor {
         this.name = name;
     }
 
-    public Editor(String name) {
-        this.name = name;
-    }
-
     public Editor() {
     }
 

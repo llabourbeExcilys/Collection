@@ -20,8 +20,7 @@ public class Author {
     private List<Serie> series;
 
 
-    public Author(long id, String firstName, String lastName, List<Serie> series) {
-        this.id = id;
+    public Author( String firstName, String lastName, List<Serie> series) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.series = series;

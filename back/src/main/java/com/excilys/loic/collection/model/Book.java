@@ -24,13 +24,16 @@ public class Book {
 
     private Boolean owned;
 
-    public Book(long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned) {
+    private Integer volume;
+
+    public Book(long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned, int volume) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.serie = serie;
         this.color = color;
         this.owned = owned;
+        this.volume = volume;
     }
 
     public Book() {
@@ -78,6 +81,15 @@ public class Book {
 
     public Book setOwned(Boolean owned) {
         this.owned = owned;
+        return this;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public Book setVolume(int volume) {
+        this.volume = volume;
         return this;
     }
 

@@ -108,6 +108,7 @@
 										:isNewItem="item.isNewItem"
 										:possibleTypes="types"
 										:possibleGenres="genres"
+										:possibleAuthors="authors"
 										@editItem="manageEdit"
 										@removeItem="manageRemove"
 										@clickAddNewItem="manageAddItem"

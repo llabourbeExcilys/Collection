@@ -15,12 +15,13 @@
 								></v-text-field>
 							</v-col>
 							<v-col :cols="3">
-								<v-text-field
+								<v-select
 									v-model="item.autor"
+									:items="possibleAuthors"
 									:rules="[rules.requiredField]"
-									outlined
 									label="Auteur"
-								></v-text-field>
+									outlined
+								></v-select>
 							</v-col>
 							<v-col :cols="2">
 								<v-text-field
@@ -315,6 +316,10 @@ export default {
 			default: () => []
 		},
 		possibleGenres: {
+			type: Array,
+			default: () => []
+		},
+		possibleAuthors: {
 			type: Array,
 			default: () => []
 		}

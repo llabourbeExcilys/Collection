@@ -1,6 +1,7 @@
 package com.excilys.loic.collection.controller;
 
-import com.excilys.loic.collection.model.Book;
+import com.excilys.loic.collection.binding.EditorDTO;
+import com.excilys.loic.collection.binding.mapper.EditorMapper;
 import com.excilys.loic.collection.model.Editor;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,29 +16,36 @@ public class EditorController {
 
     private Service service;
 
+    private EditorMapper editorMapper;
+
     @Autowired
-    public EditorController(Service service) {
+    public EditorController(Service service,EditorMapper editorMapper) {
         this.service = service;
+        this.editorMapper = editorMapper;
     }
 
     @GetMapping
-    public List<Editor> getAllEditors(){
-        return service.getEditors();
+    public List<EditorDTO> getAllEditors(){
+        return service.getEditorsDTO();
     }
 
     @GetMapping("/{id}")
-    public Editor getEditorById(@PathVariable long id){
-        return service.getEditorById(id).orElse(null);
+    public EditorDTO getEditorById(@PathVariable long id){
+        return service.findEditorDTOById(id).orElse(null);
     }
 
     @PostMapping
-    public void  postEditor(@RequestBody Editor editor){
-        this.service.addEditor(editor);
+    public void  postEditor(@RequestBody EditorDTO editorDTO){
+        this.service.addEditor(editorMapper.dtoToEditor(editorDTO));
     }
 
     @PutMapping
-    public void putEditor(@RequestBody Editor editor){
-        this.service.updateEditor(editor);
+    public void putEditor(@RequestBody EditorDTO editorDTO){
+        if(this.service.doesEditorExistById(editorDTO.getId())){
+            Editor editor = this.service.getEditorById(editorDTO.getId());
+            editor.setName(editorDTO.getName());
+            this.service.updateEditor(editor);
+        }
     }
 
 

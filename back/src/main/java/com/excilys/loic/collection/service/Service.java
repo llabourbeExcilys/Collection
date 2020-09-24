@@ -1,5 +1,6 @@
 package com.excilys.loic.collection.service;
 
+import com.excilys.loic.collection.binding.*;
 import com.excilys.loic.collection.dao.*;
 import com.excilys.loic.collection.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,26 @@ public class Service {
 
     //// Authors ////
 
-    public List<Author> getAuthors(){
-        return this.authorDAO.findAll();
+    public List<AuthorDTO> getAuthorsDTO(){
+        return this.authorDAO.findAllBy();
     }
 
-    public Optional<Author> getAuthorById(long id){
+    public Optional<AuthorDTO> findAuthorDTOById(long id){
+        return this.authorDAO.findDTOById(id);
+    }
+
+    public Optional<Author> findAuthorById(long id) {
         return this.authorDAO.findById(id);
     }
+
+    public Author getAuthorById(long id) {
+        return this.authorDAO.getOne(id);
+    }
+
+    public boolean doesAuthorExistById(long id) {
+        return authorDAO.existsById(id);
+    }
+
     public void addAuthor(Author author) {
         this.authorDAO.save(author);
     }
@@ -48,12 +62,24 @@ public class Service {
 
     //// Books ////
 
-    public List<Book> getBooks(){
-        return this.bookDAO.findAll();
+    public List<BookDTO> getBooks(){
+        return this.bookDAO.findAllBy();
     }
 
-    public Optional<Book> getBookById(long id){
+    public Optional<BookDTO> findBookDTOById(long id){
+        return this.bookDAO.findDTOById(id);
+    }
+
+    public Optional<Book> findBookById(long id){
         return this.bookDAO.findById(id);
+    }
+
+    public Book getBookById(long id){
+        return this.bookDAO.getOne(id);
+    }
+
+    public boolean doesBookExistById(long id) {
+        return bookDAO.existsById(id);
     }
 
     public void addBook(Book book) {
@@ -70,13 +96,26 @@ public class Service {
 
     //// Editor ////
 
-    public List<Editor> getEditors(){
-        return this.editorDAO.findAll();
+    public List<EditorDTO> getEditorsDTO() {
+        return this.editorDAO.findAllBy();
     }
 
-    public Optional<Editor> getEditorById(long id){
+    public Optional<Editor> findEditorById(long id){
         return this.editorDAO.findById(id);
     }
+
+    public Editor getEditorById(long id){
+        return this.editorDAO.getOne(id);
+    }
+
+    public Optional<EditorDTO> findEditorDTOById(long id){
+        return this.editorDAO.findDTOById(id);
+    }
+
+    public boolean doesEditorExistById(long id) {
+        return editorDAO.existsById(id);
+    }
+
     public void addEditor(Editor editor) {
         this.editorDAO.save(editor);
     }
@@ -91,12 +130,17 @@ public class Service {
 
     //// Genre ////
 
-    public List<Genre> getGenres(){
-        return this.genreDAO.findAll();
+
+    public List<GenreDTO> getGenresDTO(){
+        return this.genreDAO.findAllBy();
     }
 
-    public Optional<Genre> getGenreById(long id){
+    public Optional<Genre> findGenreById(long id){
         return this.genreDAO.findById(id);
+    }
+
+    public Optional<GenreDTO> findGenreDTOById(long id){
+        return this.genreDAO.findDTOById(id);
     }
 
     public void addGenre(Genre genre) {
@@ -111,15 +155,32 @@ public class Service {
         this.genreDAO.save( genre);
     }
     
-    //// SerieDAO ////
+    //// Serie ////
 
-    public List<Serie> getSeries(){
-        return this.serieDAO.findAll();
+    public List<SerieDTO> getSeriesDTO(){
+        return this.serieDAO.findAllBy();
     }
 
-    public Optional<Serie> getSerieById(long id){
+    public Optional<Serie> findSerieById(long id){
         return this.serieDAO.findById(id);
     }
+
+    public Serie getSerieById(long id){
+        return this.serieDAO.getOne(id);
+    }
+
+    public Optional<SerieDTO> findSerieDTOById(long id) {
+        return this.serieDAO.findDTOById(id);
+    }
+
+    public List<Serie> getSeriesByAuthorId(long id){
+        return this.serieDAO.findByAuthorId(id);
+    }
+
+    public boolean doesSerieExistById(long id) {
+        return serieDAO.existsById(id);
+    }
+
     public void addSerie(Serie serie) {
         this.serieDAO.save(serie);
     }
@@ -131,6 +192,7 @@ public class Service {
     public void updateSerie(Serie serie) {
         this.serieDAO.save( serie);
     }
-    
-    
+
+
+
 }
