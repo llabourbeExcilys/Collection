@@ -38,7 +38,9 @@ public class SerieController {
     
     @PostMapping
     public void  postSerie(@RequestBody SerieDTO serieDTO){
-        this.service.addSerie(serieMapper.dtoToSerie(serieDTO));
+        Serie serie = serieMapper.dtoToSerie(serieDTO);
+        serie.setId(null);
+        this.service.addSerie(serie);
     }
 
     @PutMapping
@@ -46,8 +48,8 @@ public class SerieController {
         if(this.service.doesSerieExistById(serieDTO.getId())){
             Serie serie = this.service.getSerieById(serieDTO.getId());
             serie.setNumberPublished(serieDTO.getPublished());
-            if(serieDTO.getEditorDTO() != null){
-                Optional<Editor> optionalEditor = this.service.findEditorById(serieDTO.getEditorDTO().getId());
+            if(serieDTO.getEditorId() != null){
+                Optional<Editor> optionalEditor = this.service.findEditorById(serieDTO.getEditorId());
                 serie.setEditor(optionalEditor.orElse(null));
             }
             serie.setEdition(serieDTO.getEdition());

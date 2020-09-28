@@ -67,6 +67,7 @@
 												<v-autocomplete
 													v-model="searchedAutor"
 													:items="authors"
+													:item-text="item => item.firstName + '' + item.lastName"
 													background-color="white"
 													dense
 													outlined

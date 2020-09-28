@@ -10,14 +10,14 @@ public class Genre {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
 
     private String description;
 
-    public Genre(long id, String name, String description) {
+    public Genre(Long id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,11 +49,11 @@ public class Genre {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Genre setId(long id) {
+    public Genre setId(Long id) {
         this.id = id;
         return this;
     }

@@ -2,9 +2,10 @@ package com.excilys.loic.collection.binding;
 
 public class SerieDTO {
 
-    private long id;
+    private Long id;
     private String title;
-    private EditorDTO editorDTO;
+    private Long editorId;
+    private String editorName;
     private String edition;
     private int owned;
     private int published;
@@ -12,20 +13,21 @@ public class SerieDTO {
     public SerieDTO() {
     }
 
-    public SerieDTO(long id, String title, EditorDTO editorDTO, String edition, int owned, int published) {
+    public SerieDTO(Long id, String title, Long editorId, String editorName, String edition, int owned, int published) {
         this.id = id;
         this.title = title;
-        this.editorDTO = editorDTO;
+        this.editorId = editorId;
+        this.editorName = editorName;
         this.edition = edition;
         this.owned = owned;
         this.published = published;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public SerieDTO setId(long id) {
+    public SerieDTO setId(Long id) {
         this.id = id;
         return this;
     }
@@ -39,12 +41,21 @@ public class SerieDTO {
         return this;
     }
 
-    public EditorDTO getEditorDTO() {
-        return editorDTO;
+    public Long getEditorId() {
+        return editorId;
     }
 
-    public SerieDTO setEditorDTO(EditorDTO editorDTO) {
-        this.editorDTO = editorDTO;
+    public SerieDTO setEditorId(Long editorId) {
+        this.editorId = editorId;
+        return this;
+    }
+
+    public String getEditorName() {
+        return editorName;
+    }
+
+    public SerieDTO setEditorName(String editorName) {
+        this.editorName = editorName;
         return this;
     }
 

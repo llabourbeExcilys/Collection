@@ -25,14 +25,14 @@ public class SerieMapper {
                 null,
                 null,
                 serieDTO.getTitle(),
-                this.service.findEditorById(serieDTO.getEditorDTO().getId()).orElse(null),
+                this.service.findEditorById(serieDTO.getEditorId()).orElse(null),
                 serieDTO.getEdition(),
                 serieDTO.getOwned(),
                 serieDTO.getPublished());
     }
 
     public SerieDTO serieToDTO(Serie serie){
-        return new SerieDTO(serie.getId(), serie.getTitle(), editorMapper.editortoDTO(serie.getEditor()), serie.getEdition(), serie.getOwned(), serie.getPublished());
+        return new SerieDTO(serie.getId(), serie.getTitle(), serie.getEditor().getId(), serie.getEditor().getName(), serie.getEdition(), serie.getOwned(), serie.getPublished());
     }
 
 }

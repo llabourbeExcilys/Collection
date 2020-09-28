@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class BookDTO {
 
-    private long id;
+    private Long id;
     private String title;
     private LocalDate releaseDate;
     private String color;
@@ -14,7 +14,7 @@ public class BookDTO {
     public BookDTO() {
     }
 
-    public BookDTO(long id, String title, LocalDate releaseDate, String color, Boolean owned, Integer volume) {
+    public BookDTO(Long id, String title, LocalDate releaseDate, String color, Boolean owned, Integer volume) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
@@ -23,11 +23,11 @@ public class BookDTO {
         this.volume = volume;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public BookDTO setId(long id) {
+    public BookDTO setId(Long id) {
         this.id = id;
         return this;
     }

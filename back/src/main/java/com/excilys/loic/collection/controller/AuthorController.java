@@ -42,8 +42,10 @@ public class AuthorController {
     }
 
     @PostMapping
-    public void  postAuthor(@RequestBody AuthorDTO author){
-        this.service.addAuthor(this.authorMapper.DTOToAuthor(author));
+    public void  postAuthor(@RequestBody AuthorDTO authorDTO){
+        Author author = this.authorMapper.DTOToAuthor(authorDTO);
+        author.setId(null);
+        this.service.addAuthor(author);
     }
 
     @PutMapping

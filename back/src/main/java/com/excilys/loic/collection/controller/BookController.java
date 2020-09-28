@@ -35,7 +35,9 @@ public class BookController {
 
     @PostMapping
     public void postBook(@RequestBody BookDTO bookDTO){
-        this.service.addBook(bookMapper.DTOtoBook(bookDTO));
+        Book book = bookMapper.DTOtoBook(bookDTO);
+        book.setId(null);
+        this.service.addBook(book);
     }
 
     @PutMapping

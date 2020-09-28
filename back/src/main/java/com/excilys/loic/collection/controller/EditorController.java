@@ -36,7 +36,9 @@ public class EditorController {
 
     @PostMapping
     public void  postEditor(@RequestBody EditorDTO editorDTO){
-        this.service.addEditor(editorMapper.dtoToEditor(editorDTO));
+        Editor editor = editorMapper.dtoToEditor(editorDTO);
+        editor.setId(null);
+        this.service.addEditor(editor);
     }
 
     @PutMapping

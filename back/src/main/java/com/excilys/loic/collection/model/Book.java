@@ -9,7 +9,7 @@ public class Book {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -26,7 +26,7 @@ public class Book {
 
     private Integer volume;
 
-    public Book(long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned, int volume) {
+    public Book(Long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned, int volume) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
@@ -93,11 +93,11 @@ public class Book {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Book setId(long id) {
+    public Book setId(Long id) {
         this.id = id;
         return this;
     }

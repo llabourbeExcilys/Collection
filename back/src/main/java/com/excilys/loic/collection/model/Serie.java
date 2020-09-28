@@ -8,7 +8,7 @@ public class Serie {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @OneToMany(mappedBy = "serie")
     private List<Book> mangas;
@@ -35,7 +35,7 @@ public class Serie {
     private int published;
 
 
-    public Serie(long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> author, String title, Editor editor, String edition, int owned, int published) {
+    public Serie(Long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> author, String title, Editor editor, String edition, int owned, int published) {
         this.id = id;
         this.mangas = mangas;
         this.fanbooks = fanbooks;
@@ -138,11 +138,11 @@ public class Serie {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Serie setId(long id) {
+    public Serie setId(Long id) {
         this.id = id;
         return this;
     }

@@ -5,14 +5,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Author {
 
     @Id
     @GeneratedValue
-    private long id;
-
+    private Long id;
     private String firstName;
     private String lastName;
 
@@ -20,7 +20,8 @@ public class Author {
     private List<Serie> series;
 
 
-    public Author( String firstName, String lastName, List<Serie> series) {
+    public Author(Long id, String firstName, String lastName, List<Serie> series) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.series = series;
@@ -47,11 +48,11 @@ public class Author {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Author setId(long id) {
+    public Author setId(Long id) {
         this.id = id;
         return this;
     }
@@ -63,5 +64,21 @@ public class Author {
     public Author setSeries(List<Serie> series) {
         this.series = series;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return Objects.equals(id, author.id) &&
+                Objects.equals(firstName, author.firstName) &&
+                Objects.equals(lastName, author.lastName) &&
+                Objects.equals(series, author.series);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName);
     }
 }

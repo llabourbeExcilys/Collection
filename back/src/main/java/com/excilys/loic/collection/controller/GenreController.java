@@ -2,6 +2,7 @@ package com.excilys.loic.collection.controller;
 
 import com.excilys.loic.collection.binding.GenreDTO;
 import com.excilys.loic.collection.binding.mapper.GenreMapper;
+import com.excilys.loic.collection.model.Genre;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,9 @@ public class GenreController {
 
     @PostMapping
     public void  postGenre(@RequestBody GenreDTO genreDTO){
-        this.service.addGenre(genreMapper.dtoToGenre(genreDTO));
+        Genre genre = genreMapper.dtoToGenre(genreDTO);
+        genre.setId(null);
+        this.service.addGenre(genre);
     }
 
     @PutMapping

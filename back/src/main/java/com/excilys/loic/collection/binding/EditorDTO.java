@@ -2,11 +2,11 @@ package com.excilys.loic.collection.binding;
 
 public class EditorDTO {
 
-    private long id;
+    private Long id;
 
     private String name;
 
-    public EditorDTO(long id, String name) {
+    public EditorDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -27,7 +27,7 @@ public class EditorDTO {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

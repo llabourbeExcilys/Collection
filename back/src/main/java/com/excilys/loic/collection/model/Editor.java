@@ -8,7 +8,7 @@ public class Editor {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @ManyToMany
     private List<Serie> series;
@@ -16,7 +16,7 @@ public class Editor {
     @Column(nullable = false)
     private String name;
 
-    public Editor(long id, List<Serie> series, String name) {
+    public Editor(Long id, List<Serie> series, String name) {
         this.id = id;
         this.series = series;
         this.name = name;
@@ -43,11 +43,11 @@ public class Editor {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Editor setId(long id) {
+    public Editor setId(Long id) {
         this.id = id;
         return this;
     }
