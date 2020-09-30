@@ -5,15 +5,14 @@ const baseUrl = 'http://localhost:9080';
 const MangaService = {
 	addSerie: serie => ApiService.post(baseUrl + '/series', serie),
 
-	getSeries: () => ApiService.get(baseUrl + '/series'),
-	getGenres: () => ApiService.get(baseUrl + '/genres'),
-	getTypes: () => ApiService.get(baseUrl + '/types'),
+	getGenres: () => ApiService.get(baseUrl + '/genre'),
+	getTypes: () => ApiService.get(baseUrl + '/book/type'),
 	getAuthors: () => ApiService.get(baseUrl + '/author'),
-	getEditors: () => ApiService.get(baseUrl + '/editors'),
+	getEditors: () => ApiService.get(baseUrl + '/editor'),
 
-	updateSerie: serie => ApiService.put(baseUrl + '/series/' + serie.id, serie),
-
-	removeSerie: id => ApiService.delete(baseUrl + '/series/' + id)
+	getSeries: () => ApiService.get(baseUrl + '/serie'),
+	updateSerie: serie => ApiService.put(baseUrl + '/serie/' + serie.id, serie),
+	removeSerie: id => ApiService.delete(baseUrl + '/serie/' + id)
 };
 
 export default MangaService;

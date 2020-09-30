@@ -1,5 +1,7 @@
 package com.excilys.loic.collection.model;
 
+import com.excilys.loic.collection.model.enums.Type;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -26,7 +28,10 @@ public class Book {
 
     private Integer volume;
 
-    public Book(Long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned, int volume) {
+    @Enumerated(EnumType.ORDINAL)
+    private Type type;
+
+    public Book(Long id, String title, LocalDate releaseDate, Serie serie, String color, Boolean owned, Integer volume, Type type) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
@@ -34,9 +39,19 @@ public class Book {
         this.color = color;
         this.owned = owned;
         this.volume = volume;
+        this.type = type;
     }
 
     public Book() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Book setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public Serie getSerie() {
@@ -88,17 +103,17 @@ public class Book {
         return volume;
     }
 
-    public Book setVolume(int volume) {
+    public Book setVolume(Integer volume) {
         this.volume = volume;
         return this;
     }
 
-    public Long getId() {
-        return id;
+    public Type getType() {
+        return type;
     }
 
-    public Book setId(Long id) {
-        this.id = id;
+    public Book setType(Type type) {
+        this.type = type;
         return this;
     }
 }

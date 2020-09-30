@@ -14,11 +14,7 @@ public class CoreConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/author").allowedOrigins("http://localhost:8080");
-                registry.addMapping("/book").allowedOrigins("http://localhost:8080");
-                registry.addMapping("/editor").allowedOrigins("http://localhost:8080");
-                registry.addMapping("/genre").allowedOrigins("http://localhost:8080");
-                registry.addMapping("/serie").allowedOrigins("http://localhost:8080");
+                registry.addMapping("/**").allowedOrigins("http://localhost:8080");
             }
         };
     }

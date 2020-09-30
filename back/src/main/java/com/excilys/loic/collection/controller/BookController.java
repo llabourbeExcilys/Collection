@@ -3,10 +3,12 @@ package com.excilys.loic.collection.controller;
 import com.excilys.loic.collection.binding.BookDTO;
 import com.excilys.loic.collection.binding.mapper.BookMapper;
 import com.excilys.loic.collection.model.Book;
+import com.excilys.loic.collection.model.enums.Type;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -26,6 +28,12 @@ public class BookController {
     @GetMapping
     public List<BookDTO> getAllBooks(){
         return service.getBooks();
+    }
+
+    @GetMapping("/type")
+    public List<Type> getTypes(){
+        return Arrays.asList(Type.values());
+
     }
 
     @GetMapping("/{id}")

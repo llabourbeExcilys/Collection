@@ -18,18 +18,21 @@
 								<v-select
 									v-model="item.autor"
 									:items="possibleAuthors"
+									:item-text="item => item.firstName + ' ' + item.lastName"
 									:rules="[rules.requiredField]"
 									label="Auteur"
 									outlined
 								></v-select>
 							</v-col>
 							<v-col :cols="2">
-								<v-text-field
+								<v-select
 									v-model="item.editor"
+									:items="possibleEditors"
+									:item-text="item => item.name"
 									:rules="[rules.requiredField]"
+									label="Editeur"
 									outlined
-									label="Edition"
-								></v-text-field>
+								></v-select>
 							</v-col>
 							<v-col :cols="1">
 								<v-row align="center" justify="start">
@@ -48,7 +51,7 @@
 										<v-col :cols="4">
 											<v-tooltip top>
 												<template v-slot:activator="{ on }">
-													<v-btn v-on="on" icon @click="$emit('clickCancelNewItem')">
+													<v-btn v-on="on" icon @click="$emit('click-cancel-new-item')">
 														<v-icon color="red">mdi-close-circle</v-icon>
 													</v-btn>
 												</template>
@@ -128,10 +131,19 @@
 									outlined
 								></v-select>
 							</v-col>
-							<v-col :cols="5">
+							<v-col :cols="2">
+								<v-text-field
+									v-model="item.edition"
+									:rules="[rules.requiredField]"
+									outlined
+									label="Edition"
+								></v-text-field>
+							</v-col>
+							<v-col :cols="3">
 								<v-combobox
 									v-model="item.genres"
 									:items="possibleGenres"
+									:item-text="item => item.name"
 									:rules="[rules.requiredGenre]"
 									label="Genres"
 									chips
@@ -322,6 +334,10 @@ export default {
 		possibleAuthors: {
 			type: Array,
 			default: () => []
+		},
+		possibleEditors: {
+			type: Array,
+			default: () => []
 		}
 	},
 	data() {
@@ -382,7 +398,7 @@ export default {
 			// this.edit = !this.edit;
 		},
 		clickRemoveItem() {
-			this.$emit('removeItem', this.item);
+			this.$emit('remove-item', this.item);
 			this.edit = false;
 			this.show = false;
 		},
@@ -390,9 +406,9 @@ export default {
 			this.validatingItem = true;
 			if (this.$refs.form.validate()) {
 				if (this.isNewItem) {
-					this.$emit('clickAddNewItem');
+					this.$emit('click-add-new-item');
 				} else {
-					this.$emit('editItem', this.item);
+					this.$emit('edit-item', this.item);
 				}
 				this.edit = false;
 				this.show = false;

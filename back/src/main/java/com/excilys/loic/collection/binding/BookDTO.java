@@ -1,5 +1,7 @@
 package com.excilys.loic.collection.binding;
 
+import com.excilys.loic.collection.model.enums.Type;
+
 import java.time.LocalDate;
 
 public class BookDTO {
@@ -10,17 +12,19 @@ public class BookDTO {
     private String color;
     private Boolean owned;
     private Integer volume;
+    private Type type;
 
     public BookDTO() {
     }
 
-    public BookDTO(Long id, String title, LocalDate releaseDate, String color, Boolean owned, Integer volume) {
+    public BookDTO(Long id, String title, LocalDate releaseDate, String color, Boolean owned, Integer volume, Type type) {
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.color = color;
         this.owned = owned;
         this.volume = volume;
+        this.type = type;
     }
 
     public Long getId() {
@@ -74,6 +78,15 @@ public class BookDTO {
 
     public BookDTO setVolume(Integer volume) {
         this.volume = volume;
+        return this;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public BookDTO setType(Type type) {
+        this.type = type;
         return this;
     }
 }

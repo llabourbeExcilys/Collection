@@ -45,6 +45,7 @@
 												<v-autocomplete
 													v-model="searchedEditor"
 													:items="editors"
+													:item-text="item => item.name"
 													background-color="white"
 													dense
 													outlined
@@ -67,7 +68,7 @@
 												<v-autocomplete
 													v-model="searchedAutor"
 													:items="authors"
-													:item-text="item => item.firstName + '' + item.lastName"
+													:item-text="item => item.firstName + ' ' + item.lastName"
 													background-color="white"
 													dense
 													outlined
@@ -80,6 +81,7 @@
 												<v-autocomplete
 													v-model="searchedGenre"
 													:items="genres"
+													:item-text="item => item.name"
 													background-color="white"
 													dense
 													outlined
@@ -107,13 +109,14 @@
 									<MangaSerie
 										:item="item"
 										:isNewItem="item.isNewItem"
-										:possibleTypes="types"
-										:possibleGenres="genres"
 										:possibleAuthors="authors"
-										@editItem="manageEdit"
-										@removeItem="manageRemove"
-										@clickAddNewItem="manageAddItem"
-										@clickCancelNewItem="manageCancelNewItem"
+										:possibleEditors="editors"
+										:possibleGenres="genres"
+										:possibleTypes="types"
+										@edit-item="manageEdit"
+										@remove-item="manageRemove"
+										@click-add-new-item="manageAddItem"
+										@click-cancel-new-item="manageCancelNewItem"
 									/>
 								</v-col>
 							</v-row>
