@@ -1,9 +1,6 @@
 package com.excilys.loic.collection.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +13,7 @@ public class Author {
     private String firstName;
     private String lastName;
 
-    @OneToMany(mappedBy = "editor")
+    @ManyToMany(mappedBy = "authors")
     private List<Serie> series;
 
 

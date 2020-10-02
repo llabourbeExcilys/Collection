@@ -10,23 +10,34 @@ public class Serie {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "serie")
-    private List<Book> mangas;
-    
-    @OneToMany(mappedBy = "serie")
-    private List<Book> fanbooks;
-    
-    @OneToMany(mappedBy = "serie")
-    private List<Book> artbooks;
-
-    @ManyToMany
-    private List<Author> author;
-
     @Column(nullable = false)
     private String title;
 
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    private List<Book> mangas;
+
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    private List<Book> fanbooks;
+
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    private List<Book> artbooks;
+
     @ManyToOne
     private Editor editor;
+
+    @ManyToMany
+    @JoinTable(name="serie_author",
+            joinColumns=@JoinColumn(name="serie_id"),
+            inverseJoinColumns=@JoinColumn(name="author_id")
+    )
+    private List<Author> authors;
+
+    @ManyToMany
+    @JoinTable(name="serie_genre",
+            joinColumns=@JoinColumn(name="serie_id"),
+            inverseJoinColumns=@JoinColumn(name="genre_id")
+    )
+    private List<Genre> genres;
 
     private String edition;
 
@@ -35,14 +46,15 @@ public class Serie {
     private int published;
 
 
-    public Serie(Long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> author, String title, Editor editor, String edition, int owned, int published) {
+    public Serie(Long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> authors, String title, Editor editor, List<Genre> genres, String edition, int owned, int published) {
         this.id = id;
         this.mangas = mangas;
         this.fanbooks = fanbooks;
         this.artbooks = artbooks;
-        this.author = author;
+        this.authors = authors;
         this.title = title;
         this.editor = editor;
+        this.genres = genres;
         this.edition = edition;
         this.owned = owned;
         this.published = published;
@@ -96,12 +108,12 @@ public class Serie {
         return this;
     }
 
-    public List<Author> getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public Serie setAuthor(List<Author> author) {
-        this.author = author;
+    public Serie setAuthors(List<Author> authors) {
+        this.authors = authors;
         return this;
     }
 
@@ -144,6 +156,15 @@ public class Serie {
 
     public Serie setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public Serie setGenres(List<Genre> genres) {
+        this.genres = genres;
         return this;
     }
 }

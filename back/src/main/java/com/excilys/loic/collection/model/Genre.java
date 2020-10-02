@@ -1,9 +1,7 @@
 package com.excilys.loic.collection.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Genre {
@@ -17,15 +15,14 @@ public class Genre {
 
     private String description;
 
-    public Genre(Long id, String name, String description) {
+    @ManyToMany(mappedBy = "genres")
+    private List<Serie> serie;
+
+    public Genre(Long id, String name, String description, List<Serie> serie) {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-
-    public Genre(String name, String description) {
-        this.name = name;
-        this.description = description;
+        this.serie = serie;
     }
 
     public Genre() {
@@ -55,6 +52,15 @@ public class Genre {
 
     public Genre setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public List<Serie> getSerie() {
+        return serie;
+    }
+
+    public Genre setSerie(List<Serie> serie) {
+        this.serie = serie;
         return this;
     }
 }

@@ -1,14 +1,20 @@
 package com.excilys.loic.collection.binding;
 
+import com.excilys.loic.collection.model.Genre;
+
+import java.util.List;
+
 public class SerieDTO {
 
     private Long id;
     private String title;
     private Long editorId;
     private String editorName;
+    private List<Long> genreIds;
     private String edition;
     private int owned;
     private int published;
+
 
     public SerieDTO() {
     }
@@ -18,6 +24,7 @@ public class SerieDTO {
         this.title = title;
         this.editorId = editorId;
         this.editorName = editorName;
+        this.genreIds = genreIds;
         this.edition = edition;
         this.owned = owned;
         this.published = published;
@@ -83,6 +90,15 @@ public class SerieDTO {
 
     public SerieDTO setPublished(int published) {
         this.published = published;
+        return this;
+    }
+
+    public List<Long> getGenreIds() {
+        return genreIds;
+    }
+
+    public SerieDTO setGenreIds(List<Long> genreIds) {
+        this.genreIds = genreIds;
         return this;
     }
 }

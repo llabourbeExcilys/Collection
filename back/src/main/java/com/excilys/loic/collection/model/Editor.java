@@ -10,7 +10,7 @@ public class Editor {
     @GeneratedValue
     private Long id;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "editor")
     private List<Serie> series;
 
     @Column(nullable = false)

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 public class Service {
@@ -135,6 +136,11 @@ public class Service {
         return this.genreDAO.findAllBy();
     }
 
+    public List<Genre> getGenreBySerieId(long id){
+            return this.serieDAO.findGenreBySerieId(id);
+    }
+
+
     public Optional<Genre> findGenreById(long id){
         return this.genreDAO.findById(id);
     }
@@ -158,7 +164,12 @@ public class Service {
     //// Serie ////
 
     public List<SerieDTO> getSeriesDTO(){
-        return this.serieDAO.findAllBy();
+        List<SerieDTO> seriesDTO = this.serieDAO.findAllBy();
+        for(SerieDTO serieDTO : seriesDTO){
+            List<Genre> genres = this.getGenreBySerieId(serieDTO.getId());
+            serieDTO.setGenreIds(genres.stream().map(genre -> genre.getId()).collect(Collectors.toList()));
+        }
+        return seriesDTO;
     }
 
     public Optional<Serie> findSerieById(long id){
@@ -174,7 +185,7 @@ public class Service {
     }
 
     public List<Serie> getSeriesByAuthorId(long id){
-        return this.serieDAO.findByAuthorId(id);
+        return this.serieDAO.findByAuthorsId(id);
     }
 
     public boolean doesSerieExistById(long id) {

@@ -19,4 +19,5 @@ public interface GenreDAO  extends JpaRepository<Genre, Long> {
             "WHERE genre.id = ?1")
     Optional<GenreDTO> findDTOById(long id);
 
+
 }

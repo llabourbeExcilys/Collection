@@ -3,12 +3,15 @@ package com.excilys.loic.collection.controller;
 
 import com.excilys.loic.collection.binding.SerieDTO;
 import com.excilys.loic.collection.binding.mapper.SerieMapper;
+import com.excilys.loic.collection.model.Book;
 import com.excilys.loic.collection.model.Editor;
 import com.excilys.loic.collection.model.Serie;
+import com.excilys.loic.collection.model.enums.Type;
 import com.excilys.loic.collection.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +43,12 @@ public class SerieController {
     public void  postSerie(@RequestBody SerieDTO serieDTO){
         Serie serie = serieMapper.dtoToSerie(serieDTO);
         serie.setId(null);
+        List<Book> mangas = new ArrayList<>();
+        for(int i = 1; i <= serie.getPublished(); i++){
+            Book manga = new Book(null, serie.getTitle(), null, serie, "red", i<serie.getOwned(), i, Type.MANGA);
+            mangas.add(manga);
+        }
+        serie.setMangas(mangas);
         this.service.addSerie(serie);
     }
 
