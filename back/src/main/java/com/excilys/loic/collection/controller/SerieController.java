@@ -57,8 +57,8 @@ public class SerieController {
         if(this.service.doesSerieExistById(serieDTO.getId())){
             Serie serie = this.service.getSerieById(serieDTO.getId());
             serie.setNumberPublished(serieDTO.getPublished());
-            if(serieDTO.getEditorId() != null){
-                Optional<Editor> optionalEditor = this.service.findEditorById(serieDTO.getEditorId());
+            if(serieDTO.getEditor().getId() != null){
+                Optional<Editor> optionalEditor = this.service.findEditorById(serieDTO.getEditor().getId());
                 serie.setEditor(optionalEditor.orElse(null));
             }
             serie.setEdition(serieDTO.getEdition());

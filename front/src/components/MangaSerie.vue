@@ -225,15 +225,19 @@
 				</template>
 				<!-- View Mode -->
 				<template v-else>
-					<v-row dense align="center" justify="center" no-gutters>
-						<v-col :cols="4">
+					<v-row dense align="center" no-gutters>
+						<v-col :cols="3">
 							<v-card-title>
 								{{ item.title }}
 							</v-card-title>
-							<v-card-subtitle> {{ item.edition }} ({{ item.editor }}) </v-card-subtitle>
+							<v-card-subtitle class="d-flex justify-start">
+								{{ item.edition + ' (' + item.editor.name + ')' }}
+							</v-card-subtitle>
 						</v-col>
-						<v-col :cols="2">
-							{{ item.autor }}
+						<v-col :cols="2" class="d-flex flex-column">
+							<v-card-text class="pa-1" v-for="author in item.authors" v-bind:key="author.id">
+								{{ author.firstName + ' ' + author.lastName }}
+							</v-card-text>
 						</v-col>
 						<v-col :cols="1">
 							<v-chip
@@ -250,7 +254,8 @@
 						<v-col :cols="3">
 							<v-chip
 								v-for="genre in item.genres"
-								v-bind:key="genre"
+								v-bind:key="genre.id"
+								v-text="genre.name"
 								class="ma-2"
 								small
 								dense
@@ -296,7 +301,6 @@
 								:numberPublished="item.published"
 								:numberPossessed="item.owned"
 								:mangaDimensions="mangaDimensions"
-								:color="item.color"
 							/>
 						</v-col>
 					</v-row>

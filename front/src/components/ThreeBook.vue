@@ -18,10 +18,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		color: {
-			type: String,
-			required: true
-		},
 		title: {
 			type: String,
 			required: true
@@ -43,6 +39,7 @@ export default {
 		return {
 			books: [],
 			camera: null,
+			color: '#FF0000FF',
 			controls: null,
 			emptySpace: 3,
 			geometry: null,

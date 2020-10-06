@@ -1,16 +1,14 @@
 package com.excilys.loic.collection.binding;
 
-import com.excilys.loic.collection.model.Genre;
-
 import java.util.List;
 
 public class SerieDTO {
 
     private Long id;
     private String title;
-    private Long editorId;
-    private String editorName;
-    private List<Long> genreIds;
+    private EditorDTO editor;
+    private List<GenreDTO> genres;
+    private List<AuthorDTO> authors;
     private String edition;
     private int owned;
     private int published;
@@ -19,12 +17,9 @@ public class SerieDTO {
     public SerieDTO() {
     }
 
-    public SerieDTO(Long id, String title, Long editorId, String editorName, String edition, int owned, int published) {
+    public SerieDTO(Long id, String title, String edition, int owned, int published) {
         this.id = id;
         this.title = title;
-        this.editorId = editorId;
-        this.editorName = editorName;
-        this.genreIds = genreIds;
         this.edition = edition;
         this.owned = owned;
         this.published = published;
@@ -48,21 +43,12 @@ public class SerieDTO {
         return this;
     }
 
-    public Long getEditorId() {
-        return editorId;
+    public EditorDTO getEditor() {
+        return editor;
     }
 
-    public SerieDTO setEditorId(Long editorId) {
-        this.editorId = editorId;
-        return this;
-    }
-
-    public String getEditorName() {
-        return editorName;
-    }
-
-    public SerieDTO setEditorName(String editorName) {
-        this.editorName = editorName;
+    public SerieDTO setEditor(EditorDTO editor) {
+        this.editor = editor;
         return this;
     }
 
@@ -93,12 +79,21 @@ public class SerieDTO {
         return this;
     }
 
-    public List<Long> getGenreIds() {
-        return genreIds;
+    public List<GenreDTO> getGenres() {
+        return genres;
     }
 
-    public SerieDTO setGenreIds(List<Long> genreIds) {
-        this.genreIds = genreIds;
+    public SerieDTO setGenres(List<GenreDTO> genres) {
+        this.genres = genres;
+        return this;
+    }
+
+    public List<AuthorDTO> getAuthors() {
+        return authors;
+    }
+
+    public SerieDTO setAuthors(List<AuthorDTO> authors) {
+        this.authors = authors;
         return this;
     }
 }

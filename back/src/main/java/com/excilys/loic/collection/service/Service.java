@@ -1,6 +1,9 @@
 package com.excilys.loic.collection.service;
 
 import com.excilys.loic.collection.binding.*;
+import com.excilys.loic.collection.binding.mapper.AuthorMapper;
+import com.excilys.loic.collection.binding.mapper.EditorMapper;
+import com.excilys.loic.collection.binding.mapper.GenreMapper;
 import com.excilys.loic.collection.dao.*;
 import com.excilys.loic.collection.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +21,31 @@ public class Service {
     private GenreDAO genreDAO;
     private SerieDAO serieDAO;
 
+    private GenreMapper genreMapper;
+    private AuthorMapper authorMapper;
+    private EditorMapper editorMapper;
+
+
     @Autowired
-    public Service(AuthorDAO authorDAO, BookDAO bookDAO, EditorDAO editorDAO, GenreDAO genreDAO, SerieDAO serieDAO) {
+    public Service(AuthorDAO authorDAO, BookDAO bookDAO, EditorDAO editorDAO, GenreDAO genreDAO, SerieDAO serieDAO, GenreMapper genreMapper, AuthorMapper authorMapper, EditorMapper editorMapper) {
         this.authorDAO = authorDAO;
         this.bookDAO = bookDAO;
         this.editorDAO = editorDAO;
         this.genreDAO = genreDAO;
         this.serieDAO = serieDAO;
+        this.genreMapper = genreMapper;
+        this.authorMapper = authorMapper;
+        this.editorMapper = editorMapper;
     }
 
     //// Authors ////
 
     public List<AuthorDTO> getAuthorsDTO(){
         return this.authorDAO.findAllBy();
+    }
+
+    public List<Author> getAuthorsBySerieId(long id){
+        return this.serieDAO.findAuthorBySerieId(id);
     }
 
     public Optional<AuthorDTO> findAuthorDTOById(long id){
@@ -109,6 +124,11 @@ public class Service {
         return this.editorDAO.getOne(id);
     }
 
+    public Editor getEditorBySerieId(long id){
+        return this.serieDAO.findEditorBySerieId(id);
+    }
+
+
     public Optional<EditorDTO> findEditorDTOById(long id){
         return this.editorDAO.findDTOById(id);
     }
@@ -166,8 +186,17 @@ public class Service {
     public List<SerieDTO> getSeriesDTO(){
         List<SerieDTO> seriesDTO = this.serieDAO.findAllBy();
         for(SerieDTO serieDTO : seriesDTO){
-            List<Genre> genres = this.getGenreBySerieId(serieDTO.getId());
-            serieDTO.setGenreIds(genres.stream().map(genre -> genre.getId()).collect(Collectors.toList()));
+            Long serieId = serieDTO.getId();
+            List<Genre> genres = this.getGenreBySerieId(serieId);
+            List<GenreDTO> genreDTOS = genres.stream().map(this.genreMapper::genreToDTO).collect(Collectors.toList());
+            serieDTO.setGenres(genreDTOS);
+
+            List<Author> authors = this.getAuthorsBySerieId(serieId);
+            List<AuthorDTO> authorDTOS = authors.stream().map(this.authorMapper::authorToDTO).collect(Collectors.toList());
+            serieDTO.setAuthors(authorDTOS);
+
+            Editor editor = this.getEditorBySerieId(serieId);
+            serieDTO.setEditor(this.editorMapper.editortoDTO(editor));
         }
         return seriesDTO;
     }
