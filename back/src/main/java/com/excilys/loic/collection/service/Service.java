@@ -48,6 +48,11 @@ public class Service {
         return this.serieDAO.findAuthorBySerieId(id);
     }
 
+    public List<Author> getAuthorsByIdIn(List<Long> ids){
+        return this.authorDAO.findAllById(ids);
+    }
+
+
     public Optional<AuthorDTO> findAuthorDTOById(long id){
         return this.authorDAO.findDTOById(id);
     }
@@ -81,19 +86,18 @@ public class Service {
     public List<BookDTO> getBooks(){
         return this.bookDAO.findAllBy();
     }
-
     public Optional<BookDTO> findBookDTOById(long id){
         return this.bookDAO.findDTOById(id);
     }
-
     public Optional<Book> findBookById(long id){
         return this.bookDAO.findById(id);
     }
-
     public Book getBookById(long id){
         return this.bookDAO.getOne(id);
     }
-
+    public List<Book> findMangasBySerieId(long id){
+        return this.serieDAO.findMangasBySerieId(id);
+    }
     public boolean doesBookExistById(long id) {
         return bookDAO.existsById(id);
     }
@@ -101,11 +105,9 @@ public class Service {
     public void addBook(Book book) {
         this.bookDAO.save(book);
     }
-
     public void deleteBookById(long id) {
         this.bookDAO.deleteById(id);
     }
-
     public void updateBook(Book book) {
         this.bookDAO.save( book);
     }
@@ -160,6 +162,9 @@ public class Service {
             return this.serieDAO.findGenreBySerieId(id);
     }
 
+    public List<Genre> getGenresByIdIn(List<Long> ids) {
+        return this.genreDAO.findAllById(ids);
+    }
 
     public Optional<Genre> findGenreById(long id){
         return this.genreDAO.findById(id);

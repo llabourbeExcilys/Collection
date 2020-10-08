@@ -15,14 +15,15 @@
 								></v-text-field>
 							</v-col>
 							<v-col :cols="3">
-								<v-select
-									v-model="item.autor"
+								<v-combobox
+									v-model="item.authors"
 									:items="possibleAuthors"
 									:item-text="item => item.firstName + ' ' + item.lastName"
-									:rules="[rules.requiredField]"
-									label="Auteur"
+									:rules="[rules.requiredGenre]"
+									:label="item.authors.length > 1 ? 'Auteurs' : 'Autheur'"
 									outlined
-								></v-select>
+									multiple
+								></v-combobox>
 							</v-col>
 							<v-col :cols="2">
 								<v-select
@@ -31,6 +32,7 @@
 									:item-text="item => item.name"
 									:rules="[rules.requiredField]"
 									label="Editeur"
+									return-object
 									outlined
 								></v-select>
 							</v-col>
@@ -123,15 +125,6 @@
 								></v-text-field>
 							</v-col>
 							<v-col :cols="2">
-								<v-select
-									v-model="item.type"
-									:items="possibleTypes"
-									:rules="[rules.requiredField]"
-									label="Type"
-									outlined
-								></v-select>
-							</v-col>
-							<v-col :cols="2">
 								<v-text-field
 									v-model="item.edition"
 									:rules="[rules.requiredField]"
@@ -139,7 +132,7 @@
 									label="Edition"
 								></v-text-field>
 							</v-col>
-							<v-col :cols="3">
+							<v-col :cols="5">
 								<v-combobox
 									v-model="item.genres"
 									:items="possibleGenres"
@@ -248,9 +241,6 @@
 								{{ item.owned }} / {{ item.published }}
 							</v-chip>
 						</v-col>
-						<v-col :cols="1">
-							{{ item.type }}
-						</v-col>
 						<v-col :cols="3">
 							<v-chip
 								v-for="genre in item.genres"
@@ -326,10 +316,6 @@ export default {
 		isNewItem: {
 			type: Boolean,
 			default: false
-		},
-		possibleTypes: {
-			type: Array,
-			default: () => []
 		},
 		possibleGenres: {
 			type: Array,

@@ -13,13 +13,13 @@ public class Serie {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> mangas;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> fanbooks;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> artbooks;
 
     @ManyToOne
@@ -130,9 +130,8 @@ public class Serie {
         return published;
     }
 
-    public Serie setNumberPublished(int published) {
+    public Serie setPublished(int published) {
         this.published = published;
-
         return this;
     }
 
@@ -145,10 +144,7 @@ public class Serie {
         return this;
     }
 
-    public Serie setPublished(int published) {
-        this.published = published;
-        return this;
-    }
+
 
     public Long getId() {
         return id;

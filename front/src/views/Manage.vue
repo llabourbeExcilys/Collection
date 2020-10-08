@@ -92,7 +92,7 @@
 											</v-col>
 
 											<v-col>
-												<v-btn-toggle v-model="searchGenreType" mandatory>
+												<v-btn-toggle v-model="searchOperator" mandatory>
 													<v-btn> ET </v-btn>
 													<v-btn> OU </v-btn>
 												</v-btn-toggle>
@@ -160,7 +160,7 @@ export default {
 			searchedType: '',
 			searchedAutor: '',
 			searchedGenre: [],
-			searchGenreType: 1,
+			searchOperator: 1,
 			showFilters: false,
 			types: []
 		};
@@ -185,10 +185,10 @@ export default {
 			}
 			if (this.searchedGenre.length > 0) {
 				/* OU */
-				if (this.searchGenreType === 1) {
+				if (this.searchOperator === 1) {
 					filteredItems = filteredItems.filter(item => item.genres.some(x => this.searchedGenre.includes(x)));
 					/* ET */
-				} else if (this.searchGenreType === 0) {
+				} else if (this.searchOperator === 0) {
 					filteredItems = filteredItems.filter(item =>
 						this.searchedGenre.every(x => item.genres.includes(x))
 					);
@@ -232,14 +232,13 @@ export default {
 		addBlankItem() {
 			this.mangaSeries.push({
 				id: -1,
-				autor: '',
+				authors: [],
 				color: '#1565C0FF',
 				title: '',
 				edition: '',
 				editor: '',
 				owned: 0,
 				published: 0,
-				type: '',
 				genres: [],
 				isNewItem: true
 			});
