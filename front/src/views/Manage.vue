@@ -292,15 +292,14 @@ export default {
 			var newItem = this.mangaSeries.find(item => item.id === -1);
 			delete newItem.isNewItem;
 			delete newItem.id;
-			console.log('newItem', newItem);
-			mangaService.addSerie(newItem).then(
+			mangaService.addSerie(newItem).then(() => {
 				mangaService
 					.getSeries()
 					.then(response => {
 						this.mangaSeries = response;
 					})
-					.catch(error => console.log(error))
-			);
+					.catch(error => console.log(error));
+			});
 			this.isNewItem = false;
 		},
 		manageCancelNewItem() {
