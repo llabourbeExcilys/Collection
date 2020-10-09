@@ -89,13 +89,17 @@ public class SerieController {
             } // less manga published
             else if (newPublished < oldPublished){
                 for (int i = oldPublished; i > newPublished; i--){
-                    mangas.remove(i-1);
+                    serie.removeManga(i-1);
                 }
             }
-            for (int i = 1; i <= newPublished; i++){
-                Book book = mangas.get(i - 1);
-                book.setOwned(i <= newOwned);
+            if(serie.getOwned() != newOwned){
+                for (int i = 1; i <= newPublished; i++){
+                    Book book = mangas.get(i - 1);
+                    book.setOwned(i <= newOwned);
+                }
             }
+
+//            serie.setMangas(mangas);
             serie.setOwned(serieDTO.getOwned());
             serie.setPublished(serieDTO.getPublished());
 

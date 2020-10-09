@@ -241,7 +241,7 @@
 								{{ item.owned }} / {{ item.published }}
 							</v-chip>
 						</v-col>
-						<v-col :cols="3">
+						<v-col :cols="4">
 							<v-chip
 								v-for="genre in item.genres"
 								v-bind:key="genre.id"
@@ -256,7 +256,7 @@
 							</v-chip>
 						</v-col>
 						<v-col>
-							<v-row align="center" justify="start">
+							<v-row align="center" justify="center">
 								<v-col :cols="4">
 									<v-tooltip :disabled="show" top>
 										<template v-slot:activator="{ on }">

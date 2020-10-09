@@ -13,13 +13,13 @@ public class Serie {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Book.class, mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> mangas;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Book.class, mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> fanbooks;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity = Book.class, mappedBy = "serie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> artbooks;
 
     @ManyToOne
@@ -62,6 +62,26 @@ public class Serie {
 
     public Serie() {
     }
+
+    public Serie addManga(Book book){
+        this.mangas.add(book);
+        book.setSerie(this);
+        return this;
+    }
+
+    public Serie removeManga(Book book){
+        this.mangas.remove(book);
+        book.setSerie(null);
+        return this;
+    }
+
+    public Serie removeManga(int index){
+        Book book = this.mangas.get(index);
+        book.setSerie(null);
+        this.mangas.remove(index);
+        return this;
+    }
+
 
     public List<Book> getMangas() {
         return mangas;
