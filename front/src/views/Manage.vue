@@ -41,61 +41,73 @@
 									</v-row>
 									<v-expand-transition>
 										<v-row v-show="showFilters">
-											<v-col>
-												<v-autocomplete
-													v-model="searchedEditor"
-													:items="editors"
-													:item-text="item => item.name"
-													background-color="white"
-													dense
-													outlined
-													clearable
-													label="Editeur"
-												></v-autocomplete>
-											</v-col>
-											<v-col>
-												<v-autocomplete
-													v-model="searchedType"
-													:items="types"
-													background-color="white"
-													dense
-													outlined
-													clearable
-													label="Type"
-												></v-autocomplete>
-											</v-col>
-											<v-col>
-												<v-autocomplete
-													v-model="searchedAutor"
-													:items="authors"
-													:item-text="item => item.firstName + ' ' + item.lastName"
-													background-color="white"
-													dense
-													outlined
-													clearable
-													label="Auteur"
-												></v-autocomplete>
-											</v-col>
-
-											<v-col>
-												<v-autocomplete
-													v-model="searchedGenre"
-													:items="genres"
-													:item-text="item => item.name"
-													background-color="white"
-													dense
-													outlined
-													clearable
-													label="Genres"
-													multiple
-												></v-autocomplete>
+											<v-col :cols="7">
+												<v-row align="stretch" justify="space-around">
+													<v-col :cols="4">
+														<v-autocomplete
+															v-model="searchedEditor"
+															:items="editors"
+															:item-text="item => item.name"
+															:item-value="item => item.id"
+															background-color="white"
+															dense
+															outlined
+															clearable
+															label="Editeur"
+														></v-autocomplete>
+													</v-col>
+													<v-col :cols="4">
+														<v-autocomplete
+															v-model="searchedType"
+															:items="types"
+															background-color="white"
+															clearable
+															dense
+															label="Type"
+															outlined
+															return-object
+														></v-autocomplete>
+													</v-col>
+													<v-col :cols="4">
+														<v-autocomplete
+															v-model="searchedAuthor"
+															:items="authors"
+															:item-text="item => item.firstName + ' ' + item.lastName"
+															:item-value="item => item.id"
+															background-color="white"
+															clearable
+															dense
+															outlined
+															label="Auteur"
+														></v-autocomplete>
+													</v-col>
+												</v-row>
 											</v-col>
 
 											<v-col>
-												<v-btn-toggle v-model="searchOperator" mandatory>
-													<v-btn> ET </v-btn>
-													<v-btn> OU </v-btn>
-												</v-btn-toggle>
+												<v-row align="stretch" justify="space-evenly">
+													<v-col :cols="8">
+														<v-autocomplete
+															v-model="searchedGenre"
+															:items="genres"
+															:item-text="item => item.name"
+															:item-value="item => item.id"
+															background-color="white"
+															clearable
+															dense
+															outlined
+															label="Genres"
+															multiple
+														></v-autocomplete>
+													</v-col>
+
+													<v-col :cols="3">
+														<v-btn-toggle dense v-model="searchOperator" mandatory>
+															<v-btn> ET </v-btn>
+															<v-btn> OU </v-btn>
+														</v-btn-toggle>
+													</v-col>
+												</v-row>
 											</v-col>
 										</v-row>
 									</v-expand-transition>
@@ -156,9 +168,9 @@ export default {
 			mangaSeries: [],
 			page: 1,
 			search: '',
-			searchedEditor: '',
+			searchedEditor: null,
 			searchedType: '',
-			searchedAutor: '',
+			searchedAuthor: null,
 			searchedGenre: [],
 			searchOperator: 1,
 			showFilters: false,
@@ -175,22 +187,26 @@ export default {
 			}
 
 			if (this.searchedEditor) {
-				filteredItems = filteredItems.filter(item => item.editor === this.searchedEditor);
+				filteredItems = filteredItems.filter(serie => serie.editor.id === this.searchedEditor);
 			}
 			if (this.searchedType) {
-				filteredItems = filteredItems.filter(item => item.type === this.searchedType);
+				filteredItems = filteredItems.filter(serie => serie.type === this.searchedType);
 			}
-			if (this.searchedAutor) {
-				filteredItems = filteredItems.filter(item => item.autor === this.searchedAutor);
+			if (this.searchedAuthor) {
+				filteredItems = filteredItems.filter(serie =>
+					serie.authors.some(author => author.id === this.searchedAuthor)
+				);
 			}
 			if (this.searchedGenre.length > 0) {
-				/* OU */
+				/* OR operator */
 				if (this.searchOperator === 1) {
-					filteredItems = filteredItems.filter(item => item.genres.some(x => this.searchedGenre.includes(x)));
-					/* ET */
+					filteredItems = filteredItems.filter(serie =>
+						serie.genres.some(genre => this.searchedGenre.includes(genre.id))
+					);
+					/* AND operator */
 				} else if (this.searchOperator === 0) {
-					filteredItems = filteredItems.filter(item =>
-						this.searchedGenre.every(x => item.genres.includes(x))
+					filteredItems = filteredItems.filter(serie =>
+						this.searchedGenre.every(id => serie.genres.some(genre => genre.id === id))
 					);
 				}
 			}
@@ -282,9 +298,9 @@ export default {
 		toggleFilters() {
 			this.showFilters = !this.showFilters;
 			if (!this.showFilters) {
-				this.searchedEditor = '';
+				this.searchedEditor = null;
 				this.searchedType = '';
-				this.searchedAutor = '';
+				this.searchedAuthor = null;
 				this.searchedGenre = [];
 			}
 		},
