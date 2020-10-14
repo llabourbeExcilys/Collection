@@ -26,26 +26,26 @@ public class SerieMapper {
 
     public Serie dtoToSerie(SerieDTO serieDTO){
         return new Serie(serieDTO.getId(),
-                null,
-                null,
-                null,
-                serieDTO.getAuthors().stream().map(author -> this.service.findAuthorById(author.getId()).orElse(null)).collect(Collectors.toList()),
                 serieDTO.getTitle(),
+                null,
+                null,
+                null,
                 this.service.findEditorById(serieDTO.getEditor().getId()).orElse(null),
+                serieDTO.getAuthors().stream().map(author -> this.service.findAuthorById(author.getId()).orElse(null)).collect(Collectors.toList()),
                 serieDTO.getGenres().stream().map(genre -> this.service.findGenreById(genre.getId()).orElse(null)).collect(Collectors.toList()),
                 serieDTO.getEdition(),
                 serieDTO.getOwned(),
-                serieDTO.getPublished());
+                serieDTO.getPublished(),
+                serieDTO.getDefaultColor());
     }
 
     public SerieDTO serieToDTO(Serie serie){
-
-
         SerieDTO serieDTO = new SerieDTO(serie.getId(),
                 serie.getTitle(),
                 serie.getEdition(),
                 serie.getOwned(),
-                serie.getPublished());
+                serie.getPublished(),
+                serie.getDefaultColor());
         serieDTO.setEditor(this.editorMapper.editortoDTO(serie.getEditor()));
         serieDTO.setGenres(serie.getGenres().stream().map(this.genreMapper::genreToDTO).collect(Collectors.toList()));
         serieDTO.setAuthors(serie.getAuthors().stream().map(this.authorMapper::authorToDTO).collect(Collectors.toList()));

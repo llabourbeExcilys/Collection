@@ -12,10 +12,10 @@ public interface SerieDAO extends JpaRepository<Serie, Long> {
 
     List<Serie> findByAuthorsId(long id);
 
-    @Query("Select new com.excilys.loic.collection.binding.SerieDTO(serie.id, serie.title, serie.edition, serie.owned, serie.published) FROM Serie serie")
+    @Query("Select new com.excilys.loic.collection.binding.SerieDTO(serie.id, serie.title, serie.edition, serie.owned, serie.published, serie.defaultColor) FROM Serie serie")
     List<SerieDTO> findAllBy();
 
-    @Query("Select new com.excilys.loic.collection.binding.SerieDTO(serie.id, serie.title, serie.edition, serie.owned, serie.published) FROM Serie serie WHERE serie.id = ?1")
+    @Query("Select new com.excilys.loic.collection.binding.SerieDTO(serie.id, serie.title, serie.edition, serie.owned, serie.published, serie.defaultColor) FROM Serie serie WHERE serie.id = ?1")
     Optional<SerieDTO> findDTOById(long id);
 
     @Query("Select s.mangas FROM Serie s WHERE s.id = ?1")

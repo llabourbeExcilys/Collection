@@ -45,19 +45,21 @@ public class Serie {
 
     private int published;
 
+    private String defaultColor;
 
-    public Serie(Long id, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, List<Author> authors, String title, Editor editor, List<Genre> genres, String edition, int owned, int published) {
+    public Serie(Long id, String title, List<Book> mangas, List<Book> fanbooks, List<Book> artbooks, Editor editor, List<Author> authors, List<Genre> genres, String edition, int owned, int published, String defaultColor) {
         this.id = id;
+        this.title = title;
         this.mangas = mangas;
         this.fanbooks = fanbooks;
         this.artbooks = artbooks;
-        this.authors = authors;
-        this.title = title;
         this.editor = editor;
+        this.authors = authors;
         this.genres = genres;
         this.edition = edition;
         this.owned = owned;
         this.published = published;
+        this.defaultColor = defaultColor;
     }
 
     public Serie() {
@@ -164,8 +166,6 @@ public class Serie {
         return this;
     }
 
-
-
     public Long getId() {
         return id;
     }
@@ -181,6 +181,15 @@ public class Serie {
 
     public Serie setGenres(List<Genre> genres) {
         this.genres = genres;
+        return this;
+    }
+
+    public String getDefaultColor() {
+        return defaultColor;
+    }
+
+    public Serie setDefaultColor(String defaultColor) {
+        this.defaultColor = defaultColor;
         return this;
     }
 }

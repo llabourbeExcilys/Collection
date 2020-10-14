@@ -12,17 +12,19 @@ public class SerieDTO {
     private String edition;
     private int owned;
     private int published;
+    private String defaultColor;
 
 
     public SerieDTO() {
     }
 
-    public SerieDTO(Long id, String title, String edition, int owned, int published) {
+    public SerieDTO(Long id, String title, String edition, int owned, int published,  String defaultColor) {
         this.id = id;
         this.title = title;
         this.edition = edition;
         this.owned = owned;
         this.published = published;
+        this.defaultColor = defaultColor;
     }
 
     public Long getId() {
@@ -94,6 +96,15 @@ public class SerieDTO {
 
     public SerieDTO setAuthors(List<AuthorDTO> authors) {
         this.authors = authors;
+        return this;
+    }
+
+    public String getDefaultColor() {
+        return defaultColor;
+    }
+
+    public SerieDTO setDefaultColor(String defaultColor) {
+        this.defaultColor = defaultColor;
         return this;
     }
 }

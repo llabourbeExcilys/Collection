@@ -85,7 +85,7 @@
 											</v-col>
 
 											<v-col>
-												<v-row align="stretch" justify="space-evenly">
+												<v-row align="stretch" justify="center">
 													<v-col :cols="8">
 														<v-autocomplete
 															v-model="searchedGenre"

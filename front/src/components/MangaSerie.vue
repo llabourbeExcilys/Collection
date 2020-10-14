@@ -157,7 +157,7 @@
 									:numberPublished="item.published"
 									:numberPossessed="item.owned"
 									:mangaDimensions="mangaDimensions"
-									:color="item.color"
+									:color="item.defaultColor"
 								/>
 							</v-col>
 							<v-col :cols="2">
@@ -205,7 +205,7 @@
 							</v-col>
 							<v-col :cols="3">
 								<v-color-picker
-									v-model="item.color"
+									v-model="item.defaultColor"
 									class="ma-2"
 									dot-size="15"
 									hide-canvas
@@ -291,6 +291,7 @@
 								:numberPublished="item.published"
 								:numberPossessed="item.owned"
 								:mangaDimensions="mangaDimensions"
+								:color="item.defaultColor"
 							/>
 						</v-col>
 					</v-row>

@@ -22,6 +22,10 @@ export default {
 			type: String,
 			required: true
 		},
+		color: {
+			type: String,
+			required: true
+		},
 		numberPublished: {
 			type: Number,
 			required: true
@@ -39,7 +43,6 @@ export default {
 		return {
 			books: [],
 			camera: null,
-			color: '#FF0000FF',
 			controls: null,
 			emptySpace: 3,
 			geometry: null,
@@ -73,7 +76,7 @@ export default {
 			}
 		},
 		lightenColor() {
-			const transparency = Math.round(255 * 0.7);
+			const transparency = Math.round(parseInt(this.color.substring(7), 16) * 0.75);
 			return this.computedColor(transparency);
 		},
 		ratio() {

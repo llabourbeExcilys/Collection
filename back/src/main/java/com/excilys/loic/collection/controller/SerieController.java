@@ -60,6 +60,7 @@ public class SerieController {
 
             serie.setTitle(serieDTO.getTitle());
             serie.setEdition(serieDTO.getEdition());
+            serie.setDefaultColor(serieDTO.getDefaultColor());
 
             // authors
             List<AuthorDTO> authorDTOS = serieDTO.getAuthors();
@@ -76,17 +77,18 @@ public class SerieController {
             List<Genre> genres = this.service.getGenresByIdIn(ids);
             serie.setGenres(genres);
 
+            //mangas
             List<Book> mangas = serie.getMangas();
             int oldPublished = serie.getPublished();
             int newOwned = serieDTO.getOwned();
             int newPublished= serieDTO.getPublished();
 
-            // more mangas published
+                // more mangas published
             if( oldPublished < newPublished){
                 for (int i = oldPublished+1; i <= newPublished; i++){
                     mangas.add(new Book(null, serie.getTitle(), null, serie, "red", false, i, Type.MANGA));
                 }
-            } // less manga published
+            }   // less manga published
             else if (newPublished < oldPublished){
                 for (int i = oldPublished; i > newPublished; i--){
                     serie.removeManga(i-1);
@@ -98,10 +100,9 @@ public class SerieController {
                     book.setOwned(i <= newOwned);
                 }
             }
-
-//            serie.setMangas(mangas);
             serie.setOwned(serieDTO.getOwned());
             serie.setPublished(serieDTO.getPublished());
+
 
             this.service.updateSerie(serie);
         }
