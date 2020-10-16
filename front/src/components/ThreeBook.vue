@@ -86,6 +86,7 @@ export default {
 	watch: {
 		mangaDimensions() {
 			this.setBooksScale();
+			this.setCameraPosition();
 		},
 		color() {
 			let colorOwned = parseInt(this.pickedRGBColor.substring(1), 16);
@@ -116,6 +117,7 @@ export default {
 
 				this.camera.aspect = this.ratio;
 				this.camera.updateProjectionMatrix();
+				this.setCameraPosition();
 				this.renderer.setSize(this.rendererWidth, this.rendererHeight);
 			}
 
@@ -156,11 +158,8 @@ export default {
 			let container = document.getElementById(this.canvaName);
 			container.appendChild(this.renderer.domElement);
 
-			this.camera = new THREE.PerspectiveCamera(60, this.ratio, 1, 5000);
-			this.camera.position.z = this.numberPublished * 12 + 500;
-			// this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
-			this.camera.position.y = this.numberPublished + 100 + this.mangaDimensions.height / 4;
-			this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
+			this.camera = new THREE.PerspectiveCamera(50, this.ratio, 1, 5000);
+			this.setCameraPosition();
 
 			this.scene = new THREE.Scene();
 			this.scene.background = new THREE.Color(0xf7f9f9);
@@ -169,28 +168,23 @@ export default {
 			loader.load(
 				'/models/scene.gltf',
 				gltf => {
-					var obj3D = gltf.scene;
-					// console.log('obj3D', obj3D);
+					var root = gltf.scene;
+					this.scene.add(root);
+					console.log('scene', root);
 
-					var objectToRemove = obj3D.children[0].children[0].children[0].children[0];
-					var parent = objectToRemove.parent;
-					parent.remove(objectToRemove);
+					var parent = root.children[0].children[0].children[0];
+					// console.log('parent', parent);
 
-					objectToRemove = obj3D.children[0].children[0].children[0].children[0];
-					parent = objectToRemove.parent;
-					parent.remove(objectToRemove);
+					parent.remove(parent.children[0]);
+					// console.log('parent.children[0])', parent.children[0]);
+					// parent.remove(parent.children[0]);
+					// console.log('parent.children[0])', parent.children[0]);
+					var object = parent.children[0];
+					console.log('object)', object);
 
-					var object = obj3D.children[0].children[0].children[0].children[0];
-
-					object.position.x = 0;
-					object.position.y = 0;
-					object.position.z = -(this.mangaDimensions.height / 2 + 20);
+					object.position.set(0, 0, 0);
+					object.scale.set(100, 100, 100);
 					object.rotateZ(1.5708);
-
-					object.scale.x = 100;
-					object.scale.y = 100;
-					object.scale.z = 100;
-					this.scene.add(gltf.scene);
 				},
 				xhr => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
 				error => console.error(error)
@@ -198,10 +192,9 @@ export default {
 
 			this.scene.add(new THREE.AmbientLight(0xffffff));
 
-			let light = new THREE.SpotLight(0xffffff);
-			light.position.set(0, 1000, 500);
+			let light = new THREE.SpotLight(0xffffff, 0.8);
+			light.position.set(0, 1000, 1000);
 			light.target = this.scene.children[0];
-
 			light.shadow.camera.near = 1;
 			light.shadow.camera.far = 4000;
 			light.shadow.mapSize.width = 1024;
@@ -215,7 +208,7 @@ export default {
 			this.mouse = new THREE.Vector2();
 			container.addEventListener('mousemove', this.onMouseMove, false);
 
-			// var axesHelper = new THREE.AxesHelper(500);
+			// var axesHelper = new THREE.AxesHelper(600);
 			// this.scene.add(axesHelper);
 		},
 		onMouseMove(event) {
@@ -230,11 +223,13 @@ export default {
 			this.books = [];
 			this.addBooks();
 			this.setBooksScale();
+			this.setCameraPosition();
 			this.animate();
 		},
 		addBooks() {
 			let bookWidth = this.mangaDimensions.width;
-			let bookTotalSpace = bookWidth + this.emptySpace;
+			let bookHeight = this.mangaDimensions.height;
+			let bookTotalSpaceWidth = bookWidth + this.emptySpace;
 			let geometry = new THREE.BoxGeometry(1, 1, 1);
 			for (var i = 0; i < this.numberPublished; i++) {
 				let color;
@@ -246,7 +241,10 @@ export default {
 				}
 
 				var manga = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: color }));
-				manga.position.x = i * bookTotalSpace - (this.numberPublished / 2) * bookTotalSpace + bookWidth / 2;
+				manga.position.x =
+					i * bookTotalSpaceWidth - (this.numberPublished / 2) * bookTotalSpaceWidth + bookWidth / 2;
+				manga.position.y = bookHeight / 2 + 20;
+
 				manga.castShadow = true;
 				manga.receiveShadow = true;
 				this.scene.add(manga);
@@ -264,9 +262,9 @@ export default {
 					let middle = (this.books.length - 1) / 2;
 					book.translateX(diffWidth * (index - middle));
 
-					this.camera.position.z = this.camera.position.z + diffWidth / 3;
-					this.camera.position.y = this.camera.position.y + diffWidth / 5;
-					this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
+					// this.camera.position.z = this.camera.position.z + diffWidth / 3;
+					// this.camera.position.y = this.camera.position.y + diffWidth / 5;
+					// this.camera.lookAt(0, 0, this.mangaDimensions.height / 2);
 				}
 
 				let diffHeight = this.mangaDimensions.height - this.previousMangaDimensions.height;
@@ -275,6 +273,17 @@ export default {
 				}
 			});
 			this.previousMangaDimensions = cloneDeep(this.mangaDimensions);
+		},
+		setCameraPosition() {
+			if (this.editMode) {
+				this.camera.position.z = 950;
+				this.camera.position.y = this.mangaDimensions.height + 120;
+				this.camera.lookAt(0, 0, -this.mangaDimensions.height / 2);
+			} else {
+				this.camera.position.z = 750;
+				this.camera.position.y = this.mangaDimensions.height + 100;
+				this.camera.lookAt(0, 0, -this.mangaDimensions.height / 2);
+			}
 		},
 		computedColor(transparency) {
 			const color_r = parseInt(this.color.substring(1, 3), 16);

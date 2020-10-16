@@ -1,6 +1,6 @@
 import ApiService from '@/services/ApiService';
 
-const baseUrl = 'http://localhost:9080';
+const baseUrl = 'http://localhost:9070';
 
 const MangaService = {
 	getGenres: () => ApiService.get(baseUrl + '/genre'),
