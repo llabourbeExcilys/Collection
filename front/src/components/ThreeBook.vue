@@ -6,7 +6,6 @@
 
 <script type="module">
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { cloneDeep } from 'lodash';
 
 export default {
@@ -35,6 +34,10 @@ export default {
 			required: true
 		},
 		mangaDimensions: {
+			type: Object,
+			required: true
+		},
+		gltfScene: {
 			type: Object,
 			required: true
 		}
@@ -163,33 +166,7 @@ export default {
 
 			this.scene = new THREE.Scene();
 			this.scene.background = new THREE.Color(0xf7f9f9);
-
-			const loader = new GLTFLoader();
-			loader.load(
-				'/models/scene.gltf',
-				gltf => {
-					var root = gltf.scene;
-					this.scene.add(root);
-					console.log('scene', root);
-
-					var parent = root.children[0].children[0].children[0];
-					// console.log('parent', parent);
-
-					parent.remove(parent.children[0]);
-					// console.log('parent.children[0])', parent.children[0]);
-					// parent.remove(parent.children[0]);
-					// console.log('parent.children[0])', parent.children[0]);
-					var object = parent.children[0];
-					console.log('object)', object);
-
-					object.position.set(0, 0, 0);
-					object.scale.set(100, 100, 100);
-					object.rotateZ(1.5708);
-				},
-				xhr => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
-				error => console.error(error)
-			);
-
+			this.scene.add(this.gltfScene);
 			this.scene.add(new THREE.AmbientLight(0xffffff));
 
 			let light = new THREE.SpotLight(0xffffff, 0.8);

@@ -153,6 +153,7 @@
 							<v-col :cols="6">
 								<threebook
 									:editMode="edit"
+									:gltfScene="gltfScene"
 									:title="item.title"
 									:numberPublished="item.published"
 									:numberPossessed="item.owned"
@@ -287,6 +288,7 @@
 						<v-col :cols="10">
 							<threebook
 								:editMode="edit"
+								:gltfScene="gltfScene"
 								:title="item.title"
 								:numberPublished="item.published"
 								:numberPossessed="item.owned"
@@ -329,6 +331,10 @@ export default {
 		possibleEditors: {
 			type: Array,
 			default: () => []
+		},
+		gltfScene: {
+			type: Object,
+			required: false
 		}
 	},
 	data() {
@@ -383,10 +389,6 @@ export default {
 		clickEdit() {
 			this.edit = true;
 			this.show = true;
-			// if (this.edit) {
-			// 	this.$emit('clickEdit', this.item);
-			// }
-			// this.edit = !this.edit;
 		},
 		clickRemoveItem() {
 			this.$emit('remove-item', this.item);

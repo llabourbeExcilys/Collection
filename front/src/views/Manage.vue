@@ -119,6 +119,7 @@
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
 									<MangaSerie
+										:gltfScene="gltfScene"
 										:item="item"
 										:isNewItem="item.isNewItem"
 										:possibleAuthors="authors"
@@ -151,6 +152,7 @@
 <script>
 import MangaSerie from '@/components/MangaSerie';
 import mangaService from '@/services/MangaService';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export default {
 	name: 'manage',
@@ -164,6 +166,7 @@ export default {
 			editors: [],
 			// seriesEditedMap: {},
 			genres: [],
+			gltfScene: null,
 			isNewItem: false,
 			mangaSeries: [],
 			page: 1,
@@ -243,6 +246,29 @@ export default {
 				this.editors = response;
 			})
 			.catch(error => console.log(error));
+		const loader = new GLTFLoader();
+		loader.load(
+			'/models/scene.gltf',
+			gltf => {
+				this.gltfScene = gltf.scene;
+
+				var parent = this.gltfScene.children[0].children[0].children[0];
+				// console.log('parent', parent);
+
+				parent.remove(parent.children[0]);
+				// console.log('parent.children[0])', parent.children[0]);
+				// parent.remove(parent.children[0]);
+				// console.log('parent.children[0])', parent.children[0]);
+				var object = parent.children[0];
+				console.log('object)', object);
+
+				object.position.set(0, 0, 0);
+				object.scale.set(100, 100, 100);
+				object.rotateZ(1.5708);
+			},
+			xhr => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
+			error => console.error(error)
+		);
 	},
 	methods: {
 		addBlankItem() {
