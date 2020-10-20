@@ -165,7 +165,9 @@ export default {
 			this.setCameraPosition();
 
 			this.scene = new THREE.Scene();
-			this.scene.background = new THREE.Color(0xf7f9f9);
+			// this.scene.background = new THREE.Color(0xf7f9f9);
+			this.scene.background = new THREE.Color(0xffffff);
+
 			this.scene.add(this.gltfScene);
 			this.scene.add(new THREE.AmbientLight(0xffffff));
 
@@ -253,7 +255,7 @@ export default {
 		},
 		setCameraPosition() {
 			if (this.editMode) {
-				this.camera.position.z = 950;
+				this.camera.position.z = 920 + this.numberPublished;
 				this.camera.position.y = this.mangaDimensions.height + 120;
 				this.camera.lookAt(0, 0, -this.mangaDimensions.height / 2);
 			} else {
