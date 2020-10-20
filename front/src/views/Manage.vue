@@ -119,8 +119,8 @@
 							<v-row>
 								<v-col v-for="item in props.items" :key="item.id" cols="12">
 									<MangaSerie
+										:baseItem="item"
 										:gltfScene="gltfScene"
-										:item="item"
 										:isNewItem="item.isNewItem"
 										:possibleAuthors="authors"
 										:possibleEditors="editors"

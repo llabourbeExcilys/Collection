@@ -66,7 +66,7 @@
 										<v-col :cols="3">
 											<v-tooltip top>
 												<template v-slot:activator="{ on }">
-													<v-btn v-on="on" icon @click="clickValidateEdition">
+													<v-btn v-on="on" icon @click="clickValidateEdition" :disabled="!isModified">
 														<v-icon color="green">mdi-check-bold</v-icon>
 													</v-btn>
 												</template>
@@ -305,17 +305,15 @@
 
 <script>
 import threebook from '@/components/ThreeBook';
+import restorableItem from '@/components/extends/RestorableItem';
 
 export default {
 	name: 'manga-serie',
 	components: {
 		threebook
 	},
+	mixins: [restorableItem],
 	props: {
-		item: {
-			type: Object,
-			required: true
-		},
 		isNewItem: {
 			type: Boolean,
 			default: false
@@ -372,19 +370,20 @@ export default {
 			return this.item.published;
 		}
 	},
-	watch: {
-		owned() {
-			this.$refs.form.validate();
-		},
-		published() {
-			this.$refs.form.validate();
+	mounted() {
+		function validate() {
+			if (this.validatingItem) {
+				this.$refs.form.validate();
+			}
 		}
+		this.$watch('owned', validate);
+		this.$watch('published', validate);
 	},
-	mounted() {},
 	methods: {
 		clickCancel() {
 			this.edit = false;
 			this.show = false;
+			this.restore();
 		},
 		clickEdit() {
 			this.edit = true;
