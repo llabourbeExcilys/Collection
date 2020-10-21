@@ -306,6 +306,7 @@
 <script>
 import threebook from '@/components/ThreeBook';
 import restorableItem from '@/components/extends/RestorableItem';
+import { isEmpty } from 'lodash';
 
 export default {
 	name: 'manga-serie',
@@ -349,7 +350,7 @@ export default {
 					owned <= this.item.published || 'Ne peut être supérieur au nombre publié',
 				numberToPublishedCantBeInfToOwned: published =>
 					published >= this.item.owned || 'Ne peut être inférieur au nombre possédé',
-				requiredField: value => !this.validatingItem || !!value || 'Champs requis',
+				requiredField: value => !this.validatingItem || (!isEmpty(value) && !!value) || 'Champs requis',
 				requiredGenre: value =>
 					!this.validatingItem || (!!value && value.length > 0) || 'Au moins un genre requis'
 			}
@@ -398,7 +399,7 @@ export default {
 			this.validatingItem = true;
 			if (this.$refs.form.validate()) {
 				if (this.isNewItem) {
-					this.$emit('click-add-new-item');
+					this.$emit('click-add-new-item', this.item);
 				} else {
 					this.$emit('edit-item', this.item);
 				}

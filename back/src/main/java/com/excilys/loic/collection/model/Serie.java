@@ -23,6 +23,7 @@ public class Serie {
     private List<Book> artbooks;
 
     @ManyToOne
+    @JoinColumn(name="editor_id", nullable = false)
     private Editor editor;
 
     @ManyToMany

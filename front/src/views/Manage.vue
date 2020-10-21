@@ -275,10 +275,10 @@ export default {
 			this.mangaSeries.push({
 				id: -1,
 				authors: [],
-				color: '#1565C0FF',
+				defaultColor: '#1565C0FF',
 				title: '',
 				edition: '',
-				editor: '',
+				editor: {},
 				owned: 0,
 				published: 0,
 				genres: [],
@@ -330,8 +330,7 @@ export default {
 				this.searchedGenre = [];
 			}
 		},
-		manageAddItem() {
-			var newItem = this.mangaSeries.find(item => item.id === -1);
+		manageAddItem(newItem) {
 			delete newItem.isNewItem;
 			delete newItem.id;
 			mangaService.addSerie(newItem).then(() => {
