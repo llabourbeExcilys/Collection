@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: '/',
-		redirect: '/collection'
+		redirect: '/collection/manage/serie'
 	},
 	{
 		path: '/collection',
@@ -30,7 +30,29 @@ const routes = [
 			{
 				path: 'manage',
 				name: 'Manage',
-				component: () => import(/* webpackChunkName: "about" */ '@/views/Manage.vue')
+				component: () => import(/* webpackChunkName: "about" */ '@/views/manage/Manage.vue'),
+				children: [
+					{
+						path: 'serie',
+						name: 'Serie',
+						component: () => import(/* webpackChunkName: "about" */ '@/views/manage/ManageSerie.vue')
+					},
+					{
+						path: 'author',
+						name: 'Author',
+						component: () => import(/* webpackChunkName: "about" */ '@/views/manage/ManageAuthor.vue')
+					},
+					{
+						path: 'editor',
+						name: 'Editor',
+						component: () => import(/* webpackChunkName: "about" */ '@/views/manage/ManageEditor.vue')
+					},
+					{
+						path: 'genre',
+						name: 'Genre',
+						component: () => import(/* webpackChunkName: "about" */ '@/views/manage/ManageGenre.vue')
+					}
+				]
 			}
 		]
 	}

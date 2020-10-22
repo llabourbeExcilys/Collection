@@ -1,152 +1,150 @@
 <template>
-	<div>
-		<v-container>
-			<v-row align="center" justify="center">
-				<v-col :cols="9">
-					<v-data-iterator
-						hide-default-footer
-						row
-						wrap
-						:items-per-page="5"
-						:items="filteredItems"
-						:page.sync="page"
-						:search="search"
-					>
-						<template v-slot:header>
-							<v-card color="grey lighten-3">
-								<v-container>
-									<v-row align="center">
-										<v-col cols="8">
-											<v-text-field
-												v-model="search"
-												clearable
-												flat
-												solo
-												hide-details
-												append-icon="mdi-magnify"
-												label="Chercher une oeuvre, un éditeur, un genre..."
-											/>
+	<v-container>
+		<v-row align="center" justify="center">
+			<v-col :cols="9">
+				<v-data-iterator
+					hide-default-footer
+					row
+					wrap
+					:items-per-page="5"
+					:items="filteredItems"
+					:page.sync="page"
+					:search="search"
+				>
+					<template v-slot:header>
+						<v-card color="grey lighten-3">
+							<v-container>
+								<v-row align="center">
+									<v-col cols="8">
+										<v-text-field
+											v-model="search"
+											clearable
+											flat
+											solo
+											hide-details
+											append-icon="mdi-magnify"
+											label="Chercher une oeuvre, un éditeur, un genre..."
+										/>
+									</v-col>
+									<v-spacer></v-spacer>
+									<v-col>
+										<v-btn v-if="!isNewItem" large depressed color="grey lighten-1" @click="addBlankItem"
+											>Ajouter</v-btn
+										>
+									</v-col>
+									<v-col>
+										<v-btn large depressed color="grey lighten-1" @click="toggleFilters"
+											>Filtrer {{ showFilters ? '-' : '+' }}</v-btn
+										>
+									</v-col>
+								</v-row>
+								<v-expand-transition>
+									<v-row v-show="showFilters">
+										<v-col :cols="7">
+											<v-row align="stretch" justify="space-around">
+												<v-col :cols="4">
+													<v-autocomplete
+														v-model="searchedEditor"
+														:items="editors"
+														:item-text="item => item.name"
+														:item-value="item => item.id"
+														background-color="white"
+														dense
+														outlined
+														clearable
+														label="Editeur"
+													></v-autocomplete>
+												</v-col>
+												<v-col :cols="4">
+													<v-autocomplete
+														v-model="searchedType"
+														:items="types"
+														background-color="white"
+														clearable
+														dense
+														label="Type"
+														outlined
+														return-object
+													></v-autocomplete>
+												</v-col>
+												<v-col :cols="4">
+													<v-autocomplete
+														v-model="searchedAuthor"
+														:items="authors"
+														:item-text="item => item.firstName + ' ' + item.lastName"
+														:item-value="item => item.id"
+														background-color="white"
+														clearable
+														dense
+														outlined
+														label="Auteur"
+													></v-autocomplete>
+												</v-col>
+											</v-row>
 										</v-col>
-										<v-spacer></v-spacer>
+
 										<v-col>
-											<v-btn v-if="!isNewItem" large depressed color="grey lighten-1" @click="addBlankItem"
-												>Ajouter</v-btn
-											>
-										</v-col>
-										<v-col>
-											<v-btn large depressed color="grey lighten-1" @click="toggleFilters"
-												>Filtrer {{ showFilters ? '-' : '+' }}</v-btn
-											>
+											<v-row align="stretch" justify="center">
+												<v-col :cols="8">
+													<v-autocomplete
+														v-model="searchedGenre"
+														:items="genres"
+														:item-text="item => item.name"
+														:item-value="item => item.id"
+														background-color="white"
+														clearable
+														dense
+														outlined
+														label="Genres"
+														multiple
+													></v-autocomplete>
+												</v-col>
+
+												<v-col :cols="3">
+													<v-btn-toggle dense v-model="searchOperator" mandatory>
+														<v-btn> ET </v-btn>
+														<v-btn> OU </v-btn>
+													</v-btn-toggle>
+												</v-col>
+											</v-row>
 										</v-col>
 									</v-row>
-									<v-expand-transition>
-										<v-row v-show="showFilters">
-											<v-col :cols="7">
-												<v-row align="stretch" justify="space-around">
-													<v-col :cols="4">
-														<v-autocomplete
-															v-model="searchedEditor"
-															:items="editors"
-															:item-text="item => item.name"
-															:item-value="item => item.id"
-															background-color="white"
-															dense
-															outlined
-															clearable
-															label="Editeur"
-														></v-autocomplete>
-													</v-col>
-													<v-col :cols="4">
-														<v-autocomplete
-															v-model="searchedType"
-															:items="types"
-															background-color="white"
-															clearable
-															dense
-															label="Type"
-															outlined
-															return-object
-														></v-autocomplete>
-													</v-col>
-													<v-col :cols="4">
-														<v-autocomplete
-															v-model="searchedAuthor"
-															:items="authors"
-															:item-text="item => item.firstName + ' ' + item.lastName"
-															:item-value="item => item.id"
-															background-color="white"
-															clearable
-															dense
-															outlined
-															label="Auteur"
-														></v-autocomplete>
-													</v-col>
-												</v-row>
-											</v-col>
+								</v-expand-transition>
+							</v-container>
+						</v-card>
+					</template>
 
-											<v-col>
-												<v-row align="stretch" justify="center">
-													<v-col :cols="8">
-														<v-autocomplete
-															v-model="searchedGenre"
-															:items="genres"
-															:item-text="item => item.name"
-															:item-value="item => item.id"
-															background-color="white"
-															clearable
-															dense
-															outlined
-															label="Genres"
-															multiple
-														></v-autocomplete>
-													</v-col>
-
-													<v-col :cols="3">
-														<v-btn-toggle dense v-model="searchOperator" mandatory>
-															<v-btn> ET </v-btn>
-															<v-btn> OU </v-btn>
-														</v-btn-toggle>
-													</v-col>
-												</v-row>
-											</v-col>
-										</v-row>
-									</v-expand-transition>
-								</v-container>
-							</v-card>
-						</template>
-
-						<template v-slot:default="props">
-							<v-row>
-								<v-col v-for="item in props.items" :key="item.id" cols="12">
-									<MangaSerie
-										:baseItem="item"
-										:gltfScene="gltfScene"
-										:isNewItem="item.isNewItem"
-										:possibleAuthors="authors"
-										:possibleEditors="editors"
-										:possibleGenres="genres"
-										:possibleTypes="types"
-										@edit-item="manageEdit"
-										@remove-item="manageRemove"
-										@click-add-new-item="manageAddItem"
-										@click-cancel-new-item="manageCancelNewItem"
-									/>
-								</v-col>
-							</v-row>
-						</template>
-						<template v-slot:footer="{ options, pagination, updateOptions }">
-							<v-data-footer
-								:class="'d-flex justify-center'"
-								:options="options"
-								:pagination="pagination"
-								@update:options="updateOptions"
-							>
-							</v-data-footer>
-						</template> </v-data-iterator
-				></v-col>
-			</v-row>
-		</v-container>
-	</div>
+					<template v-slot:default="props">
+						<v-row>
+							<v-col v-for="item in props.items" :key="item.id" cols="12">
+								<MangaSerie
+									:baseItem="item"
+									:gltfScene="gltfScene"
+									:isNewItem="item.isNewItem"
+									:possibleAuthors="authors"
+									:possibleEditors="editors"
+									:possibleGenres="genres"
+									:possibleTypes="types"
+									@edit-item="manageEdit"
+									@remove-item="manageRemove"
+									@click-add-new-item="manageAddItem"
+									@click-cancel-new-item="manageCancelNewItem"
+								/>
+							</v-col>
+						</v-row>
+					</template>
+					<template v-slot:footer="{ options, pagination, updateOptions }">
+						<v-data-footer
+							:class="'d-flex justify-center'"
+							:options="options"
+							:pagination="pagination"
+							@update:options="updateOptions"
+						>
+						</v-data-footer>
+					</template> </v-data-iterator
+			></v-col>
+		</v-row>
+	</v-container>
 </template>
 
 <script>
@@ -253,12 +251,8 @@ export default {
 				this.gltfScene = gltf.scene;
 
 				var parent = this.gltfScene.children[0].children[0].children[0];
-				// console.log('parent', parent);
-
-				parent.remove(parent.children[0]);
-				// console.log('parent.children[0])', parent.children[0]);
 				// parent.remove(parent.children[0]);
-				// console.log('parent.children[0])', parent.children[0]);
+				// parent.remove(parent.children[0]);
 				var object = parent.children[0];
 				console.log('object)', object);
 

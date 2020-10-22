@@ -150,6 +150,7 @@ export default {
 
 		init() {
 			this.renderer = new THREE.WebGLRenderer({ antialias: true });
+			this.renderer.physicallyCorrectLights = true;
 			this.renderer.setPixelRatio(window.devicePixelRatio);
 
 			this.rendererWidth = this.$refs.canva.clientWidth;
@@ -171,7 +172,7 @@ export default {
 			this.scene.add(this.gltfScene);
 			this.scene.add(new THREE.AmbientLight(0xffffff));
 
-			let light = new THREE.SpotLight(0xffffff, 0.8);
+			let light = new THREE.SpotLight(0xffffff, 4000);
 			light.position.set(0, 1000, 1000);
 			light.target = this.scene.children[0];
 			light.shadow.camera.near = 1;
