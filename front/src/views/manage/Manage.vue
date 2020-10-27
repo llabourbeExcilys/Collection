@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<v-tabs>
-			<v-tab @click="push('Serie')">Series</v-tab>
-			<v-tab @click="push('Author')">Autheurs</v-tab>
-			<v-tab @click="push('Genre')">Genres</v-tab>
-			<v-tab @click="push('Editor')">Editeurs</v-tab>
+			<v-tab :to="{ name: 'Serie' }">Series</v-tab>
+			<v-tab :to="{ name: 'Author' }">Autheurs</v-tab>
+			<v-tab :to="{ name: 'Genre' }">Genres</v-tab>
+			<v-tab :to="{ name: 'Editor' }">Editeurs</v-tab>
 		</v-tabs>
 		<router-view></router-view>
 	</div>
@@ -19,11 +19,7 @@ export default {
 	},
 	computed: {},
 	mounted() {},
-	methods: {
-		push(name) {
-			this.$router.push({ name: name });
-		}
-	}
+	methods: {}
 };
 </script>
 <style scoped></style>

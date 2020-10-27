@@ -63,7 +63,7 @@ export default {
 				{
 					icon: 'mdi-pencil',
 					title: 'Editer',
-					to: '/collection/manage'
+					to: '/collection/manage/serie'
 				},
 				{
 					icon: 'mdi-library-shelves',
