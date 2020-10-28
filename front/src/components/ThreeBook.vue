@@ -36,10 +36,6 @@ export default {
 		mangaDimensions: {
 			type: Object,
 			required: true
-		},
-		gltfScene: {
-			type: Object,
-			required: true
 		}
 	},
 	data: function() {
@@ -169,7 +165,15 @@ export default {
 			// this.scene.background = new THREE.Color(0xf7f9f9);
 			this.scene.background = new THREE.Color(0xffffff);
 
-			this.scene.add(this.gltfScene);
+			const gltfScene = this.$store.state.woodPlankScene;
+			if (gltfScene == null) {
+				this.$store.dispatch('loadWoodPlankScene').then(() => {
+					this.scene.add(this.$store.state.woodPlankScene);
+				});
+			} else {
+				this.scene.add(this.$store.state.woodPlankScene);
+			}
+
 			this.scene.add(new THREE.AmbientLight(0xffffff));
 
 			let light = new THREE.SpotLight(0xffffff, 4000);

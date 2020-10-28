@@ -339,8 +339,8 @@ export default {
 	data() {
 		return {
 			validatingItem: false,
-			edit: this.isNewItem ? true : false,
-			show: this.isNewItem ? true : false,
+			edit: this.isNewItem,
+			show: this.isNewItem,
 			mangaWidth: 17,
 			mangaHeight: 184,
 			mangaDepth: 130,
