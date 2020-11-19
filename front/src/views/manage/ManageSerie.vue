@@ -119,7 +119,6 @@
 							<v-col v-for="item in props.items" :key="item.id" cols="12">
 								<MangaSerie
 									:baseItem="item"
-									:gltfScene="gltfScene"
 									:isNewItem="item.isNewItem"
 									:possibleAuthors="authors"
 									:possibleEditors="editors"
@@ -162,7 +161,6 @@ export default {
 			books: [],
 			editors: [],
 			genres: [],
-			gltfScene: null,
 			isNewItem: false,
 			mangaSeries: [],
 			page: 1,
@@ -327,7 +325,7 @@ export default {
 			mangaService.updateSerie(item).then(() => this.loadMangaSeries());
 		},
 		manageRemove(item) {
-			mangaService.removeSerie(item.id).then(() => this.loadMangaSeries());
+			mangaService.deleteSerie(item.id).then(() => this.loadMangaSeries());
 		}
 	}
 };

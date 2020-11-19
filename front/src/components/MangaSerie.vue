@@ -288,7 +288,6 @@
 						<v-col :cols="10">
 							<threebook
 								:editMode="edit"
-								:gltfScene="gltfScene"
 								:title="item.title"
 								:numberPublished="item.published"
 								:numberPossessed="item.owned"
@@ -330,10 +329,6 @@ export default {
 		possibleEditors: {
 			type: Array,
 			default: () => []
-		},
-		gltfScene: {
-			type: Object,
-			required: false
 		}
 	},
 	data() {
