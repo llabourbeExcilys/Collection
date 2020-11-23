@@ -6,14 +6,6 @@ export default {
 		baseItem: {
 			type: Object,
 			required: true
-		},
-		isBlocked: {
-			type: Boolean,
-			default: false
-		},
-		isNew: {
-			type: Boolean,
-			default: false
 		}
 	},
 	data() {
