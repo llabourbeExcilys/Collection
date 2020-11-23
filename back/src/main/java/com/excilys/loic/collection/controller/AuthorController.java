@@ -48,9 +48,9 @@ public class AuthorController {
         this.service.addAuthor(author);
     }
 
-    @PutMapping
-    public void putAuthor(@RequestBody AuthorDTO authorDTO){
-        if(this.service.doesAuthorExistById(authorDTO.getId())){
+    @PutMapping("/{id}")
+    public void putAuthor(@RequestBody AuthorDTO authorDTO, @PathVariable long id){
+        if(authorDTO.getId() == id && this.service.doesAuthorExistById(authorDTO.getId())){
             Author author = this.service.getAuthorById(authorDTO.getId());
             author.setFirstName(authorDTO.getFirstName());
             author.setLastName(authorDTO.getLastName());
