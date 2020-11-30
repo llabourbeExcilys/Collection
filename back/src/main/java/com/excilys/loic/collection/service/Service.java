@@ -170,6 +170,10 @@ public class Service {
         return this.genreDAO.findById(id);
     }
 
+    public boolean doesGenreExistById(long id) {
+        return genreDAO.existsById(id);
+    }
+
     public Optional<GenreDTO> findGenreDTOById(long id){
         return this.genreDAO.findDTOById(id);
     }

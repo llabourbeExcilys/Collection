@@ -40,9 +40,11 @@ public class GenreController {
         this.service.addGenre(genre);
     }
 
-    @PutMapping
-    public void putGenre(@RequestBody GenreDTO genreDTO){
-        this.service.updateGenre(genreMapper.dtoToGenre(genreDTO));
+    @PutMapping("/{id}")
+    public void putGenre(@RequestBody GenreDTO genreDTO, @PathVariable long id){
+        if(genreDTO.getId() == id && this.service.doesGenreExistById(genreDTO.getId())) {
+            this.service.updateGenre(genreMapper.dtoToGenre(genreDTO));
+        }
     }
 
     @DeleteMapping("/{id}")

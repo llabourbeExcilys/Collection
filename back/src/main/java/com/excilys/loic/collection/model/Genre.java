@@ -1,5 +1,7 @@
 package com.excilys.loic.collection.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Genre {
     @Column(nullable = false)
     private String name;
 
+    @Type(type = "text")
     private String description;
 
     @ManyToMany(mappedBy = "genres")

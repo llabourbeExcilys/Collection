@@ -15,7 +15,7 @@
 							<v-spacer />
 							<v-col cols="3">
 								<v-btn icon>
-									<v-icon color="red" v-show="hover" @click="deleteAuthor">mdi-close-circle</v-icon>
+									<v-icon color="red lighten-2" v-show="hover" @click="deleteAuthor">mdi-close-circle</v-icon>
 								</v-btn>
 							</v-col>
 						</v-row>
@@ -75,7 +75,7 @@ import { isEmpty } from 'lodash';
 import restorableItem from '@/components/extends/RestorableItem';
 
 export default {
-	name: 'ManageAuthors',
+	name: 'Author',
 	components: {},
 	mixins: [restorableItem],
 	props: {},
