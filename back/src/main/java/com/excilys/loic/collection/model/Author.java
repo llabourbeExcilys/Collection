@@ -13,7 +13,7 @@ public class Author {
     private String firstName;
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors",cascade = CascadeType.REMOVE)
     private List<Serie> series;
 
 

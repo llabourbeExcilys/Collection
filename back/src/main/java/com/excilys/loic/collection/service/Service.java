@@ -226,6 +226,11 @@ public class Service {
         return this.serieDAO.findByAuthorsId(id);
     }
 
+    public List<Serie> getSeriesByGenresId(long id){
+        return this.serieDAO.findByGenresId(id);
+    }
+
+
     public boolean doesSerieExistById(long id) {
         return serieDAO.existsById(id);
     }
