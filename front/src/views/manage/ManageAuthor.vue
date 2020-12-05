@@ -73,7 +73,7 @@
 
 					<template v-slot:default="props">
 						<v-row>
-							<v-col v-for="item in props.items" :key="item.id" cols="3">
+							<v-col v-for="item in props.items" :key="item.id" :cols="colWidth">
 								<author :baseItem="item" @delete-author-event="deleteAuthor" @edit-author-event="editAuthor">
 								</author>
 							</v-col>
@@ -82,6 +82,7 @@
 					<template v-slot:footer="{ options, pagination, updateOptions }">
 						<v-data-footer
 							:class="'d-flex justify-center'"
+							:items-per-page-options="itemsPerPageArray"
 							:options="options"
 							:pagination="pagination"
 							@update:options="updateOptions"
@@ -104,6 +105,7 @@ export default {
 	data: function() {
 		return {
 			authors: [],
+			colWidth: 3,
 			dialog: false,
 			formValid: false,
 			newItem: {
@@ -119,7 +121,12 @@ export default {
 			}
 		};
 	},
-	computed: {},
+	computed: {
+		itemsPerPageArray() {
+			let itemPerPage = 12 / this.colWidth;
+			return [itemPerPage, itemPerPage * 2, itemPerPage * 3, -1];
+		}
+	},
 	mounted() {
 		this.loadAuthors();
 	},

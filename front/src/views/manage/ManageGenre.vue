@@ -86,6 +86,7 @@
 					<template v-slot:footer="{ options, pagination, updateOptions }">
 						<v-data-footer
 							:class="'d-flex justify-center'"
+							:items-per-page-options="itemsPerPageArray"
 							:options="options"
 							:pagination="pagination"
 							@update:options="updateOptions"
@@ -135,6 +136,10 @@ export default {
 			let charPerLigne = 180 * (this.colWidth / 12);
 			let ligne = Math.ceil(maxDescLength / charPerLigne);
 			return 55 + ligne * 35;
+		},
+		itemsPerPageArray() {
+			let itemPerPage = 12 / this.colWidth;
+			return [itemPerPage, itemPerPage * 2, itemPerPage * 3, -1];
 		}
 	},
 	mounted() {

@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: '/',
-		redirect: '/collection/manage/serie'
+		redirect: '/collection/login'
 	},
 	{
 		path: '/collection',
@@ -15,11 +15,21 @@ const routes = [
 		component: Home,
 		children: [
 			{
-				path: 'arrange',
-				name: 'Arrange',
+				path: 'login',
+				name: 'Login',
 				// route level code-splitting
 				// this generates a separate chunk (about.[hash].js) for this route
 				// which is lazy-loaded when the route is visited.
+				component: () => import(/* webpackChunkName: "about" */ '@/views/Login.vue')
+			},
+			{
+				path: 'signup',
+				name: 'Signup',
+				component: () => import(/* webpackChunkName: "about" */ '@/views/Signup.vue')
+			},
+			{
+				path: 'arrange',
+				name: 'Arrange',
 				component: () => import(/* webpackChunkName: "about" */ '@/views/Arrange.vue')
 			},
 			{
@@ -60,6 +70,20 @@ const routes = [
 
 const router = new VueRouter({
 	routes
+});
+
+router.beforeEach((to, from, next) => {
+	const publicPages = ['/collection/login', '/', '/collection/signup'];
+	const authRequired = !publicPages.includes(to.path);
+	const loggedIn = localStorage.getItem('user');
+
+	// trying to access a restricted page + not logged in
+	// redirect to login page
+	if (authRequired && !loggedIn) {
+		next('/collection/login');
+	} else {
+		next();
+	}
 });
 
 export default router;

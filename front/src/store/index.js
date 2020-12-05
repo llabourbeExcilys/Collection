@@ -1,25 +1,27 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { auth } from '@/store/auth.module';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+	modules: { auth },
 	state: {
 		woodPlankScene: null,
 		manageSelectedTab: 'Serie'
 	},
 	mutations: {
-		setWoodPlankScene(state, plank){
-			state.woodPlankScene = plank
+		setWoodPlankScene(state, plank) {
+			state.woodPlankScene = plank;
 		},
-		setManageSelectedTab(state, tab){
-			state.manageSelectedTab = tab
+		setManageSelectedTab(state, tab) {
+			state.manageSelectedTab = tab;
 		}
 	},
 	actions: {
-		loadWoodPlankScene({commit}){
-			return new Promise( (resolve) => {
+		loadWoodPlankScene({ commit }) {
+			return new Promise(resolve => {
 				const loader = new GLTFLoader();
 				loader.load(
 					'/models/scene.gltf',
@@ -33,15 +35,14 @@ export default new Vuex.Store({
 						object.position.set(0, 0, 0);
 						object.scale.set(100, 100, 100);
 						object.rotateZ(1.5708);
-	
-						commit('setWoodPlankScene', gltfScene)
-						resolve()
+
+						commit('setWoodPlankScene', gltfScene);
+						resolve();
 					},
 					xhr => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
 					error => console.error(error)
 				);
-			})
+			});
 		}
-	},
-	modules: {}
+	}
 });
