@@ -16,7 +16,7 @@
 		"three": "^0.118.1",
 		"vue": "^2.6.11",
 		"vue-router": "^3.2.0",
-		"vuetify": "^2.3.2",
+		"vuetify": "^2.6.10",
 		"vuex": "^3.4.0"
 	},
 	"devDependencies": {
